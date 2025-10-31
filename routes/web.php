@@ -11,6 +11,7 @@ use App\Http\Controllers\equiposController;
 use App\Http\Controllers\fechaController;
 use App\Http\Controllers\faltasController;
 use App\Http\Controllers\jugadoresController;
+use App\Http\Controllers\rolesController;
 
 
 Route::get('/', function () {
@@ -35,3 +36,6 @@ Route::get('/lugares', [lugaresController::class,"index"])->name("lugares");
 Route::get('/fechas', [fechaController::class,"index"])->name("fechas");
 Route::get('/faltas', [faltasController::class,"index"])->name("faltas");
 Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores");
+
+//Kevin
+Route::get('/roles', [rolesController::class,"index"])->name("roles");

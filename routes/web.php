@@ -12,6 +12,9 @@ use App\Http\Controllers\fechaController;
 use App\Http\Controllers\faltasController;
 use App\Http\Controllers\jugadoresController;
 use App\Http\Controllers\rolesController;
+use App\Http\Controllers\resultadosController;
+use App\http\Controllers\premiacionController;
+use App\http\Controllers\posicionesController;
 
 
 Route::get('/', function () {
@@ -39,3 +42,6 @@ Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores"
 
 //Kevin
 Route::get('/roles', [rolesController::class,"index"])->name("roles");
+Route::get('/resultados', [resultadosController::class,"index"])->name("resultados");
+Route::get('/premiacion', [premiacionController::class,"index"])->name("premiacion");
+Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones");

@@ -51,7 +51,8 @@ Route::get('/faltas', [faltasController::class,"index"])->name("faltas");
 Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores");
 
 //Kevin
-Route::get('/roles', [rolesController::class,"index"])->name("roles");
+Route::get('/roles', [rolesController::class,"index"])->name("roles.index");
+Route::post('/roles', [rolesController::class,"store"])->name("roles.store");
 Route::get('/resultados', [resultadosController::class,"index"])->name("resultados");
 Route::get('/premiacion', [premiacionController::class,"index"])->name("premiacion");
 Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones");

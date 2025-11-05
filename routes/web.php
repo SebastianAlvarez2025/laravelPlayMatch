@@ -15,6 +15,9 @@ use App\Http\Controllers\rolesController;
 use App\Http\Controllers\resultadosController;
 use App\Http\Controllers\premiacionController;
 use App\Http\Controllers\posicionesController;
+use App\Http\Controllers\torneosController;
+use App\Http\Controllers\tecnicosController;
+use App\Http\Controllers\tipo_faltaController;
 
 
 Route::get('/', function () {

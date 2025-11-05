@@ -12,6 +12,9 @@ use App\Http\Controllers\fechaController;
 use App\Http\Controllers\faltasController;
 use App\Http\Controllers\jugadoresController;
 use App\Http\Controllers\rolesController;
+use App\Http\Controllers\resultadosController;
+use App\Http\Controllers\premiacionController;
+use App\Http\Controllers\posicionesController;
 
 
 Route::get('/', function () {

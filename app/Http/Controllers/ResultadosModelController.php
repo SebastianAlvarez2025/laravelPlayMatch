@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
-use App\Models\resultadoModel;
+use app\Models\resultadoModel;
 use Illuminate\Http\Request;
 
 class ResultadoModelController extends Controller

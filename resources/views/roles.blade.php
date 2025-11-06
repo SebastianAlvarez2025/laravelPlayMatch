@@ -14,7 +14,7 @@
                 <hr>
                 <form name="cliente" action="{{ url('/roles') }}" method="GET">
                     <div class="text-end mb-3">
-                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nuevo</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal"><i class="fa-solid fa-plus"></i> Nuevo</button>
                     </div>
 
                     <div class="row g-2 align-items-center">
@@ -61,8 +61,53 @@
                 @else
                     <p class="text-center mt-3">No se encontraron roles.</p>
                 @endif
+
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fa-solid fa-user"></i> Crear Cliente</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form action="{{ route('roles.store') }}" name="roles" method="POST">
+                                @csrf <!--Permite proteger sobre algun virus-->
+
+                                <div class="mb-3">
+                                    <label for="id_rol" class="form-label">Identificación del rol</label>
+                                    <input type="text" class="form-control" id="id_rol" name="id_rol"placeholder="Digite el número de identificación del nuevo rol." required>
+                                </div> 
+
+                                <div class="mb-3">
+                                    <label for="nombrerol" class="form-label">Nombre del rol</label>
+                                    <input type="text" class="form-control" id="nombrerol" name="nombrerol"placeholder="Digite el nombre del nuevo rol." required>
+                                </div> 
+
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label">Descripción de rol</label>
+                                    <input type="text" class="form-control" id="descripcion" name="descripcion"placeholder="Escriba para que sirve el nuevo rol." required>
+                                </div> 
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i> Cerrar</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+
+
+                    </div>
+                </div>
             </div>
         </div>
+
+        
     </div>
 </body>
 </html>

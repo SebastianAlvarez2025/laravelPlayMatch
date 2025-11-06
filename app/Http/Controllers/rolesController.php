@@ -32,8 +32,9 @@ public function store (Request  $request){
         'descripcion'=>'required',
 
     ]);
-    rolesmodelo::crate ($request->all());
-    return redirect()->route('roles.index')->with('succes','rol registrado en la plataforma');
+
+    rolesModelo::create ($request->all());
+    return redirect()->route('roles.index')->with('succes','Rol registrado en la plataforma');
 
 }
 }

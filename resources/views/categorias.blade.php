@@ -3,79 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo categorias</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/fontawesome.min.css" integrity="sha512-M5Kq4YVQrjg5c2wsZSn27Dkfm/2ALfxmun0vUE3mPiJyK53hQBHYCVAtvMYEC7ZXmYLg8DVG4tF8gD27WmDbsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Módulo Árbitros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a2d9a56a4b.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <container class="container-sm d-flex justify-content-center mt-5">
-        <div class="card">
-            <div class="card-body" style="width: 1200px;">
-                <h3>Modulo categorias</h3>
-                <hr>
-                <form name="cliente" action="" method="post">
-                    <div class="text-end mb-3">
-                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nuevo</button>
-                    </div>
-                    <div class="row g-2 align-items-center">
-                        <div class="col-md-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Buscar</span>
-                                <input type="text" class="form-control" placeholder="Buscar por nombre o documento" aria-label="Username" aria-describedby="basic-addon1">
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h3>Módulo Árbitros</h3>
+            <hr>
+
+            {{-- Botón Nuevo --}}
+            <div class="text-end mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                    <i class="fa-solid fa-plus"></i> Nuevo
+                </button>
+            </div>
+
+            {{-- Tabla --}}
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID Árbitro</th>
+                        <th>ID Usuario</th>
+                        <th>Licencia</th>
+                        <th>Años Experiencia</th>
+                        <th>Categoría Arbitral</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($datos as $item)
+                    <tr>
+                        <td>{{ $item->id_arbitro }}</td>
+                        <td>{{ $item->id_usuario }}</td>
+                        <td>{{ $item->licencia }}</td>
+                        <td>{{ $item->anos_experiencia }}</td>
+                        <td>{{ $item->categoria_arbitral }}</td>
+                        <td>
+                            {{-- Botón Editar --}}
+                            <button type="button" class="btn btn-success btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditar{{ $item->id_arbitro }}">
+                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            </button>
+
+                            {{-- Botón Eliminar --}}
+                            <form action="{{ route('arbitros.destroy', $item->id_arbitro) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este árbitro?')">
+                                    <i class="fa-solid fa-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    {{-- Modal Editar --}}
+                    <div class="modal fade" id="modalEditar{{ $item->id_arbitro }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ route('arbitros.update', $item->id_arbitro) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Editar Árbitro</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-2">
+                                            <label>ID Usuario</label>
+                                            <input type="number" name="id_usuario" class="form-control" value="{{ $item->id_usuario }}" required>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label>Licencia</label>
+                                            <input type="text" name="licencia" class="form-control" value="{{ $item->licencia }}" required>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label>Años de Experiencia</label>
+                                            <input type="number" name="anos_experiencia" class="form-control" value="{{ $item->anos_experiencia }}" required>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label>Categoría Arbitral</label>
+                                            <input type="text" name="categoria_arbitral" class="form-control" value="{{ $item->categoria_arbitral }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
-                        <div class="col-md-6 text-end">
-                            <button type="button" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                            <button type="button" class="btn btn-warning"><i class="fas fa-list"></i> Reset</button>
-                        </div>
                     </div>
-
-                </form>
-
-                <table class="table table-striped table-hover table-bordered ">
-                        <thead class="table-primary">
-                            <tr>
-                            <th scope="col">id_categoria</th>
-                            <th scope="col">nombre_categoria</th>
-                            <th scope="col">descripcion</th>
-                            <th scope="col">edad_minima</th>
-                            <th scope="col">edad_maxima</th>
-                            <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($datos as $item)
-                            <tr>
-                                <td>{{$item->id_categoria}}</td>
-                                <td>{{$item->nombre_categoria}}</td>
-                                <td>{{$item->descripcion}}</td>
-                                <td>{{$item->edad_minima}}</td>
-                                <td>{{$item->edad_maxima}}</td>
-                                <td>
-                                    <button type="button" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
-                                </td>
-                           </tr>
-                            @endforeach
-                        </tbody>
-                </table>
-                <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-                </nav>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-    </container>
+    </div>
+</div>
+
+{{-- Modal Agregar --}}
+<div class="modal fade" id="modalAgregar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('arbitros.store') }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Árbitro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label>ID Usuario</label>
+                        <input type="number" name="id_usuario" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Licencia</label>
+                        <input type="text" name="licencia" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Años de Experiencia</label>
+                        <input type="number" name="anos_experiencia" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Categoría Arbitral</label>
+                        <input type="text" name="categoria_arbitral" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

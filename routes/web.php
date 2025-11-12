@@ -35,13 +35,18 @@ Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios");
 Route::get('/arbitros', [arbitrosController::class,"index"])->name("arbitros");
 Route::get('/categorias', [categoriasController::class,"index"])->name("categorias");
 Route::get('/encuentros', [encuentrosController::class,"index"])->name("encuentros");
-Route::get('/equipos', [equiposController::class,"index"])->name("equipos");
+
+Route::get('/equipos', [equiposController::class, 'index'])->name('equipos.index');
+Route::post('/equipos/store', [equiposController::class, 'store'])->name('equipos.store');
+Route::put('/equipos/update/{id}', [equiposController::class, 'update'])->name('equipos.update');
+Route::delete('/equipos/delete/{id}', [equiposController::class, 'destroy'])->name('equipos.destroy');
+
+
 
 //Jesus
 Route::get('/torneos', [torneosController::class,"index"])->name("torneos");
 Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos");
 Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta");
-
 
 
 //Sebastian

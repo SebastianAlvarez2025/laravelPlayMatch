@@ -3,81 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo equipos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/fontawesome.min.css" integrity="sha512-M5Kq4YVQrjg5c2wsZSn27Dkfm/2ALfxmun0vUE3mPiJyK53hQBHYCVAtvMYEC7ZXmYLg8DVG4tF8gD27WmDbsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Módulo Equipos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a2d9a56a4b.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <container class="container-sm d-flex justify-content-center mt-5">
-        <div class="card">
-            <div class="card-body" style="width: 1200px;">
-                <h3>Modulo equipos</h3>
-                <hr>
-                <form name="cliente" action="" method="post">
-                    <div class="text-end mb-3">
-                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nuevo</button>
-                    </div>
-                    <div class="row g-2 align-items-center">
-                        <div class="col-md-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Buscar</span>
-                                <input type="text" class="form-control" placeholder="Buscar por nombre o documento" aria-label="Username" aria-describedby="basic-addon1">
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h3>Módulo Equipos</h3>
+            <hr>
+
+            {{-- Botón Nuevo --}}
+            <div class="text-end mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                    <i class="fa-solid fa-plus"></i> Nuevo
+                </button>
+            </div>
+
+            {{-- Tabla --}}
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Ciudad</th>
+                        <th>Categoría</th>
+                        <th>Escudo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($datos as $item)
+                    <tr>
+                        <td>{{ $item->id_equipo }}</td>
+                        <td>{{ $item->nombre_equipo }}</td>
+                        <td>{{ $item->ciudad }}</td>
+                        <td>{{ $item->id_categoria }}</td>
+                        <td><img src="{{ $item->escudo_url }}" width="50"></td>
+                        <td>{{ $item->estado }}</td>
+                        <td>
+                            {{-- Botón Editar --}}
+                            <button type="button" class="btn btn-success btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditar{{ $item->id_equipo }}">
+                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            </button>
+
+                            {{-- Botón Eliminar --}}
+                            <form action="{{ route('equipos.destroy', $item->id_equipo) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este equipo?')">
+                                    <i class="fa-solid fa-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    {{-- Modal Editar --}}
+                    <div class="modal fade" id="modalEditar{{ $item->id_equipo }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ route('equipos.update', $item->id_equipo) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Editar Equipo</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-2">
+                                            <label>Nombre</label>
+                                            <input type="text" name="nombre_equipo" class="form-control" value="{{ $item->nombre_equipo }}" required>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label>Ciudad</label>
+                                            <input type="text" name="ciudad" class="form-control" value="{{ $item->ciudad }}" required>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label>ID Categoría</label>
+                                            <input type="number" name="id_categoria" class="form-control" value="{{ $item->id_categoria }}" required>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label>Escudo URL</label>
+                                            <input type="text" name="escudo_url" class="form-control" value="{{ $item->escudo_url }}">
+                                        </div>
+                                        <div class="mb-2">
+                                            <label>Estado</label>
+                                            <input type="text" name="estado" class="form-control" value="{{ $item->estado }}">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
-                        <div class="col-md-6 text-end">
-                            <button type="button" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                            <button type="button" class="btn btn-warning"><i class="fas fa-list"></i> Reset</button>
-                        </div>
                     </div>
-
-                </form>
-
-                <table class="table table-striped table-hover table-bordered ">
-                        <thead class="table-primary">
-                            <tr>
-                            <th scope="col">id_equipo</th>
-                            <th scope="col">nombre_equipo</th>
-                            <th scope="col">ciudad</th>
-                            <th scope="col">id_categoria</th>
-                            <th scope="col">escudo_url</th>
-                            <th scope="col">estado</th>
-                            <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($datos as $item)
-                            <tr>
-                                <td>{{$item->id_equipo}}</td>
-                                <td>{{$item->nombre_equipo}}</td>
-                                <td>{{$item->ciudad}}</td>
-                                <td>{{$item->id_categoria}}</td>
-                                <td>{{$item->escudo_url}}</td>
-                                <td>{{$item->estado}}</td>
-                                <td>
-                                    <button type="button" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
-                                </td>
-                           </tr>
-                            @endforeach
-                        </tbody>
-                </table>
-                <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-                </nav>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-    </container>
+    </div>
+</div>
+
+{{-- Modal Agregar --}}
+<div class="modal fade" id="modalAgregar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('equipos.store') }}" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Equipo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label>Nombre</label>
+                        <input type="text" name="nombre_equipo" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Ciudad</label>
+                        <input type="text" name="ciudad" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>ID Categoría</label>
+                        <input type="number" name="id_categoria" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Escudo URL</label>
+                        <input type="text" name="escudo_url" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label>Estado</label>
+                        <input type="text" name="estado" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

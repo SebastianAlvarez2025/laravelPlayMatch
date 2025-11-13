@@ -35,9 +35,21 @@ Route::get('/encuentros', [encuentrosController::class,"index"])->name("encuentr
 Route::get('/equipos', [equiposController::class,"index"])->name("equipos");
 
 //Jesus
+//Torneos
 Route::get('/torneos', [torneosController::class,"index"])->name("torneos");
+Route::post('/torneos/store', [torneosController::class, 'store'])->name('torneos.store');
+Route::put('/torneos/update/{id}', [torneosController::class, 'update'])->name('torneos.update');
+Route::delete('/torneos/delete/{id}', [torneosController::class, 'destroy'])->name('torneos.destroy');
+//Tecnicos
 Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos");
+Route::post('/tecnicos/store', [tecnicosController::class, 'store'])->name('tecnicos.store');
+Route::put('/tecnicos/update/{id}', [tecnicosController::class, 'update'])->name('tecnicos.update');
+Route::delete('/tecnicos/delete/{id}', [tecnicosController::class, 'destroy'])->name('tecnicos.destroy');
+//Tipo_Falta
 Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta");
+Route::post('/tipo_falta/store', [tipo_faltaController::class, 'store'])->name('tipo_falta.store');
+Route::put('/tipo_falta/update/{id}', [tipo_faltaController::class, 'update'])->name('tipo_falta.update');
+Route::delete('/tipo_falta/delete/{id}', [tipo_faltaController::class, 'destroy'])->name('tipo_falta.destroy');
 
 
 

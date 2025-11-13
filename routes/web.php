@@ -42,6 +42,7 @@ Route::post('/categorias/store', [categoriasController::class, 'store'])->name('
 Route::put('/categorias/update/{id}', [categoriasController::class, 'update'])->name('categorias.update');
 Route::delete('/categorias/delete/{id}', [categoriasController::class, 'destroy'])->name('categorias.destroy');
 // arbitros 
+
 Route::get('/arbitros', [arbitrosController::class, 'index'])->name('arbitros.index');
 Route::post('/arbitros/store', [arbitrosController::class, 'store'])->name('arbitros.store');
 Route:: put('/arbitros/update/{id}', [arbitrosController::class, 'update'])->name('arbitros.update');

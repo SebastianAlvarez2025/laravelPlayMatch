@@ -54,9 +54,9 @@ Route::delete('/encuentros/delete/{id}', [encuentrosController::class, 'destroy'
 
 
 //Jesus
-Route::get('/torneos', [torneosController::class,"index"])->name("torneos");
-Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos");
-Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta");
+Route::get('/torneos', [torneosController::class,"index"])->name("torneos.index");
+Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos.index");
+Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta.index");
 
 
 //Sebastian
@@ -66,15 +66,15 @@ Route::post('/lugares', [lugaresController::class, 'store'])->name('lugares.stor
 Route::put('/lugares/{id_lugar}', [lugaresController::class, 'update'])->name('lugares.update');
 Route::delete('/lugares/{id_lugar}', [lugaresController::class, 'destroy'])->name('lugares.destroy');
 //Fechas
-Route::get('/fechas', [fechaController::class,"index"])->name("fechas");
-Route::get('/faltas', [faltasController::class,"index"])->name("faltas");
-Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores");
+Route::get('/fechas', [fechaController::class,"index"])->name("fechas.index");
+Route::get('/faltas', [faltasController::class,"index"])->name("faltas.index");
+Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores.index");
 
 //Kevin
 Route::get('/roles', [rolesController::class, 'index'])->name('roles.index');
 Route::post('/roles', [rolesController::class, 'store'])->name('roles.store');
 Route::put('/roles/{id_rol}', [rolesController::class, 'update'])->name('roles.update');
 Route::delete('/roles/{id_rol}', [rolesController::class, 'destroy'])->name('roles.destroy');
-Route::get('/resultados', [resultadosController::class,"index"])->name("resultados");
-Route::get('/premiacion', [premiacionController::class,"index"])->name("premiacion");
-Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones");
+Route::get('/resultados', [resultadosController::class,"index"])->name("resultados.index");
+Route::get('/premiacion', [premiacionController::class,"index"])->name("premiacion.index");
+Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones.index");

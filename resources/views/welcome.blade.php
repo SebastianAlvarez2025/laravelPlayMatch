@@ -35,10 +35,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="">Administracion</a>
-                        <ul>
-                            <li>Cuentas</li>
-                        </ul>
+                        <a class="nav-link" href="">Torneo</a>
                     </li>
 
                     <li class="nav-item">

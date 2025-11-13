@@ -2,8 +2,6 @@
 <html lang="es">
 <head>
     <title>Módulo Árbitros</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -26,7 +24,7 @@
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por id_usuario, licencia o categoría">
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por nombre o categoría arbitral">
                         </div>
                     </div>
                     <div class="col-md-6 text-end">
@@ -38,17 +36,17 @@
 
             @if($datos->count() > 0)
                 <table class="table table-striped table-hover table-bordered">
-                    <thead class="table-primary text-center">
-                        <tr>
-                            <th>ID Árbitro</th>
-                            <th>ID Usuario</th>
-                            <th>Licencia</th>
-                            <th>Años Experiencia</th>
-                            <th>Categoría Arbitral</th>
-                            <th>Acciones</th>
-                        </tr>
+                    <thead class="table-primary">
+                    <tr>
+                        <th>id_Árbitro</th>
+                        <th>id_Usuario</th>
+                        <th>Licencia</th>
+                        <th>Anos_Experiencia</th>
+                        <th>Categoría_arbitral</th>
+                        <th>Acciones</th>
+                    </tr>
                     </thead>
-                    <tbody class="align-middle text-center">
+                    <tbody>
                     @foreach ($datos as $item)
                         <tr>
                             <td>{{ $item->id_arbitro }}</td>
@@ -57,14 +55,16 @@
                             <td>{{ $item->anos_experiencia }}</td>
                             <td>{{ $item->categoria_arbitral }}</td>
                             <td>
+                                <!-- BOTÓN EDITAR -->
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_arbitro }}">
                                     <i class="fa-solid fa-pen-to-square"></i> Editar
                                 </button>
 
+                                <!-- BOTÓN ELIMINAR -->
                                 <form action="{{ route('arbitros.destroy', $item->id_arbitro) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este árbitro?')">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este árbitro?')">
                                         <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
                                 </form>
@@ -84,19 +84,19 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label class="form-label">ID Usuario</label>
-                                                <input type="number" class="form-control" name="id_usuario" value="{{ $item->id_usuario }}" required>
+                                                <label for="id_usuario" class="form-label">ID Usuario</label>
+                                                <input type="text" class="form-control" name="id_usuario" value="{{ $item->id_usuario }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Licencia</label>
+                                                <label for="licencia" class="form-label">Licencia</label>
                                                 <input type="text" class="form-control" name="licencia" value="{{ $item->licencia }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Años de Experiencia</label>
+                                                <label for="anos_experiencia" class="form-label">Años de Experiencia</label>
                                                 <input type="number" class="form-control" name="anos_experiencia" value="{{ $item->anos_experiencia }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Categoría Arbitral</label>
+                                                <label for="categoria_arbitral" class="form-label">Categoría Arbitral</label>
                                                 <input type="text" class="form-control" name="categoria_arbitral" value="{{ $item->categoria_arbitral }}" required>
                                             </div>
                                         </div>
@@ -111,10 +111,6 @@
                     @endforeach
                     </tbody>
                 </table>
-
-                <div class="d-flex justify-content-end">
-                    {{ $datos->links() }}
-                </div>
             @else
                 <p class="text-center mt-3">No se encontraron árbitros.</p>
             @endif
@@ -127,25 +123,29 @@
                     <form action="{{ route('arbitros.store') }}" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title"><i class="fa-solid fa-user"></i> Registrar Árbitro</h5>
+                            <h5 class="modal-title"><i class="fa-solid fa-user"></i> Crear Árbitro</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label class="form-label">ID Usuario</label>
-                                <input type="number" class="form-control" name="id_usuario" placeholder="Digite el ID del usuario" required>
+                                <label for="id_arbitro" class="form-label">ID Árbitro</label>
+                                <input type="text" class="form-control" name="id_arbitro" placeholder="Ingrese el ID del árbitro" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Licencia</label>
-                                <input type="text" class="form-control" name="licencia" placeholder="Digite la licencia" required>
+                                <label for="id_usuario" class="form-label">ID Usuario</label>
+                                <input type="text" class="form-control" name="id_usuario" placeholder="Ingrese el ID del usuario" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Años de Experiencia</label>
-                                <input type="number" class="form-control" name="anos_experiencia" placeholder="Digite los años de experiencia" required>
+                                <label for="licencia" class="form-label">Licencia</label>
+                                <input type="text" class="form-control" name="licencia" placeholder="Ingrese la licencia del árbitro" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Categoría Arbitral</label>
-                                <input type="text" class="form-control" name="categoria_arbitral" placeholder="Digite la categoría arbitral" required>
+                                <label for="anos_experiencia" class="form-label">Años de Experiencia</label>
+                                <input type="number" class="form-control" name="anos_experiencia" placeholder="Ingrese los años de experiencia" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="categoria_arbitral" class="form-label">Categoría Arbitral</label>
+                                <input type="text" class="form-control" name="categoria_arbitral" placeholder="Ingrese la categoría arbitral" required>
                             </div>
                         </div>
                         <div class="modal-footer">

@@ -28,7 +28,6 @@ Route::get('/prueba', function (){
     return 'Está es otra ruta';
 });
 
-Route::get('/clientes', [ClienteController::class,"index"])->name("cliente");
 Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios");
 
 //Jorge
@@ -45,7 +44,7 @@ Route::delete('/categorias/delete/{id}', [categoriasController::class, 'destroy'
 // arbitros 
 Route::get('/arbitros', [arbitrosController::class, 'index'])->name('arbitros.index');
 Route::post('/arbitros/store', [arbitrosController::class, 'store'])->name('arbitros.store');
-Route::put('/arbitros/update/{id}', [arbitrosController::class, 'update'])->name('arbitros.update');
+Route:: put('/arbitros/update/{id}', [arbitrosController::class, 'update'])->name('arbitros.update');
 Route::delete('/arbitros/delete/{id}', [arbitrosController::class, 'destroy'])->name('arbitros.destroy');
 //encuentros 
 Route::get('/encuentros', [encuentrosController::class, 'index'])->name('encuentros.index');

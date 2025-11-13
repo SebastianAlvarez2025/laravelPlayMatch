@@ -61,7 +61,12 @@ Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_fal
 
 
 //Sebastian
-Route::get('/lugares', [lugaresController::class,"index"])->name("lugares");
+//Lugares
+Route::get('/lugares', [lugaresController::class, 'index'])->name('lugares.index');
+Route::post('/lugares', [lugaresController::class, 'store'])->name('lugares.store');
+Route::put('/lugares/{id_lugar}', [lugaresController::class, 'update'])->name('lugares.update');
+Route::delete('/lugares/{id_lugar}', [lugaresController::class, 'destroy'])->name('lugares.destroy');
+//Fechas
 Route::get('/fechas', [fechaController::class,"index"])->name("fechas");
 Route::get('/faltas', [faltasController::class,"index"])->name("faltas");
 Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores");

@@ -43,6 +43,7 @@
                         <th>Dirección</th>
                         <th>Ciudad</th>
                         <th>Capacidad</th>
+                        <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>

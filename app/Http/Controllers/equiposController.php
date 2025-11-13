@@ -7,9 +7,18 @@ use Illuminate\Support\Facades\DB;
 
 class equiposController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $datos = DB::table('equipos')->get();
+        $search = $request->input('search');
+
+        $datos = DB::table('equipos')
+            ->when($search, function ($query, $search) {
+                return $query->where('nombre_equipo', 'LIKE', "%{$search}%")
+                             ->orWhere('ciudad', 'LIKE', "%{$search}%");
+            })
+            ->orderBy('id_equipo', 'asc')
+            ->paginate(10);
+
         return view('equipos', compact('datos'));
     }
 

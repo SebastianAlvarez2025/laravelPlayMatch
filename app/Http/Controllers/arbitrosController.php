@@ -7,9 +7,18 @@ use Illuminate\Support\Facades\DB;
 
 class arbitrosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $datos = DB::table('arbitros')->get(); 
+        $search = $request->input('search');
+
+        $datos = DB::table('arbitros')
+            ->when($search, function ($query, $search) {
+                return $query->where('licencia', 'LIKE', "%{$search}%")
+                             ->orWhere('categoria_arbitral', 'LIKE', "%{$search}%")
+                             ->orWhere('id_usuario', 'LIKE', "%{$search}%");
+            })
+            ->orderBy('id_arbitro', 'asc')  ->paginate(10);
+
         return view('arbitros', compact('datos'));
     }
 
@@ -27,7 +36,7 @@ class arbitrosController extends Controller
 
     public function update(Request $request, $id)
     {
-        DB::table('arbitros')->where('id_usuario', $id)->update([
+        DB::table('arbitros')->where('id_arbitro', $id)->update([
             'id_usuario' => $request->id_usuario,
             'licencia' => $request->licencia,
             'anos_experiencia' => $request->anos_experiencia,
@@ -39,7 +48,7 @@ class arbitrosController extends Controller
 
     public function destroy($id)
     {
-        DB::table('arbitros')->where('id_usuario', $id)->delete();
+        DB::table('arbitros')->where('id_arbitro', $id)->delete();
         return redirect()->route('arbitros.index');
     }
 }

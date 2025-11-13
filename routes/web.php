@@ -26,7 +26,7 @@ Route::get('/prueba', function (){
 });
 
 Route::get('/clientes', [ClienteController::class,"index"])->name("cliente");
-Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios");
+
 
 //Jorge
 Route::get('/arbitros', [arbitrosController::class,"index"])->name("arbitros");
@@ -50,6 +50,11 @@ Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_fal
 Route::post('/tipo_falta/store', [tipo_faltaController::class, 'store'])->name('tipo_falta.store');
 Route::put('/tipo_falta/update/{id}', [tipo_faltaController::class, 'update'])->name('tipo_falta.update');
 Route::delete('/tipo_falta/delete/{id}', [tipo_faltaController::class, 'destroy'])->name('tipo_falta.destroy');
+//Usuarios
+Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios");
+Route::post('/usuarios/store', [usuariosController::class, 'store'])->name('usuarios.store');
+Route::put('/usuarios/update/{id}', [usuariosController::class, 'update'])->name('usuarios.update');
+Route::delete('/usuarios/delete/{id}', [usuariosController::class, 'destroy'])->name('usuarios.destroy');
 
 
 

@@ -6,12 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class torneosController extends Controller
-{
-<<<<<<< Updated upstream
-    public function index(){
-        $datos = DB::select("select * from torneos");
-        return view("torneos")->with("datos", $datos);
-=======
+{ 
     // Mostrar roles + búsqueda
     public function index(Request $request){
         $search = $request->input('search');
@@ -55,12 +50,12 @@ class torneosController extends Controller
     public function update(Request $request, $id_torneo){
         $torneos = torneosModelo::findOrFail($id_torneo);
         $torneos->update([
-            'nombre_torneo' => $request->nombrerol,
-            'fecha_fin' => $request->nombrerol,
-            'ciudad' => $request->nombrerol,
-            'id_categoria' => $request->nombrerol,
-            'id_usuario' => $request->nombrerol,
-            'estado' => $request->descripcion,
+            'nombre_torneo' => $request->nombre_torneo,
+            'fecha_fin' => $request->fecha_fin,
+            'ciudad' => $request->ciudad,
+            'id_categoria' => $request->id_categoria,
+            'id_usuario' => $request->id_usuario,
+            'estado' => $request->estado,
         ]);
         return redirect()->route('torneos.index')->with('success','Torneo actualizado correctamente');
     }
@@ -70,7 +65,7 @@ class torneosController extends Controller
         $torneos = tornosModelo::findOrFail($id_torneos);
         $torneos->delete();
         return redirect()->route('torneos.index')->with('success','Torneo eliminado correctamente');
->>>>>>> Stashed changes
+
     }
 }
 

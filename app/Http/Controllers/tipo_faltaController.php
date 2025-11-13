@@ -43,8 +43,8 @@ class tipo_faltaController extends Controller
         $torneos = tipo_faltaModelo::findOrFail($id_tipo_falta);
         $torneos->update([
             'nombre' => $request->nombre,
-            'gravedad' => $request->nombre,
-            'sancion_base' => $request->nombre,
+            'gravedad' => $request->gravedad,
+            'sancion_base' => $request->sancion_base,
             
         ]);
         return redirect()->route('tipo_falta.index')->with('success','Tipo de falta actualizado correctamente');

@@ -22,6 +22,7 @@ class equiposController extends Controller
         return view('equipos', compact('datos'));
     }
 
+    // Guarda
     public function store(Request $request)
     {
         DB::table('equipos')->insert([
@@ -35,6 +36,7 @@ class equiposController extends Controller
         return redirect()->route('equipos.index');
     }
 
+    // Actualiza
     public function update(Request $request, $id)
     {
         DB::table('equipos')->where('id_equipo', $id)->update([
@@ -48,6 +50,7 @@ class equiposController extends Controller
         return redirect()->route('equipos.index');
     }
 
+    // Elimina
     public function destroy($id)
     {
         DB::table('equipos')->where('id_equipo', $id)->delete();

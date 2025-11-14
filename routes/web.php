@@ -55,9 +55,9 @@ Route::delete('/encuentros/delete/{id}', [encuentrosController::class, 'destroy'
 
 
 //Jesus
-Route::get('/torneos', [torneosController::class,"index"])->name("torneos");
-Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos");
-Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta");
+Route::get('/torneos', [torneosController::class,"index"])->name("torneos.index");
+Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos.index");
+Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta.index");
 
 
 //Sebastian

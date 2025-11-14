@@ -43,7 +43,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="">Árbitros</a>
+                        <a class="nav-link" href="{{route('arbitros.index')}}">Árbitros</a>
                     </li>
 
                     <li class="nav-item">

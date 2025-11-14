@@ -90,10 +90,20 @@ Route::get('/faltas', [faltasController::class,"index"])->name("faltas.index");
 Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores.index");
 
 //Kevin
+//Roles
 Route::get('/roles', [rolesController::class, 'index'])->name('roles.index');
 Route::post('/roles', [rolesController::class, 'store'])->name('roles.store');
 Route::put('/roles/{id_rol}', [rolesController::class, 'update'])->name('roles.update');
 Route::delete('/roles/{id_rol}', [rolesController::class, 'destroy'])->name('roles.destroy');
+//Resultados
 Route::get('/resultados', [resultadosController::class,"index"])->name("resultados.index");
+Route::post('/resultados', [resultadosController::class, 'store'])->name('resultados.store');
+Route::put('/resultados/{id_rol}', [resultadosController::class, 'update'])->name('resultados.update');
+Route::delete('/resulatdos/{id_rol}', [resultadosController::class, 'destroy'])->name('resultados.destroy');
+//Premiacion
 Route::get('/premiacion', [premiacionController::class,"index"])->name("premiacion.index");
+Route::post('/premiacion', [premiacionController::class, 'store'])->name('premiacion.store');
+Route::put('/premiacion/{id_rol}', [premiacionController::class, 'update'])->name('premiacion.update');
+Route::delete('/premiacion/{id_rol}', [premiacionController::class, 'destroy'])->name('premiacion.destroy');
+//
 Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones.index");

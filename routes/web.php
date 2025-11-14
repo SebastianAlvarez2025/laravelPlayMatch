@@ -109,5 +109,8 @@ Route::get('/premiacion', [premiacionController::class,"index"])->name("premiaci
 Route::post('/premiacion', [premiacionController::class, 'store'])->name('premiacion.store');
 Route::put('/premiacion/{id_rol}', [premiacionController::class, 'update'])->name('premiacion.update');
 Route::delete('/premiacion/{id_rol}', [premiacionController::class, 'destroy'])->name('premiacion.destroy');
-//
+//Posiciones
 Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones.index");
+Route::post('/posiciones', [posicionesController::class, 'store'])->name('posiciones.store');
+Route::put('/posiciones/{id_rol}', [posicionesController::class, 'update'])->name('posiciones.update');
+Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');

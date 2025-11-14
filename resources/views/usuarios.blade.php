@@ -12,7 +12,7 @@
     <container class="container-sm d-flex justify-content-center mt-5">
         <div class="card">
             <div class="card-body" style="width: 1200px;">
-                <h3>Modulo Clientes</h3>
+                <h3>Modulo usuarios </h3>
                 <hr>
                 <form name="cliente" action="" method="post">
                     <div class="text-end mb-3">

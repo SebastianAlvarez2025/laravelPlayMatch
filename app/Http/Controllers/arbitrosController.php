@@ -2,56 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Arbitro;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ArbitrosController extends Controller
 {
+    // Listar con búsqueda y paginación
     public function index(Request $request)
     {
         $buscar = $request->get('search');
 
-        $datos = DB::table('arbitros')
+        $datos = Arbitro::query()
             ->when($buscar, function ($query, $buscar) {
-                return $query->where('categoria_arbitral', 'LIKE', "%{$buscar}%")
-                             ->orWhere('licencia', 'LIKE', "%{$buscar}%");
+                $query->where(function($q) use ($buscar) {
+                    $q->where('categoria_arbitral', 'LIKE', "%{$buscar}%")
+                      ->orWhere('licencia', 'LIKE', "%{$buscar}%");
+                });
             })
             ->paginate(10);
 
         return view('arbitros', compact('datos'));
     }
 
-    // Guarda
+    // Guardar
     public function store(Request $request)
     {
-        DB::table('arbitros')->insert([
-            'id_arbitro' => $request->id_arbitro,
-            'id_usuario' => $request->id_usuario,
-            'licencia' => $request->licencia,
-            'anos_experiencia' => $request->anos_experiencia,
-            'categoria_arbitral' => $request->categoria_arbitral,
+        $request->validate([
+            'id_usuario' => 'required|integer',
+            'licencia' => 'required|string|max:50',
+            'anos_experiencia' => 'required|integer|min:0',
+            'categoria_arbitral' => 'required|string|max:50',
         ]);
 
-        return redirect()->route('arbitros.index');
+        Arbitro::create($request->all());
+
+        return redirect()->route('arbitros.index')->with('success', 'Árbitro registrado correctamente.');
     }
 
-    // Actualiza
+    // Actualizar
     public function update(Request $request, $id)
     {
-        DB::table('arbitros')->where('id_arbitro', $id)->update([
-            'id_usuario' => $request->id_usuario,
-            'licencia' => $request->licencia,
-            'anos_experiencia' => $request->anos_experiencia,
-            'categoria_arbitral' => $request->categoria_arbitral,
+        $request->validate([
+            'id_usuario' => 'required|integer',
+            'licencia' => 'required|string|max:50',
+            'anos_experiencia' => 'required|integer|min:0',
+            'categoria_arbitral' => 'required|string|max:50',
         ]);
 
-        return redirect()->route('arbitros.index');
+        $arbitro = Arbitro::findOrFail($id);
+        $arbitro->update($request->all());
+
+        return redirect()->route('arbitros.index')->with('success', 'Árbitro actualizado correctamente.');
     }
 
-    // Elimina
+    // Eliminar
     public function destroy($id)
     {
-        DB::table('arbitros')->where('id_arbitro', $id)->delete();
-        return redirect()->route('arbitros.index');
+        $arbitro = Arbitro::findOrFail($id);
+        $arbitro->delete();
+
+        return redirect()->route('arbitros.index')->with('success', 'Árbitro eliminado correctamente.');
     }
 }

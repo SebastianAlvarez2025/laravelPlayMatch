@@ -12,6 +12,8 @@ class equiposController extends Controller
         $search = $request->input('search');
 
         $datos = DB::table('equipos')
+            ->join('categorias', 'equipos.id_categoria', '=', 'categorias.id_categoria')
+            ->select('equipos.*', 'categorias.nombre_categoria')
             ->when($search, function ($query, $search) {
                 return $query->where('nombre_equipo', 'LIKE', "%{$search}%")
                              ->orWhere('ciudad', 'LIKE', "%{$search}%");
@@ -19,38 +21,45 @@ class equiposController extends Controller
             ->orderBy('id_equipo', 'asc')
             ->paginate(10);
 
-        return view('equipos', compact('datos'));
+        // PARA SELECT EN MODAL CREAR Y EDITAR
+        $categorias = DB::table('categorias')->get();
+
+        return view('equipos', compact('datos', 'categorias'));
     }
 
-    // Guarda
     public function store(Request $request)
     {
+        $request->validate([
+            'nombre_equipo' => 'required',
+            'ciudad' => 'required',
+            'id_categoria' => 'required',
+            'estado' => 'required',
+        ]);
+
         DB::table('equipos')->insert([
             'nombre_equipo' => $request->nombre_equipo,
-            'ciudad' => $request->ciudad,
-            'id_categoria' => $request->id_categoria,
-            'escudo_url' => $request->escudo_url,
-            'estado' => $request->estado,
+            'ciudad'        => $request->ciudad,
+            'id_categoria'  => $request->id_categoria,
+            'escudo_url'    => $request->escudo_url,
+            'estado'        => $request->estado,
         ]);
 
         return redirect()->route('equipos.index');
     }
 
-    // Actualiza
     public function update(Request $request, $id)
     {
         DB::table('equipos')->where('id_equipo', $id)->update([
             'nombre_equipo' => $request->nombre_equipo,
-            'ciudad' => $request->ciudad,
-            'id_categoria' => $request->id_categoria,
-            'escudo_url' => $request->escudo_url,
-            'estado' => $request->estado,
+            'ciudad'        => $request->ciudad,
+            'id_categoria'  => $request->id_categoria,
+            'escudo_url'    => $request->escudo_url,
+            'estado'        => $request->estado,
         ]);
 
         return redirect()->route('equipos.index');
     }
 
-    // Elimina
     public function destroy($id)
     {
         DB::table('equipos')->where('id_equipo', $id)->delete();

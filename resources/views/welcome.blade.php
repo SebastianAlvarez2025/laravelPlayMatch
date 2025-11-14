@@ -7,70 +7,79 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         body {
             background-color: #f8f9fa;
         }
-        .navbar {
-            background-color: #0056b3 !important;
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #0056b3;
+            padding-top: 20px;
+            position: fixed;
+        }
+        .sidebar a {
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #00408a;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+        .brand-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            margin-left: 20px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <!-- ✅ Menú de navegación responsive -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="{{ url('/') }}">🏆 Playmatch</a>
+    <!-- 📌 SIDEBAR IZQUIERDA -->
+    <div class="sidebar">
+        <div class="brand-title">🏆 Playmatch</div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <a href="{{route('arbitros.index')}}">Árbitros</a>
+        <a href="{{route('categorias.index')}}">Categorías</a>
+        <a href="{{route('encuentros.index')}}">Encuentros</a>
+        <a href="{{route('equipos.index')}}">Equipos</a>
+        <a href="{{route('faltas.index')}}">Faltas</a>
+        <a href="{{route('fechas.index')}}">Fechas</a>
+        <a href="{{route('jugadores.index')}}">Jugadores</a>
+        <a href="{{route('lugares.index')}}">Lugares</a>
+        <a href="{{route('posiciones.index')}}">Posiciones</a>
+        <a href="{{route('premiacion.index')}}">Premiación</a>
+        <a href="{{route('resultados.index')}}">Resultados</a>
+        <a href="{{route('roles.index')}}">Roles</a>
+        <a href="{{route('tecnicos.index')}}">Tecnicos</a>
+        <a href="{{route('tipo_falta.index')}}">Tipo falta</a>
+        <a href="{{route('torneos.index')}}">Torneos</a>
+        <a href="{{route('usuarios.index')}}">Usuarios</a>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <hr class="text-white">
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Torneo</a>
-                    </li>
+        @auth
+            <form action="{{ route('logout') }}" method="POST" class="px-3">
+                @csrf
+                <button type="submit" class="btn btn-light w-100">Cerrar sesión</button>
+            </form>
+        @else
+            <a href="#" class="btn btn-outline-light w-75 mx-3">Iniciar sesión</a>
+        @endauth
+    </div>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('equipos.index')}}">Equipos</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('arbitros.index')}}">Árbitros</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Tabla de Posiciones</a>
-                    </li>
-                </ul>
-
-                <ul class="navbar-nav ms-auto">
-                    @auth
-                        <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-light">Cerrar sesión</button>
-                            </form>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a href="" class="btn btn-outline-light">Iniciar sesión</a>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ✅ Contenido principal -->
-    <div class="container text-center mt-5">
+    <!-- 📌 CONTENIDO PRINCIPAL -->
+    <div class="content">
         @yield('content')
     </div>
 

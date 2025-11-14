@@ -87,7 +87,11 @@ Route::delete('/lugares/{id_lugar}', [lugaresController::class, 'destroy'])->nam
 //Fechas
 Route::get('/fechas', [fechaController::class,"index"])->name("fechas.index");
 Route::get('/faltas', [faltasController::class,"index"])->name("faltas.index");
+//Jugadores
 Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores.index");
+Route::post('/jugadores', [jugadoresController::class, 'store'])->name('jugadores.store');
+Route::put('/jugadores/{id_jugador}', [jugadoresController::class, 'update'])->name('jugadores.update');
+Route::delete('/jugadores/{id_jugador}', [jugadoresController::class, 'destroy'])->name('jugadores.destroy');
 
 //Kevin
 Route::get('/roles', [rolesController::class, 'index'])->name('roles.index');

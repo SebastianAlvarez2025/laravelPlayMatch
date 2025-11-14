@@ -49,38 +49,102 @@
                         </thead>
                         <tbody>
                             @foreach ($datos as $item)
-                            <tr>
-                                <td>{{$item->id_torneo}}</td>
-                                <td>{{$item->nombre_torneo}}</td>
-                                <td>{{$item->fecha_inicio}}</td>
-                                <td>{{$item->fecha_fin}}</td>
-                                <td>{{$item->ciudad}}</td>
-                                <td>{{$item->id_categoria}}</td>
-                                <td>{{$item->id_usuario}}</td>
-                                <td>{{$item->estado}}</td>
-                                <td>
-                                    <button type="button" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
-                                </td>
-                           </tr>
-                            @endforeach
-                        </tbody>
+                        <tr>
+                            <td>{{ $item->id_rol }}</td>
+                            <td>{{ $item->nombrerol }}</td>
+                            <td>{{ $item->descripcion }}</td>
+                            <td>
+                                <!-- BOTÓN EDITAR -->
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_rol }}">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </button>
+
+                                
+                                <!-- BOTÓN ELIMINAR -->
+                                <form action="{{ route('roles.destroy', $item->id_rol) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este rol?')">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- MODAL EDITAR -->
+                        <div class="modal fade" id="editarModal{{ $item->id_rol }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <form action="{{ route('roles.update', $item->id_rol) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar Rol</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="nombrerol" class="form-label">Nombre del rol</label>
+                                                <input type="text" class="form-control" name="nombrerol" value="{{ $item->nombrerol }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="descripcion" class="form-label">Descripción</label>
+                                                <input type="text" class="form-control" name="descripcion" value="{{ $item->descripcion }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    </tbody>
                 </table>
-                <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-                </nav>
+                <div class="d-flex justify-content-end">
+                    {{ $datos->links() }}
+                </div>
+            @else
+                <p class="text-center mt-3">No se encontraron roles.</p>
+            @endif
+        </div>
+
+        <!-- MODAL AGREGAR -->
+        <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="agregarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form action="{{ route('roles.store') }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fa-solid fa-user"></i> Crear Rol</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="id_rol" class="form-label">Identificación del rol</label>
+                                <input type="text" class="form-control" id="id_rol" name="id_rol" placeholder="Digite el ID del nuevo rol" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombrerol" class="form-label">Nombre del rol</label>
+                                <input type="text" class="form-control" id="nombrerol" name="nombrerol" placeholder="Digite el nombre del rol" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Descripción del rol" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </container>
+
+    </div>
+</div>
 </body>
 </html>

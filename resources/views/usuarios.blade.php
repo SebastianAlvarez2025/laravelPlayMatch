@@ -1,58 +1,53 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo Usuarios</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/fontawesome.min.css" integrity="sha512-M5Kq4YVQrjg5c2wsZSn27Dkfm/2ALfxmun0vUE3mPiJyK53hQBHYCVAtvMYEC7ZXmYLg8DVG4tF8gD27WmDbsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-    <container class="container-sm d-flex justify-content-center mt-5">
-        <div class="card">
-            <div class="card-body" style="width: 1200px;">
-                <h3>Modulo usuarios </h3>
-                <hr>
-                <form name="cliente" action="" method="post">
-                    <div class="text-end mb-3">
-                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nuevo</button>
-                    </div>
-                    <div class="row g-2 align-items-center">
-                        <div class="col-md-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Buscar</span>
-                                <input type="text" class="form-control" placeholder="Buscar por usuario" aria-label="Username" aria-describedby="basic-addon1">
-                            </div>
-                        </div>
+@extends('welcome')
 
-                        <div class="col-md-6 text-end">
-                            <button type="button" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                            <button type="button" class="btn btn-warning"><i class="fas fa-list"></i> Reset</button>
+@section('title', 'usuarios')
+@section('content')
+<div class="container-sm d-flex justify-content-center mt-5">
+    <div class="card" style="width: 1200px;">
+        <div class="card-body">
+            <h3>Módulo Usuarios</h3>
+            <hr>
+
+            <form action="{{ url('/usuarios') }}" method="GET">
+                <div class="text-end mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
+                        <i class="fa-solid fa-plus"></i> Nuevo
+                    </button>
+                </div>
+
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por Nombre o Id ">
                         </div>
                     </div>
+                    <div class="col-md-6 text-end">
+                        <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
+                        <a href="{{ url('/usuarios') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                    </div>
+                </div>
+            </form>
 
-                </form>
-
-                <table class="table table-striped table-hover table-bordered ">
-                        <thead class="table-primary">
-                            <tr>
-                            <th scope="col">id_usuario</th>
-                            <th scope="col">nombre</th>
-                            <th scope="col">apellido</th>
-                            <th scope="col">correo</th>
-                            <th scope="col">telefono</th>
-                            <th scope="col">id_rol</th>
-                            <th scope="col">fecha_registro</th>
-                            <th scope="col">fecha_nacimiento</th>
-                            <th scope="col">estado</th>
-                            <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($datos as $item)
-                            <tr>
-                                <td>{{$item->id_usuario}}</td>
+            @if($datos->count() > 0)
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Usuario</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Rol</th>
+                            <th scope="col">Registro</th>
+                            <th scope="col">Fecha de Nacimiento</th>
+                            <th scope="col">Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($datos as $item)
+                        <tr>
+                            <td>{{$item->id_usuario}}</td>
                                 <td>{{$item->nombre}}</td>
                                 <td>{{$item->apellido}}</td>
                                 <td>{{$item->correo}}</td>
@@ -61,29 +56,143 @@
                                 <td>{{$item->fecha_registro}}</td>
                                 <td>{{$item->fecha_nacimiento}}</td>
                                 <td>{{$item->estado}}</td>
-                                <td>
-                                    <button type="button" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
-                                </td>
-                           </tr>
-                            @endforeach
-                        </tbody>
+                            <td>
+                                <!-- BOTÓN EDITAR -->
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_usuario }}">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </button>
+
+                                <!-- BOTÓN ELIMINAR -->
+                                <form action="{{ route('usuarios.destroy', $item->id_usuario) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este Usuario ?')">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- MODAL EDITAR -->
+                        <div class="modal fade" id="editarModal{{ $item->id_usuario }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <form action="{{ route('usuarios.update', $item->id_usuario) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar Usuario</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="nombre" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" name="nombre" value="{{ $item->nombre }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="apellido" class="form-label">Apellido</label>
+                                                <input type="text" class="form-control" name="apellido" value="{{ $item->apellido }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="correo" class="form-label">Correo</label>
+                                                <input type="number" class="form-control" name="correo" value="{{ $item->correo }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="telefono" class="form-label">Telefono</label>
+                                                <input type="text" class="form-control" name="telefono" value="{{ $item->telefono }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="id_rol" class="form-label">Rol</label>
+                                                <input type="text" class="form-control" name="id_rol" value="{{ $item->id_rol }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="fecha_registro" class="form-label">Fecha de Registro</label>
+                                                <input type="text" class="form-control" name="fecha_registro" value="{{ $item->fecha_registro }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="fecha_nacimiento" class="form-label">Fecha Nacimiento</label>
+                                                <input type="text" class="form-control" name="fecha_nacimiento" value="{{ $item->fecha_nacimiento }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="estado" class="form-label">Estado</label>
+                                                <input type="text" class="form-control" name="estado" value="{{ $item->estado }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    </tbody>
                 </table>
-                <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-                </nav>
+            @else
+                <p class="text-center mt-3">No se encontro Usuarios.</p>
+            @endif
+        </div>
+
+        <!-- MODAL AGREGAR -->
+        <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="agregarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form action="{{ route('usuarios.store') }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fa-solid fa-user"></i> Crear Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="id_usuario" class="form-label">Id Usuario</label>
+                                <input type="text" class="form-control" name="id_usuario" placeholder="Ingrese el ID del Usuario" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" name="nombre" placeholder="Ingrese el Nombre del Usuario" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="apellido" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" name="apellido" placeholder="Ingrese el Apellido" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="correo" class="form-label">Correo</label>
+                                <input type="number" class="form-control" name="correo" placeholder="Ingrese el Apellido" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Telefono</label>
+                                <input type="text" class="form-control" name="telefono" placeholder="Ingrese el Telefono" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_rol" class="form-label">Rol</label>
+                                <input type="text" class="form-control" name="iid_rol" placeholder="Ingrese el Rol" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fecha_registro" class="form-label">Fecha de Registro</label>
+                                <input type="text" class="form-control" name="fecha_registro" placeholder="Ingrese la fecha de registro" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fecha_nacimiento" class="form-label">Fecha Nacimiento</label>
+                                <input type="text" class="form-control" name="fecha_nacimiento" placeholder="Ingrese la Fecha de Nacimiento" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estado" class="form-label">Estado</label>
+                                <input type="text" class="form-control" name="estado" placeholder="Ingrese el Estado" required>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </container>
-</body>
-</html>
+
+    </div>
+</div>
+
+@endsection

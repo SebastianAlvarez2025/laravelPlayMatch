@@ -132,23 +132,23 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="id_lugar" class="form-label">Identificación del lugar</label>
-                                <input type="number" class="form-control" name="id_lugar" value="{{ $item->id_lugar }}" required>
+                                <input type="number" class="form-control" id="id_lugar "name="id_lugar" placeholder="Digite el número de identificación del lugar." required>
                             </div>
                             <div class="mb-3">
                                 <label for="nombre_lugar" class="form-label">Nombre del lugar</label>
-                                <input type="text" class="form-control" name="nombre_lugar" value="{{ $item->nombre_lugar }}" required>
+                                <input type="text" class="form-control" id="nombre_lugar "name="nombre_lugar" placeholder="Digite el nombre del lugar." required>
                             </div>
                             <div class="mb-3">
                                 <label for="direccion" class="form-label">Dirección</label>
-                                <input type="text" class="form-control" name="direccion" value="{{ $item->direccion }}" required>
+                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Digite la dirección del lugar." required>
                             </div>
                             <div class="mb-3">
                                 <label for="ciudad" class="form-label">Ciudad</label>
-                                <input type="text" class="form-control" name="ciudad" value="{{ $item->ciudad }}" required>
+                                <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Digite el nombre de la ciudad." required>
                             </div>
                             <div class="mb-3">
                                 <label for="capacidad" class="form-label">Capacidad</label>
-                                <input type="number" class="form-control" name="capacidad" value="{{ $item->capacidad }}" required>
+                                <input type="number" class="form-control" id="capacidad" name="capacidad" placeholder="Digite la capacidad del lugar." required>
                             </div>
                         </div>
                         <div class="modal-footer">

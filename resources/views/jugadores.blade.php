@@ -6,10 +6,10 @@
 <div class="container-sm d-flex justify-content-center mt-5">
     <div class="card" style="width: 1200px;">
         <div class="card-body">
-            <h3>Módulo lugares</h3>
+            <h3>Módulo jugadores</h3>
             <hr>
 
-            <form action="{{ url('/lugares') }}" method="GET">
+            <form action="{{ url('/jugadores') }}" method="GET">
                 <div class="text-end mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
                         <i class="fa-solid fa-plus"></i> Nuevo
@@ -20,12 +20,12 @@
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por lugares">
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por jugadores">
                         </div>
                     </div>
                     <div class="col-md-6 text-end">
                         <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                        <a href="{{ url('/lugares') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                        <a href="{{ url('/jugadores') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
                     </div>
                 </div>
             </form>
@@ -34,32 +34,34 @@
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="table-primary">
                     <tr>
-                        <th>Identificación del lugar</th>
-                        <th>Nombre del lugar</th>
-                        <th>Dirección</th>
-                        <th>Ciudad</th>
-                        <th>Capacidad</th>
+                        <th>Identificación del jugador</th>
+                        <th>Identificación del usuario</th>
+                        <th>Identificación del equipo</th>
+                        <th>Posicion</th>
+                        <th>Número de camiseta</th>
+                        <th>Estado</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($datos as $item)
                         <tr>
-                            <td>{{ $item->id_lugar }}</td> 
-                            <td>{{ $item->nombre_lugar }}</td>
-                            <td>{{ $item->direccion }}</td>
-                            <td>{{ $item->ciudad }}</td>
-                            <td>{{ $item->capacidad }}</td>
+                            <td>{{ $item->id_jugador }}</td> 
+                            <td>{{ $item->id_usuario }}</td>
+                            <td>{{ $item->id_equipo }}</td>
+                            <td>{{ $item->posicion }}</td>
+                            <td>{{ $item->numero_camiseta }}</td>
+                            <td>{{ $item->estado }}</td>
                             <td>
                                 <!-- BOTÓN EDITAR -->
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_lugar }}">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_jugador }}">
                                     <i class="fa-solid fa-pen-to-square"></i> Editar
                                 </button>
 
                                 <!-- BOTÓN ELIMINAR -->
-                                <form action="{{ route('lugares.destroy', $item->id_lugar) }}" method="POST" class="d-inline">
+                                <form action="{{ route('jugadores.destroy', $item->id_jugador) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este lugar?')">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este jugador?')">
                                         <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
                                 </form>
@@ -67,32 +69,32 @@
                         </tr>
 
                         <!-- MODAL EDITAR -->
-                        <div class="modal fade" id="editarModal{{ $item->id_lugar }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal fade" id="editarModal{{ $item->id_jugador }}" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
-                                    <form action="{{ route('lugares.update', $item->id_lugar) }}" method="POST">
+                                    <form action="{{ route('jugadores.update', $item->id_jugador) }}" method="POST">
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-header">
-                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar lugares</h5>
+                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar jugador</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label for="nombre_lugar" class="form-label">Nombre del lugar</label>
-                                                <input type="text" class="form-control" name="nombre_lugar" value="{{ $item->nombre_lugar }}" required>
+                                                <label for="id_equipo" class="form-label">Identificación del equipo</label>
+                                                <input type="text" class="form-control" name="id_equipo" value="{{ $item->id_equipo }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="direccion" class="form-label">Dirección</label>
-                                                <input type="text" class="form-control" name="direccion" value="{{ $item->direccion }}" required>
+                                                <label for="posicion" class="form-label">Posición</label>
+                                                <input type="text" class="form-control" name="posicion" value="{{ $item->posicion }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="ciudad" class="form-label">Ciudad</label>
-                                                <input type="text" class="form-control" name="ciudad" value="{{ $item->ciudad }}" required>
+                                                <label for="numero_camiseta" class="form-label">Número de camiseta</label>
+                                                <input type="text" class="form-control" name="numero_camiseta" value="{{ $item->numero_camiseta }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="capacidad" class="form-label">Capacidad</label>
-                                                <input type="number" class="form-control" name="capacidad" value="{{ $item->capacidad }}" required>
+                                                <label for="estado" class="form-label">Capacidad</label>
+                                                <input type="number" class="form-control" name="estado" value="{{ $item->estado }}" required>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -110,7 +112,7 @@
                     {{ $datos->links() }}
                 </div>
             @else
-                <p class="text-center mt-3">No se encontraron lugares.</p>
+                <p class="text-center mt-3">No se encontraron jugadores.</p>
             @endif
         </div>
 
@@ -118,32 +120,51 @@
         <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="agregarModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form action="{{ route('lugares.store') }}" method="POST">
+                    <form action="{{ route('jugadores.store') }}" method="POST">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title"><i class="fa-solid fa-user"></i> Crear lugar</h5>
+                            <h5 class="modal-title"><i class="fa-solid fa-user"></i> Crear jugador</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="id_lugar" class="form-label">Identificación del lugar</label>
-                                <input type="number" class="form-control" id="id_lugar "name="id_lugar" placeholder="Digite el número de identificación del lugar." required>
+                                <label for="id_jugador" class="form-label">Identificación del jugador</label>
+                                <input type="number" class="form-control" id="id_jugador "name="id_jugador" placeholder="Digite el número de identificación del jugador." required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_usuario" class="form-label">Usuario:</label>
+                                <select class="form-select" name="id_usuario" required>
+                                    <option value="">Seleccione un usuario</option>
+                                    @foreach($usuarios as $usuario)
+                                        <option value="{{ $usuario->id_usuario }}">{{ $usuario->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="id_equipo" class="form-label">Equipo:</label>
+                                <select class="form-select" name="id_equipo" required>
+                                    <option value="">Seleccione un equipo</option>
+                                    @foreach($equipos as $equipo)
+                                        <option value="{{ $equipo->id_equipo }}">{{ $equipo->nombre_equipo }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="posicion" class="form-label">Posicion</label>
+                                <input type="text" class="form-control" id="posicion" name="posicion" placeholder="Digite el nombre de la posicion." required>
                             </div>
                             <div class="mb-3">
-                                <label for="nombre_lugar" class="form-label">Nombre del lugar</label>
-                                <input type="text" class="form-control" id="nombre_lugar "name="nombre_lugar" placeholder="Digite el nombre del lugar." required>
+                                <label for="numero_camiseta" class="form-label">Número de camiseta</label>
+                                <input type="number" class="form-control" id="numero_camiseta" name="numero_camiseta" placeholder="Digite el número de camiseta del jugador." required>
                             </div>
                             <div class="mb-3">
-                                <label for="direccion" class="form-label">Dirección</label>
-                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Digite la dirección del lugar." required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ciudad" class="form-label">Ciudad</label>
-                                <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Digite el nombre de la ciudad." required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="capacidad" class="form-label">Capacidad</label>
-                                <input type="number" class="form-control" id="capacidad" name="capacidad" placeholder="Digite la capacidad del lugar." required>
+                                <label for="estado" class="form-label">Estado</label>
+                                <input type="text" class="form-control" id="estado" name="estado" placeholder="Digite el estado del jugador." required>
                             </div>
                         </div>
                         <div class="modal-footer">

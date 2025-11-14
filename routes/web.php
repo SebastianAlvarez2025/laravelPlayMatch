@@ -8,7 +8,7 @@ use App\Http\Controllers\ArbitrosController;
 use App\Http\Controllers\categoriasController;
 use App\Http\Controllers\encuentrosController;
 use App\Http\Controllers\equiposController;
-use App\Http\Controllers\fechaController;
+use App\Http\Controllers\fechasController;
 use App\Http\Controllers\faltasController;
 use App\Http\Controllers\jugadoresController;
 use App\Http\Controllers\rolesController;
@@ -88,7 +88,13 @@ Route::post('/lugares', [lugaresController::class, 'store'])->name('lugares.stor
 Route::put('/lugares/{id_lugar}', [lugaresController::class, 'update'])->name('lugares.update');
 Route::delete('/lugares/{id_lugar}', [lugaresController::class, 'destroy'])->name('lugares.destroy');
 //Fechas
-Route::get('/fechas', [fechaController::class,"index"])->name("fechas.index");
+Route::get('/fechas', [fechasController::class,"index"])->name("fechas.index");
+Route::post('/fechas', [fechasController::class, 'store'])->name('fechas.store');
+Route::put('/fechas/{id_fecha}', [fechasController::class, 'update'])->name('fechas.update');
+Route::delete('/fechas/{id_fecha}', [fechasController::class, 'destroy'])->name('fechas.destroy');
+
+
+
 Route::get('/faltas', [faltasController::class,"index"])->name("faltas.index");
 //Jugadores
 Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores.index");

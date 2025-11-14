@@ -1,6 +1,6 @@
 @extends('welcome')
 
-@section('title', 'Equipos')
+@section('title', 'Jugadores')
 @section('content')
 
 <div class="container-sm d-flex justify-content-center mt-5">
@@ -35,8 +35,8 @@
                     <thead class="table-primary">
                     <tr>
                         <th>Identificación del jugador</th>
-                        <th>Identificación del usuario</th>
-                        <th>Identificación del equipo</th>
+                        <th>Usuario</th>
+                        <th>Equipo</th>
                         <th>Posicion</th>
                         <th>Número de camiseta</th>
                         <th>Estado</th>
@@ -47,8 +47,8 @@
                     @foreach ($datos as $item)
                         <tr>
                             <td>{{ $item->id_jugador }}</td> 
-                            <td>{{ $item->id_usuario }}</td>
-                            <td>{{ $item->id_equipo }}</td>
+                            <td>{{ $item->usuario_nombre }} {{ $item->usuario_apellido }}</td>
+                            <td>{{ $item->equipo_nombre }}</td>
                             <td>{{ $item->posicion }}</td>
                             <td>{{ $item->numero_camiseta }}</td>
                             <td>{{ $item->estado }}</td>
@@ -81,21 +81,37 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
+                                            
                                             <div class="mb-3">
-                                                <label for="id_equipo" class="form-label">Identificación del equipo</label>
-                                                <input type="text" class="form-control" name="id_equipo" value="{{ $item->id_equipo }}" required>
+                                                <label for="id_equipo" class="form-label">Equipo:</label>
+                                                <select class="form-select" name="id_equipo" required>
+                                                    @foreach($equipos as $equipo)
+                                                        <option value="{{ $equipo->id_equipo }}"
+                                                            {{ $equipo->id_equipo == $item->id_equipo ? 'selected' : '' }}>
+                                                            
+                                                            {{ $equipo->nombre_equipo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
+
                                             <div class="mb-3">
                                                 <label for="posicion" class="form-label">Posición</label>
                                                 <input type="text" class="form-control" name="posicion" value="{{ $item->posicion }}" required>
                                             </div>
+                                            
                                             <div class="mb-3">
                                                 <label for="numero_camiseta" class="form-label">Número de camiseta</label>
-                                                <input type="text" class="form-control" name="numero_camiseta" value="{{ $item->numero_camiseta }}" required>
+                                                <input type="number" class="form-control" name="numero_camiseta" value="{{ $item->numero_camiseta }}" required>
                                             </div>
+
                                             <div class="mb-3">
-                                                <label for="estado" class="form-label">Capacidad</label>
-                                                <input type="number" class="form-control" name="estado" value="{{ $item->estado }}" required>
+                                                <label for="estado" class="form-label">Estado</label>
+                                                <select class="form-select" name="estado" required>
+                                                <option value="activo" {{ $item->estado == 'activo' ? 'selected' : '' }}>Activo</option>
+                                                <option value="lesionado" {{ $item->estado == 'lesionado' ? 'selected' : '' }}>Lesionado</option>
+                                                <option value="suspendido" {{ $item->estado == 'suspendido' ? 'selected' : '' }}>Suspendido</option>
+                                            </select>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -136,9 +152,9 @@
                             <div class="mb-3">
                                 <label for="id_usuario" class="form-label">Usuario:</label>
                                 <select class="form-select" name="id_usuario" required>
-                                    <option value="">Seleccione un usuario</option>
+                                    <option value="" hidden disable selected>Seleccione un usuario</option>
                                     @foreach($usuarios as $usuario)
-                                        <option value="{{ $usuario->id_usuario }}">{{ $usuario->nombre }}</option>
+                                        <option value="{{ $usuario->id_usuario }}">{{ $usuario->nombre }} {{ $usuario->apellido }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -147,7 +163,7 @@
                             <div class="mb-3">
                                 <label for="id_equipo" class="form-label">Equipo:</label>
                                 <select class="form-select" name="id_equipo" required>
-                                    <option value="">Seleccione un equipo</option>
+                                    <option value="" hidden disable selected>Seleccione un equipo</option>
                                     @foreach($equipos as $equipo)
                                         <option value="{{ $equipo->id_equipo }}">{{ $equipo->nombre_equipo }}</option>
                                     @endforeach
@@ -159,13 +175,18 @@
                                 <label for="posicion" class="form-label">Posicion</label>
                                 <input type="text" class="form-control" id="posicion" name="posicion" placeholder="Digite el nombre de la posicion." required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="numero_camiseta" class="form-label">Número de camiseta</label>
                                 <input type="number" class="form-control" id="numero_camiseta" name="numero_camiseta" placeholder="Digite el número de camiseta del jugador." required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="estado" class="form-label">Estado</label>
-                                <input type="text" class="form-control" id="estado" name="estado" placeholder="Digite el estado del jugador." required>
+                                <select class="form-select" name="estado" aria-label="Default select example">
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option> 
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">

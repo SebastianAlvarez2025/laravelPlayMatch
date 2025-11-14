@@ -38,11 +38,11 @@
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="table-primary">
                     <tr>
-                        <th>id_Árbitro</th>
-                        <th>id_Usuario</th>
+                        <th>Árbitro</th>
+                        <th>Usuario</th>
                         <th>Licencia</th>
-                        <th>Anos_Experiencia</th>
-                        <th>Categoría_arbitral</th>
+                        <th>años de Experiencia</th>
+                        <th>Categoría arbitral</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>

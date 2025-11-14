@@ -43,8 +43,8 @@ class lugaresController extends Controller
 
     // Actualizar (modificar)
     public function update(Request $request, $id_lugar){
-        $rol = lugaresModelo::findOrFail($id_lugar);
-        $rol->update([
+        $lugar = lugaresModelo::findOrFail($id_lugar);
+        $lugar->update([
             'nombre_lugar' => $request->nombre_lugar,
             'direccion' => $request->direccion,
             'ciudad' => $request->ciudad,
@@ -59,4 +59,6 @@ class lugaresController extends Controller
         $rol->delete();
         return redirect()->route('lugares.index')->with('success','Lugar eliminado correctamente');
     }
+
+    
 }

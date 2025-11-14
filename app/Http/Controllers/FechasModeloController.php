@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\fechaModelo;
 use Illuminate\Http\Request;
 
-class FechaModeloController extends Controller
+class FechasModeloController extends Controller
 {
     /**
      * Display a listing of the resource.

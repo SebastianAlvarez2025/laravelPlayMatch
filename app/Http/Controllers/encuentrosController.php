@@ -2,56 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Encuentro;
-use App\Models\Torneo;
-use App\Models\Lugar;
-use App\Models\Equipo;
-use App\Models\Arbitro;
+use Illuminate\Http\Request;
 
 class EncuentrosController extends Controller
 {
-    // Mostrar todos los encuentros con búsqueda
     public function index(Request $request)
     {
         $buscar = $request->get('search');
 
-        $datos = Encuentro::with(['torneo', 'lugar', 'equipo', 'arbitro'])
-            ->when($buscar, function ($query, $buscar) {
-                $query->whereHas('torneo', fn($q) => $q->where('nombre', 'LIKE', "%{$buscar}%"))
-                      ->orWhereHas('lugar', fn($q) => $q->where('nombre', 'LIKE', "%{$buscar}%"));
-            })
-            ->paginate(10);
+        $datos = Encuentro::when($buscar, function($query, $buscar) {
+            return $query->where('id_encuentro', 'like', "%$buscar%")
+                         ->orWhere('id_fecha', 'like', "%$buscar%")
+                         ->orWhere('fecha', 'like', "%$buscar%")
+                         ->orWhere('id_torneo', 'like', "%$buscar%")
+                         ->orWhere('id_equipo', 'like', "%$buscar%");
+        })->paginate(10);
 
-        // Datos para los <select>
-        $torneos = Torneo::all();
-        $lugares = Lugar::all();
-        $equipos = Equipo::all();
-        $arbitros = Arbitro::all();
-
-        return view('encuentros', compact('datos', 'torneos', 'lugares', 'equipos', 'arbitros'));
+        return view('encuentros', compact('datos'));
     }
 
-    // Crear nuevo encuentro
     public function store(Request $request)
     {
-        Encuentro::create($request->all());
+        Encuentro::create([
+            'id_fecha'      => $request->id_fecha,
+            'fecha'         => $request->fecha,
+            'hora'          => $request->hora,
+            'id_torneo'     => $request->id_torneo,
+            'id_lugar'      => $request->id_lugar,
+            'id_equipo'     => $request->id_equipo,
+            'id_arbitro'    => $request->id_arbitro_principal
+        ]);
+
         return redirect()->route('encuentros.index');
     }
 
-    // Actualizar encuentro existente
     public function update(Request $request, $id)
     {
         $encuentro = Encuentro::findOrFail($id);
-        $encuentro->update($request->all());
+
+        $encuentro->update([
+            'id_fecha'      => $request->id_fecha,
+            'fecha'         => $request->fecha,
+            'hora'          => $request->hora,
+            'id_torneo'     => $request->id_torneo,
+            'id_lugar'      => $request->id_lugar,
+            'id_equipo'     => $request->id_equipo,
+            'id_arbitro'    => $request->id_arbitro
+        ]);
+
         return redirect()->route('encuentros.index');
     }
 
-    // Eliminar encuentro
     public function destroy($id)
     {
         $encuentro = Encuentro::findOrFail($id);
         $encuentro->delete();
+
         return redirect()->route('encuentros.index');
     }
 }

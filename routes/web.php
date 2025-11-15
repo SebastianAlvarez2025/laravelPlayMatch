@@ -6,7 +6,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\lugaresController;
 use App\Http\Controllers\ArbitrosController;
 use App\Http\Controllers\categoriasController;
-use App\Http\Controllers\encuentrosController;
+use App\Http\Controllers\EncuentrosController;
 use App\Http\Controllers\equiposController;
 use App\Http\Controllers\fechasController;
 use App\Http\Controllers\faltasController;
@@ -38,24 +38,23 @@ Route::post('/equipos/store', [equiposController::class, 'store'])->name('equipo
 Route::put('/equipos/update/{id}', [equiposController::class, 'update'])->name('equipos.update');
 Route::delete('/equipos/delete/{id}', [equiposController::class, 'destroy'])->name('equipos.destroy');
 Route::resource('equipos', App\Http\Controllers\EquiposController::class);
-
 // vista categorias 
 Route::get('/categorias', [categoriasController::class, 'index'])->name('categorias.index');
 Route::post('/categorias/store', [categoriasController::class, 'store'])->name('categorias.store');
 Route::put('/categorias/update/{id}', [categoriasController::class, 'update'])->name('categorias.update');
 Route::delete('/categorias/delete/{id}', [categoriasController::class, 'destroy'])->name('categorias.destroy');
 // arbitros 
-
 Route::get('/arbitros', [arbitrosController::class, 'index'])->name('arbitros.index');
 Route::post('/arbitros/store', [arbitrosController::class, 'store'])->name('arbitros.store');
 Route:: put('/arbitros/update/{id}', [arbitrosController::class, 'update'])->name('arbitros.update');
 Route::delete('/arbitros/delete/{id}', [arbitrosController::class, 'destroy'])->name('arbitros.destroy');
-Route::resource('arbitros', ArbitrosController::class);
+
 //encuentros 
-Route::get('/encuentros', [encuentrosController::class, 'index'])->name('encuentros.index');
-Route::post('/encuentros/store', [encuentrosController::class, 'store'])->name('encuentros.store');
-Route::put('/encuentros/update/{id}', [encuentrosController::class, 'update'])->name('encuentros.update');
-Route::delete('/encuentros/delete/{id}', [encuentrosController::class, 'destroy'])->name('encuentros.destroy');
+Route::get('/encuentros', [EncuentrosController::class, 'index'])->name('encuentros.index');
+Route::post('/encuentros/store', [EncuentrosController::class, 'store'])->name('encuentros.store');
+Route::get('/encuentros/edit/{id}', [EncuentrosController::class, 'edit'])->name('encuentros.edit');
+Route::put('/encuentros/update/{id}', [EncuentrosController::class, 'update'])->name('encuentros.update');
+Route::delete('/encuentros/destroy/{id}', [EncuentrosController::class, 'destroy'])->name('encuentros.destroy');
 
 
 //Jesus

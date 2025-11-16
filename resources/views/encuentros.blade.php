@@ -179,16 +179,7 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="text-muted">
-                        Mostrando {{ $datos->firstItem() }} - {{ $datos->lastItem() }} de {{ $datos->total() }} registros
-                    </div>
-                    <div>
-                        {{ $datos->links() }}
-                    </div>
-                </div>
-
+                
             @else
                 <div class="text-center mt-5">
                     <i class="fas fa-futbol fa-3x text-muted mb-3"></i>

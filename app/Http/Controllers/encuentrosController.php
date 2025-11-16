@@ -15,7 +15,7 @@ class EncuentrosController extends Controller
     {
         $buscar = $request->get('search');
 
-        // Consulta optimizada con relaciones
+        // Consulta las relaciones
         $datos = Encuentro::with(['torneo', 'lugar', 'equipo', 'arbitro'])
             ->when($buscar, function($query) use ($buscar) {
                 return $query->where(function($q) use ($buscar) {
@@ -45,7 +45,6 @@ class EncuentrosController extends Controller
 
     public function create()
     {
-        // El formulario de crear está en el modal de la vista
         return redirect()->route('encuentros.index');
     }
 
@@ -75,13 +74,11 @@ class EncuentrosController extends Controller
 
     public function show($id)
     {
-        // No necesario para este módulo
         return redirect()->route('encuentros.index');
     }
 
     public function edit($id)
     {
-        // El formulario de editar está en el modal de la vista
         return redirect()->route('encuentros.index');
     }
 

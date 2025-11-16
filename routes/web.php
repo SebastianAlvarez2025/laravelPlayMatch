@@ -48,14 +48,12 @@ Route::get('/arbitros', [arbitrosController::class, 'index'])->name('arbitros.in
 Route::post('/arbitros/store', [arbitrosController::class, 'store'])->name('arbitros.store');
 Route:: put('/arbitros/update/{id}', [arbitrosController::class, 'update'])->name('arbitros.update');
 Route::delete('/arbitros/delete/{id}', [arbitrosController::class, 'destroy'])->name('arbitros.destroy');
-
 //encuentros 
 Route::get('/encuentros', [EncuentrosController::class, 'index'])->name('encuentros.index');
 Route::post('/encuentros/store', [EncuentrosController::class, 'store'])->name('encuentros.store');
 Route::get('/encuentros/edit/{id}', [EncuentrosController::class, 'edit'])->name('encuentros.edit');
 Route::put('/encuentros/update/{id}', [EncuentrosController::class, 'update'])->name('encuentros.update');
 Route::delete('/encuentros/destroy/{id}', [EncuentrosController::class, 'destroy'])->name('encuentros.destroy');
-
 
 //Jesus
 //Torneos

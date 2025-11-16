@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Encuentro;
 use Illuminate\Http\Request;
+use App\Models\Encuentro;
+use App\Models\torneoModel;  
+use App\Models\lugaresmodelo;     
+use App\Models\equiposModelos;  
+use App\Models\arbitrosModelo;  
 
 class EncuentrosController extends Controller
 {
@@ -11,54 +15,33 @@ class EncuentrosController extends Controller
     {
         $buscar = $request->get('search');
 
-        $datos = Encuentro::when($buscar, function($query, $buscar) {
-            return $query->where('id_encuentro', 'like', "%$buscar%")
-                         ->orWhere('id_fecha', 'like', "%$buscar%")
-                         ->orWhere('fecha', 'like', "%$buscar%")
-                         ->orWhere('id_torneo', 'like', "%$buscar%")
-                         ->orWhere('id_equipo', 'like', "%$buscar%");
-        })->paginate(10);
+        $datos = Encuentro::select(
+                'encuentros.*',
+                'torneos.nombre_torneo',
+                'lugares.nombre_lugar',
+                'equipos.nombre_equipo',
+                'arbitros.id_arbitro'
+            )
+            ->leftJoin('torneos', 'encuentros.id_torneo', '=', 'torneos.id_torneo')
+            ->leftJoin('lugares', 'encuentros.id_lugar', '=', 'lugares.id_lugar')
+            ->leftJoin('equipos', 'encuentros.id_equipo', '=', 'equipos.id_equipo')
+            ->leftJoin('arbitros', 'encuentros.id_arbitro', '=', 'arbitros.id_arbitro')
+            ->where(function ($query) use ($buscar) {
+                if ($buscar) {
+                    $query->where('torneos.nombre_torneo', 'like', "%$buscar%")
+                          ->orWhere('lugares.nombre_lugar', 'like', "%$buscar%")
+                          ->orWhere('equipos.nombre_equipo', 'like', "%$buscar%")
+                          ->orWhere('encuentros.fecha', 'like', "%$buscar%");
+                }
+            })
+            ->paginate(10);
 
-        return view('encuentros', compact('datos'));
-    }
+    
+        $torneos = torneoModel::all();      
+        $lugares = lugaresModelo::all();    
+        $equipos = equiposModelos::all();  
+        $arbitros = arbitrosModelo::all(); 
 
-    public function store(Request $request)
-    {
-        Encuentro::create([
-            'id_fecha'      => $request->id_fecha,
-            'fecha'         => $request->fecha,
-            'hora'          => $request->hora,
-            'id_torneo'     => $request->id_torneo,
-            'id_lugar'      => $request->id_lugar,
-            'id_equipo'     => $request->id_equipo,
-            'id_arbitro'    => $request->id_arbitro_principal
-        ]);
-
-        return redirect()->route('encuentros.index');
-    }
-
-    public function update(Request $request, $id)
-    {
-        $encuentro = Encuentro::findOrFail($id);
-
-        $encuentro->update([
-            'id_fecha'      => $request->id_fecha,
-            'fecha'         => $request->fecha,
-            'hora'          => $request->hora,
-            'id_torneo'     => $request->id_torneo,
-            'id_lugar'      => $request->id_lugar,
-            'id_equipo'     => $request->id_equipo,
-            'id_arbitro'    => $request->id_arbitro
-        ]);
-
-        return redirect()->route('encuentros.index');
-    }
-
-    public function destroy($id)
-    {
-        $encuentro = Encuentro::findOrFail($id);
-        $encuentro->delete();
-
-        return redirect()->route('encuentros.index');
+        return view('encuentros', compact('datos', 'torneos', 'lugares', 'equipos', 'arbitros'));
     }
 }

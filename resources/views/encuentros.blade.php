@@ -35,13 +35,13 @@
                     <thead class="table-primary">
                     <tr>
                         <th>ID</th>
-                        <th>ID Fecha</th>
+                        <th>Fecha</th>
                         <th>Fecha</th>
                         <th>Hora</th>
-                        <th>ID Torneo</th>
-                        <th>ID Lugar</th>
-                        <th>ID Equipo</th>
-                        <th>ID Arbitro</th>
+                        <th>Torneo</th>
+                        <th>Lugar</th>
+                        <th>Equipo</th>
+                        <th>Arbitro</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
@@ -102,24 +102,56 @@
                                                 <input type="time" class="form-control" name="hora" value="{{ $item->hora }}" required>
                                             </div>
 
+                                            <!-- SELECT TORNEO -->
                                             <div class="mb-3">
-                                                <label>ID Torneo</label>
-                                                <input type="number" class="form-control" name="id_torneo" value="{{ $item->id_torneo }}" required>
+                                                <label>Torneo</label>
+                                                <select name="id_torneo" class="form-control" required>
+                                                    @foreach($torneos as $t)
+                                                        <option value="{{ $t->id_torneo }}" 
+                                                            @if($t->id_torneo == $item->id_torneo) selected @endif>
+                                                            {{ $t->nombre_torneo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
+                                            <!-- SELECT LUGAR -->
                                             <div class="mb-3">
-                                                <label>ID Lugar</label>
-                                                <input type="number" class="form-control" name="id_lugar" value="{{ $item->id_lugar }}" required>
+                                                <label>Lugar</label>
+                                                <select name="id_lugar" class="form-control" required>
+                                                    @foreach($lugares as $l)
+                                                        <option value="{{ $l->id_lugar }}" 
+                                                            @if($l->id_lugar == $item->id_lugar) selected @endif>
+                                                            {{ $l->nombre_lugar }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
+                                            <!-- SELECT EQUIPO -->
                                             <div class="mb-3">
-                                                <label>ID Equipo</label>
-                                                <input type="number" class="form-control" name="id_equipo" value="{{ $item->id_equipo }}" required>
+                                                <label>Equipo</label>
+                                                <select name="id_equipo" class="form-control" required>
+                                                    @foreach($equipos as $e)
+                                                        <option value="{{ $e->id_equipo }}"
+                                                            @if($e->id_equipo == $item->id_equipo) selected @endif>
+                                                            {{ $e->nombre_equipo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
+                                            <!-- SELECT ÁRBITRO -->
                                             <div class="mb-3">
-                                                <label>ID Arbitro</label>
-                                                <input type="number" class="form-control" name="id_arbitro" value="{{ $item->id_arbitro }}" required>
+                                                <label>Árbitro</label>
+                                                <select name="id_arbitro" class="form-control" required>
+                                                    @foreach($arbitros as $a)
+                                                        <option value="{{ $a->id_arbitro }}"
+                                                            @if($a->id_arbitro == $item->id_arbitro) selected @endif>
+                                                            Arbitro {{ $a->id_arbitro }} (Lic: {{ $a->licencia }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
                                         </div>
@@ -176,24 +208,50 @@
                                 <input type="time" class="form-control" name="hora" required>
                             </div>
 
+                            <!-- SELECT TORNEO -->
                             <div class="mb-3">
-                                <label>ID Torneo</label>
-                                <input type="number" class="form-control" name="id_torneo" required>
+                                <label>Torneo</label>
+                                <select name="id_torneo" class="form-control" required>
+                                    <option value="">Seleccione un torneo</option>
+                                    @foreach($torneos as $t)
+                                        <option value="{{ $t->id_torneo }}">{{ $t->nombre_torneo }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
+                            <!-- SELECT LUGAR -->
                             <div class="mb-3">
-                                <label>ID Lugar</label>
-                                <input type="number" class="form-control" name="id_lugar" required>
+                                <label>Lugar</label>
+                                <select name="id_lugar" class="form-control" required>
+                                    <option value="">Seleccione un lugar</option>
+                                    @foreach($lugares as $l)
+                                        <option value="{{ $l->id_lugar }}">{{ $l->nombre_lugar }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
+                            <!-- SELECT EQUIPO -->
                             <div class="mb-3">
-                                <label>ID Equipo</label>
-                                <input type="number" class="form-control" name="id_equipo" required>
+                                <label>Equipo</label>
+                                <select name="id_equipo" class="form-control" required>
+                                    <option value="">Seleccione un equipo</option>
+                                    @foreach($equipos as $e)
+                                        <option value="{{ $e->id_equipo }}">{{ $e->nombre_equipo }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
+                            <!-- SELECT ÁRBITRO -->
                             <div class="mb-3">
-                                <label>ID Arbitro</label>
-                                <input type="number" class="form-control" name="id_arbitro" required>
+                                <label>Árbitro</label>
+                                <select name="id_arbitro" class="form-control" required>
+                                    <option value="">Seleccione un árbitro</option>
+                                    @foreach($arbitros as $a)
+                                        <option value="{{ $a->id_arbitro }}">
+                                            Arbitro {{ $a->id_arbitro }} (Lic: {{ $a->licencia }})
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                         </div>

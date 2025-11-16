@@ -177,7 +177,6 @@
             <a href="{{ route('premiacion.index') }}"><i class="fas fa-medal"></i> Premiación</a>
         </div>
 
-        <!-- Footer fijo (sin scroll) -->
         <div class="sidebar-footer">
             @auth
                 <form action="{{ route('logout') }}" method="POST">

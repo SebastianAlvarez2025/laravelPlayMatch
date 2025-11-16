@@ -32,13 +32,14 @@ Route::get('/clientes', [ClienteController::class,"index"])->name("cliente");
 
 
 //Jorge
-// vista equipo 
+
+// equipo 
 Route::get('/equipos', [equiposController::class, 'index'])->name('equipos.index');
 Route::post('/equipos/store', [equiposController::class, 'store'])->name('equipos.store');
 Route::put('/equipos/update/{id}', [equiposController::class, 'update'])->name('equipos.update');
 Route::delete('/equipos/delete/{id}', [equiposController::class, 'destroy'])->name('equipos.destroy');
 Route::resource('equipos', App\Http\Controllers\EquiposController::class);
-// vista categorias 
+// categorias 
 Route::get('/categorias', [categoriasController::class, 'index'])->name('categorias.index');
 Route::post('/categorias/store', [categoriasController::class, 'store'])->name('categorias.store');
 Route::put('/categorias/update/{id}', [categoriasController::class, 'update'])->name('categorias.update');

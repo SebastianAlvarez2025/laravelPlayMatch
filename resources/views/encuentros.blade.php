@@ -8,11 +8,10 @@
         <div class="card-body">
             <h3>Módulo Encuentros</h3>
             <hr>
-
             <form action="{{ url('/encuentros') }}" method="GET">
                 <div class="text-end mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
-                        <i class="fa-solid fa-plus"></i> Nuevo  
+                        <i class="fa-solid fa-plus"></i> Nuevo 
                     </button>
                 </div>
 
@@ -24,158 +23,179 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-end">
-                        <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                        <a href="{{ url('/encuentros') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                        <button type="submit" class="btn btn-info"><i class="fas fa-search"></i> Buscar</button>
+                        <a href="{{ url('/encuentros') }}" class="btn btn-warning"><i class="fas fa-sync"></i> Reset</a>
                     </div>
                 </div>
             </form>
 
             @if($datos->count() > 0)
-                <table class="table table-striped table-hover table-bordered">
-                    <thead class="table-primary">
-                    <tr>
-                        <th>ID</th>
-                        <th>Fecha</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Torneo</th>
-                        <th>Lugar</th>
-                        <th>Equipo</th>
-                        <th>Arbitro</th>
-                        <th>Acciones</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($datos as $item)
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead class="table-primary">
                         <tr>
-                            <td>{{ $item->id_encuentro }}</td>
-                            <td>{{ $item->id_fecha }}</td>
-                            <td>{{ $item->fecha }}</td>
-                            <td>{{ $item->hora }}</td>
-                            <td>{{ $item->id_torneo }}</td>
-                            <td>{{ $item->id_lugar }}</td>
-                            <td>{{ $item->id_equipo }}</td>
-                            <td>{{ $item->id_arbitro }}</td>
-                            <td>
-                                <!-- BOTÓN EDITAR -->
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_encuentro }}">
-                                    <i class="fa-solid fa-pen-to-square"></i> Editar
-                                </button>
-
-                                <!-- BOTÓN ELIMINAR -->
-                                <form action="{{ route('encuentros.destroy', $item->id_encuentro) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar este encuentro?')">
-                                        <i class="fa-solid fa-trash"></i> Eliminar
-                                    </button>
-                                </form>
-                            </td>
+                            <th>ID</th>
+                            <th>ID Fecha</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Torneo</th>
+                            <th>Lugar</th>
+                            <th>Equipo</th>
+                            <th>Árbitro</th>
+                            <th>Acciones</th>
                         </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($datos as $item)
+                            <tr>
+                                <td><strong>{{ $item->id_encuentro }}</strong></td>
+                                <td>{{ $item->id_fecha }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->fecha)->format('d/m/Y') }}</td>
+                                <td>{{ $item->hora }}</td>
+                                <td>{{ $item->torneo->nombre_torneo ?? 'N/A' }}</td>
+                                <td>{{ $item->lugar->nombre_lugar ?? 'N/A' }}</td>
+                                <td>{{ $item->equipo->nombre_equipo ?? 'N/A' }}</td>
+                                <td>
+                                    @if($item->arbitro)
+                                        Árbitro {{ $item->arbitro->id_arbitro }} 
+                                        @if($item->arbitro->licencia)
+                                            (Lic: {{ $item->arbitro->licencia }})
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <!-- BOTÓN EDITAR -->
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_encuentro }}">
+                                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                                        </button>
 
-                        <!-- MODAL EDITAR -->
-                        <div class="modal fade" id="editarModal{{ $item->id_encuentro }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <form action="{{ route('encuentros.update', $item->id_encuentro) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar encuentro</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
+                                        <!-- BOTÓN ELIMINAR -->
+                                        <form action="{{ route('encuentros.destroy', $item->id_encuentro) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este encuentro?')">
+                                                <i class="fa-solid fa-trash"></i> Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
 
-                                        <div class="modal-body">
-
-                                            <div class="mb-3">
-                                                <label>ID Fecha</label>
-                                                <input type="number" class="form-control" name="id_fecha" value="{{ $item->id_fecha }}" required>
+                            <!-- MODAL EDITAR -->
+                            <div class="modal fade" id="editarModal{{ $item->id_encuentro }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <form action="{{ route('encuentros.update', $item->id_encuentro) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar Encuentro</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
 
-                                            <div class="mb-3">
-                                                <label>Fecha</label>
-                                                <input type="date" class="form-control" name="fecha" value="{{ $item->fecha }}" required>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">ID Fecha</label>
+                                                    <input type="number" class="form-control" name="id_fecha" value="{{ $item->id_fecha }}" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Fecha</label>
+                                                    <input type="date" class="form-control" name="fecha" value="{{ $item->fecha }}" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Hora</label>
+                                                    <input type="time" class="form-control" name="hora" value="{{ $item->hora }}" required>
+                                                </div>
+
+                                                <!-- SELECT TORNEO -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Torneo</label>
+                                                    <select name="id_torneo" class="form-control" required>
+                                                        @foreach($torneos as $t)
+                                                            <option value="{{ $t->id_torneo }}" 
+                                                                @if($t->id_torneo == $item->id_torneo) selected @endif>
+                                                                {{ $t->nombre_torneo }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <!-- SELECT LUGAR -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Lugar</label>
+                                                    <select name="id_lugar" class="form-control" required>
+                                                        @foreach($lugares as $l)
+                                                            <option value="{{ $l->id_lugar }}" 
+                                                                @if($l->id_lugar == $item->id_lugar) selected @endif>
+                                                                {{ $l->nombre_lugar }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <!-- SELECT EQUIPO -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Equipo</label>
+                                                    <select name="id_equipo" class="form-control" required>
+                                                        @foreach($equipos as $e)
+                                                            <option value="{{ $e->id_equipo }}"
+                                                                @if($e->id_equipo == $item->id_equipo) selected @endif>
+                                                                {{ $e->nombre_equipo }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <!-- SELECT ÁRBITRO -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Árbitro</label>
+                                                    <select name="id_arbitro" class="form-control" required>
+                                                        @foreach($arbitros as $a)
+                                                            <option value="{{ $a->id_arbitro }}"
+                                                                @if($a->id_arbitro == $item->id_arbitro) selected @endif>
+                                                                @if($a->nombre)
+                                                                    {{ $a->nombre }} (Lic: {{ $a->licencia }})
+                                                                @else
+                                                                    Árbitro {{ $a->id_arbitro }} (Lic: {{ $a->licencia }})
+                                                                @endif
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
 
-                                            <div class="mb-3">
-                                                <label>Hora</label>
-                                                <input type="time" class="form-control" name="hora" value="{{ $item->hora }}" required>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
                                             </div>
-
-                                            <!-- SELECT TORNEO -->
-                                            <div class="mb-3">
-                                                <label>Torneo</label>
-                                                <select name="id_torneo" class="form-control" required>
-                                                    @foreach($torneos as $t)
-                                                        <option value="{{ $t->id_torneo }}" 
-                                                            @if($t->id_torneo == $item->id_torneo) selected @endif>
-                                                            {{ $t->nombre_torneo }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <!-- SELECT LUGAR -->
-                                            <div class="mb-3">
-                                                <label>Lugar</label>
-                                                <select name="id_lugar" class="form-control" required>
-                                                    @foreach($lugares as $l)
-                                                        <option value="{{ $l->id_lugar }}" 
-                                                            @if($l->id_lugar == $item->id_lugar) selected @endif>
-                                                            {{ $l->nombre_lugar }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <!-- SELECT EQUIPO -->
-                                            <div class="mb-3">
-                                                <label>Equipo</label>
-                                                <select name="id_equipo" class="form-control" required>
-                                                    @foreach($equipos as $e)
-                                                        <option value="{{ $e->id_equipo }}"
-                                                            @if($e->id_equipo == $item->id_equipo) selected @endif>
-                                                            {{ $e->nombre_equipo }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <!-- SELECT ÁRBITRO -->
-                                            <div class="mb-3">
-                                                <label>Árbitro</label>
-                                                <select name="id_arbitro" class="form-control" required>
-                                                    @foreach($arbitros as $a)
-                                                        <option value="{{ $a->id_arbitro }}"
-                                                            @if($a->id_arbitro == $item->id_arbitro) selected @endif>
-                                                            Arbitro {{ $a->id_arbitro }} (Lic: {{ $a->licencia }})
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
-                                        </div>
-
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-                    @endforeach
-                    </tbody>
-                </table>
-
-                <div class="d-flex justify-content-end">
-                    {{ $datos->links() }}
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="text-muted">
+                        Mostrando {{ $datos->firstItem() }} - {{ $datos->lastItem() }} de {{ $datos->total() }} registros
+                    </div>
+                    <div>
+                        {{ $datos->links() }}
+                    </div>
                 </div>
 
             @else
-                <p class="text-center mt-3">No se encontraron encuentros.</p>
+                <div class="text-center mt-5">
+                    <i class="fas fa-futbol fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No se encontraron encuentros.</p>
+                </div>
             @endif
         </div>
 
@@ -187,30 +207,29 @@
                         @csrf
 
                         <div class="modal-header">
-                            <h5 class="modal-title"><i class="fa-solid fa-plus"></i> Crear encuentro</h5>
+                            <h5 class="modal-title"><i class="fa-solid fa-plus"></i> Crear Nuevo Encuentro</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
                         <div class="modal-body">
-
                             <div class="mb-3">
-                                <label>ID Fecha</label>
-                                <input type="number" class="form-control" name="id_fecha" required>
+                                <label class="form-label">ID Fecha</label>
+                                <input type="number" class="form-control" name="id_fecha" required min="1">
                             </div>
 
                             <div class="mb-3">
-                                <label>Fecha</label>
+                                <label class="form-label">Fecha</label>
                                 <input type="date" class="form-control" name="fecha" required>
                             </div>
 
                             <div class="mb-3">
-                                <label>Hora</label>
+                                <label class="form-label">Hora</label>
                                 <input type="time" class="form-control" name="hora" required>
                             </div>
 
                             <!-- SELECT TORNEO -->
                             <div class="mb-3">
-                                <label>Torneo</label>
+                                <label class="form-label">Torneo</label>
                                 <select name="id_torneo" class="form-control" required>
                                     <option value="">Seleccione un torneo</option>
                                     @foreach($torneos as $t)
@@ -221,7 +240,7 @@
 
                             <!-- SELECT LUGAR -->
                             <div class="mb-3">
-                                <label>Lugar</label>
+                                <label class="form-label">Lugar</label>
                                 <select name="id_lugar" class="form-control" required>
                                     <option value="">Seleccione un lugar</option>
                                     @foreach($lugares as $l)
@@ -232,7 +251,7 @@
 
                             <!-- SELECT EQUIPO -->
                             <div class="mb-3">
-                                <label>Equipo</label>
+                                <label class="form-label">Equipo</label>
                                 <select name="id_equipo" class="form-control" required>
                                     <option value="">Seleccione un equipo</option>
                                     @foreach($equipos as $e)
@@ -243,29 +262,30 @@
 
                             <!-- SELECT ÁRBITRO -->
                             <div class="mb-3">
-                                <label>Árbitro</label>
+                                <label class="form-label">Árbitro</label>
                                 <select name="id_arbitro" class="form-control" required>
                                     <option value="">Seleccione un árbitro</option>
                                     @foreach($arbitros as $a)
                                         <option value="{{ $a->id_arbitro }}">
-                                            Arbitro {{ $a->id_arbitro }} (Lic: {{ $a->licencia }})
+                                            @if($a->nombre)
+                                                {{ $a->nombre }} (Lic: {{ $a->licencia }})
+                                            @else
+                                                Árbitro {{ $a->id_arbitro }} (Lic: {{ $a->licencia }})
+                                            @endif
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Encuentro</button>
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 

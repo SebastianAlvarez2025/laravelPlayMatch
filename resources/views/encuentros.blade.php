@@ -34,8 +34,7 @@
                     <table class="table table-striped table-hover table-bordered">
                         <thead class="table-primary">
                         <tr>
-                            <th>ID</th>
-                            <th>ID Fecha</th>
+                            <th>Encuentro</th>
                             <th>Fecha</th>
                             <th>Hora</th>
                             <th>Torneo</th>
@@ -49,7 +48,6 @@
                         @foreach ($datos as $item)
                             <tr>
                                 <td><strong>{{ $item->id_encuentro }}</strong></td>
-                                <td>{{ $item->id_fecha }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->fecha)->format('d/m/Y') }}</td>
                                 <td>{{ $item->hora }}</td>
                                 <td>{{ $item->torneo->nombre_torneo ?? 'N/A' }}</td>

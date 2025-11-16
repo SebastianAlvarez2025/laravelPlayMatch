@@ -36,7 +36,7 @@ class Encuentro extends Model
 
     public function equipo()
     {
-        return $this->belongsTo(equiposModelos::class, 'id_equipo', 'id_equipo');
+        return $this->belongsTo(equipo::class, 'id_equipo', 'id_equipo');
     }
 
     public function arbitro()

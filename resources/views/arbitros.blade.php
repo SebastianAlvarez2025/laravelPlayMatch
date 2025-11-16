@@ -34,7 +34,7 @@
                     <thead class="table-primary">
                     <tr>
                         <th>ID Árbitro</th>
-                        <th>ID Usuario</th>
+                        <th>Usuario</th>
                         <th>Licencia</th>
                         <th>Años Experiencia</th>
                         <th>Categoría Arbitral</th>

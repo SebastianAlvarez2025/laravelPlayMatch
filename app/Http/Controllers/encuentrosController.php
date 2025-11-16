@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Encuentro;
 use App\Models\torneoModel;  
 use App\Models\lugaresModelo;     
-use App\Models\equiposModelos;  
+use App\Models\equipo;  
 use App\Models\arbitrosModelo;  
 
 class EncuentrosController extends Controller
@@ -37,7 +37,7 @@ class EncuentrosController extends Controller
         // Datos para los selects
         $torneos = torneoModel::all();      
         $lugares = lugaresModelo::all();    
-        $equipos = equiposModelos::all();  
+        $equipos = equipo::all();  
         $arbitros = arbitrosModelo::all(); 
 
         return view('encuentros', compact('datos', 'torneos', 'lugares', 'equipos', 'arbitros'));
@@ -65,11 +65,11 @@ class EncuentrosController extends Controller
             Encuentro::create($request->all());
 
             return redirect()->route('encuentros.index')
-                ->with('success', '✅ Encuentro creado exitosamente.');
+                ->with('success', 'Encuentro creado exitosamente.');
 
         } catch (\Exception $e) {
             return redirect()->route('encuentros.index')
-                ->with('error', '❌ Error al crear el encuentro: ' . $e->getMessage());
+                ->with('error', 'Error al crear el encuentro: ' . $e->getMessage());
         }
     }
 
@@ -102,11 +102,11 @@ class EncuentrosController extends Controller
             $encuentro->update($request->all());
 
             return redirect()->route('encuentros.index')
-                ->with('success', '✅ Encuentro actualizado exitosamente.');
+                ->with('success', 'Encuentro actualizado exitosamente.');
 
         } catch (\Exception $e) {
             return redirect()->route('encuentros.index')
-                ->with('error', '❌ Error al actualizar el encuentro: ' . $e->getMessage());
+                ->with('error', 'Error al actualizar el encuentro: ' . $e->getMessage());
         }
     }
 
@@ -117,11 +117,11 @@ class EncuentrosController extends Controller
             $encuentro->delete();
 
             return redirect()->route('encuentros.index')
-                ->with('success', '✅ Encuentro eliminado exitosamente.');
+                ->with('success', 'Encuentro eliminado exitosamente.');
 
         } catch (\Exception $e) {
             return redirect()->route('encuentros.index')
-                ->with('error', '❌ Error al eliminar el encuentro: ' . $e->getMessage());
+                ->with('error', 'Error al eliminar el encuentro: ' . $e->getMessage());
         }
     }
 }

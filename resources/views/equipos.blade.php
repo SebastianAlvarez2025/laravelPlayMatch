@@ -34,7 +34,7 @@
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="table-primary">
                     <tr>
-                        <th>ID</th>
+                        <th>Equipo</th>
                         <th>Nombre del equipo</th>
                         <th>Ciudad</th>
                         <th>Categoría</th>

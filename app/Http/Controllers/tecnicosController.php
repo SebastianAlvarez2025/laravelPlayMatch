@@ -42,8 +42,8 @@ class tecnicosController extends Controller
 
     // Actualizar (modificar)
     public function update(Request $request, $id_tecnico){
-        $torneos = tecnicosModelo::findOrFail($id_tecnico);
-        $torneos->update([
+        $tecnicos = tecnicosModelo::findOrFail($id_tecnico);
+        $tecnicos->update([
             'id_usuario' => $request->id_usuario,
             'id_equipo' => $request->id_equipo,
             'licencia' => $request->licencia,

@@ -40,8 +40,8 @@ class tipo_faltaController extends Controller
 
     // Actualizar (modificar)
     public function update(Request $request, $id_tipo_falta){
-        $torneos = tipo_faltaModelo::findOrFail($id_tipo_falta);
-        $torneos->update([
+        $tipo_falta = tipo_faltaModelo::findOrFail($id_tipo_falta);
+        $tipo_falta->update([
             'nombre' => $request->nombre,
             'gravedad' => $request->gravedad,
             'sancion_base' => $request->sancion_base,

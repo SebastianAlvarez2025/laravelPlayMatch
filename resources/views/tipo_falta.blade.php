@@ -1,78 +1,148 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo tipo_falta</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/fontawesome.min.css" integrity="sha512-M5Kq4YVQrjg5c2wsZSn27Dkfm/2ALfxmun0vUE3mPiJyK53hQBHYCVAtvMYEC7ZXmYLg8DVG4tF8gD27WmDbsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-    <container class="container-sm d-flex justify-content-center mt-5">
-        <div class="card">
-            <div class="card-body" style="width: 1200px;">
-                <h3>Modulo tipo_falta</h3>
-                <hr>
-                <form name="cliente" action="" method="post">
-                    <div class="text-end mb-3">
-                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nuevo</button>
-                    </div>
-                    <div class="row g-2 align-items-center">
-                        <div class="col-md-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Buscar</span>
-                                <input type="text" class="form-control" placeholder="Buscar por nombre o documento" aria-label="Username" aria-describedby="basic-addon1">
-                            </div>
-                        </div>
+@extends('welcome')
 
-                        <div class="col-md-6 text-end">
-                            <button type="button" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                            <button type="button" class="btn btn-warning"><i class="fas fa-list"></i> Reset</button>
+@section('title', 'tipo_falta')
+@section('content')
+<div class="container-sm d-flex justify-content-center mt-5">
+    <div class="card" style="width: 1200px;">
+        <div class="card-body">
+            <h3>Módulo Tipo de Faltas</h3>
+            <hr>
+
+            <form action="{{ url('/tipo_falta') }}" method="GET">
+                <div class="text-end mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
+                        <i class="fa-solid fa-plus"></i> Nuevo
+                    </button>
+                </div>
+
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por Id, Nombre o Gravedad ">
                         </div>
                     </div>
+                    <div class="col-md-6 text-end">
+                        <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
+                        <a href="{{ url('/tipo_falta') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                    </div>
+                </div>
+            </form>
 
-                </form>
-
-                <table class="table table-striped table-hover table-bordered ">
-                        <thead class="table-primary">
-                            <tr>
-                            <th scope="col">id_tipo_falta</th>
-                            <th scope="col">nombre</th>
-                            <th scope="col">gravedad</th>
-                            <th scope="col">sancion_base</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($datos as $item)
-                            <tr>
-                                <td>{{$item->id_tipo_falta}}</td>
+            @if($datos->count() > 0)
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Id de Falta</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Gravedad</th>
+                            <th scope="col">Sancion Base</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($datos as $item)
+                        <tr>
+                            <td>{{$item->id_tipo_falta }}</td>
                                 <td>{{$item->nombre}}</td>
                                 <td>{{$item->gravedad}}</td>
                                 <td>{{$item->sancion_base}}</td>
-                                <td>
-                                    <button type="button" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
-                                </td>
-                           </tr>
-                            @endforeach
-                        </tbody>
+                            <td>
+                                <!-- BOTÓN EDITAR -->
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_tipo_falta }}">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </button>
+
+                                <!-- BOTÓN ELIMINAR -->
+                                <form action="{{ route('tipo_falta.destroy', $item->id_tipo_falta) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar la falta ?')">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <!-- MODAL EDITAR -->
+                        <div class="modal fade" id="editarModal{{ $item->id_tipo_falta }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <form action="{{ route('tipo_falta.update', $item->id_tipo_falta) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar Falta</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="nombre" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" name="nombre" value="{{ $item->nombre }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="gravedad" class="form-label">Gravedad</label>
+                                                <input type="text" class="form-control" name="gravedad" value="{{ $item->gravedad }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="sancion_base" class="form-label">Sancion Base</label>
+                                                <input type="number" class="form-control" name="sancion_base" value="{{ $item->sancion_base }}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    </tbody>
                 </table>
-                <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-                </nav>
+            @else
+                <p class="text-center mt-3">No se encontro Falta.</p>
+            @endif
+        </div>
+
+        <!-- MODAL AGREGAR -->
+        <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="agregarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form action="{{ route('tipo_falta.store') }}" method="POST">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fa-solid fa-user"></i> Crear Falta</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="id_tipo_falta" class="form-label">Id Tipo de Falta</label>
+                                <input type="text" class="form-control" name="id_tipo_falta" placeholder="Ingrese el ID del tipo de Falta" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" name="nombre" placeholder="Ingrese el nombre del tipo de falta" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="gravedad" class="form-label">Gravedado</label>
+                                <input type="text" class="form-control" name="gravedad" placeholder="Ingrese gravedad de la falta" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sancion_base" class="form-label">Sancion Base</label>
+                                <input type="number" class="form-control" name="sancion_base" placeholder="Ingrese sancion base" required>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </container>
-</body>
-</html>
+
+    </div>
+</div>
+
+@endsection

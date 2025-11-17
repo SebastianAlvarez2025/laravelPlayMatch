@@ -3,62 +3,55 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Encuentro;
+use App\Models\Torneo;
+use App\Models\Lugar;
+use App\Models\Equipo;
+use App\Models\Arbitro;
 
 class EncuentrosController extends Controller
 {
+    // Mostrar todos los encuentros con búsqueda
     public function index(Request $request)
     {
         $buscar = $request->get('search');
 
-        $datos = DB::table('encuentros')
+        $datos = Encuentro::with(['torneo', 'lugar', 'equipo', 'arbitro'])
             ->when($buscar, function ($query, $buscar) {
-                return $query->where('id_torneo', 'LIKE', "%{$buscar}%")
-                             ->orWhere('id_lugar', 'LIKE', "%{$buscar}%");
+                $query->whereHas('torneo', fn($q) => $q->where('nombre', 'LIKE', "%{$buscar}%"))
+                      ->orWhereHas('lugar', fn($q) => $q->where('nombre', 'LIKE', "%{$buscar}%"));
             })
             ->paginate(10);
 
-        return view('encuentros', compact('datos'));
+        // Datos para los <select>
+        $torneos = Torneo::all();
+        $lugares = Lugar::all();
+        $equipos = Equipo::all();
+        $arbitros = Arbitro::all();
+
+        return view('encuentros', compact('datos', 'torneos', 'lugares', 'equipos', 'arbitros'));
     }
 
-
-    // Guarda
+    // Crear nuevo encuentro
     public function store(Request $request)
     {
-        DB::table('encuentros')->insert([
-            'id_encuentro' => $request->id_encuentro,
-            'id_fecha' => $request->id_fecha,
-            'fecha' => $request->fecha,
-            'hora' => $request->hora,
-            'id_torneo' => $request->id_torneo,
-            'id_lugar' => $request->id_lugar,
-            'id_equipo' => $request->id_equipo,
-            'id_arbitro_principal' => $request->id_arbitro_principal,
-        ]);
-
+        Encuentro::create($request->all());
         return redirect()->route('encuentros.index');
     }
 
-    // Actualiza
+    // Actualizar encuentro existente
     public function update(Request $request, $id)
     {
-        DB::table('encuentros')->where('id_encuentro', $id)->update([
-            'id_fecha' => $request->id_fecha,
-            'fecha' => $request->fecha,
-            'hora' => $request->hora,
-            'id_torneo' => $request->id_torneo,
-            'id_lugar' => $request->id_lugar,
-            'id_equipo' => $request->id_equipo,
-            'id_arbitro_principal' => $request->id_arbitro_principal,
-        ]);
-
+        $encuentro = Encuentro::findOrFail($id);
+        $encuentro->update($request->all());
         return redirect()->route('encuentros.index');
     }
 
-    // Elimina
+    // Eliminar encuentro
     public function destroy($id)
     {
-        DB::table('encuentros')->where('id_encuentro', $id)->delete();
+        $encuentro = Encuentro::findOrFail($id);
+        $encuentro->delete();
         return redirect()->route('encuentros.index');
     }
 }

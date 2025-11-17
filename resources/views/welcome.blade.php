@@ -16,7 +16,7 @@
         .sidebar {
             width: 250px;
             height: 100vh;
-            background-color: #0056b3;
+            background-color: #4e6166ff;
             padding-top: 20px;
             position: fixed;
         }
@@ -45,7 +45,6 @@
 </head>
 <body>
 
-    <!-- 📌 SIDEBAR IZQUIERDA -->
     <div class="sidebar">
         <div class="brand-title">🏆 Playmatch</div>
 

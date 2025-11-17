@@ -40,6 +40,7 @@
                         <th>Posicion</th>
                         <th>Número de camiseta</th>
                         <th>Estado</th>
+                         <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>

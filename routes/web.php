@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\lugaresController;
-use App\Http\Controllers\arbitrosController;
+use App\Http\Controllers\ArbitrosController;
 use App\Http\Controllers\categoriasController;
 use App\Http\Controllers\encuentrosController;
 use App\Http\Controllers\equiposController;
@@ -37,6 +37,8 @@ Route::get('/equipos', [equiposController::class, 'index'])->name('equipos.index
 Route::post('/equipos/store', [equiposController::class, 'store'])->name('equipos.store');
 Route::put('/equipos/update/{id}', [equiposController::class, 'update'])->name('equipos.update');
 Route::delete('/equipos/delete/{id}', [equiposController::class, 'destroy'])->name('equipos.destroy');
+Route::resource('equipos', App\Http\Controllers\EquiposController::class);
+
 // vista categorias 
 Route::get('/categorias', [categoriasController::class, 'index'])->name('categorias.index');
 Route::post('/categorias/store', [categoriasController::class, 'store'])->name('categorias.store');
@@ -48,6 +50,7 @@ Route::get('/arbitros', [arbitrosController::class, 'index'])->name('arbitros.in
 Route::post('/arbitros/store', [arbitrosController::class, 'store'])->name('arbitros.store');
 Route:: put('/arbitros/update/{id}', [arbitrosController::class, 'update'])->name('arbitros.update');
 Route::delete('/arbitros/delete/{id}', [arbitrosController::class, 'destroy'])->name('arbitros.destroy');
+Route::resource('arbitros', ArbitrosController::class);
 //encuentros 
 Route::get('/encuentros', [encuentrosController::class, 'index'])->name('encuentros.index');
 Route::post('/encuentros/store', [encuentrosController::class, 'store'])->name('encuentros.store');
@@ -115,5 +118,8 @@ Route::get('/premiacion', [premiacionController::class,"index"])->name("premiaci
 Route::post('/premiacion', [premiacionController::class, 'store'])->name('premiacion.store');
 Route::put('/premiacion/{id_rol}', [premiacionController::class, 'update'])->name('premiacion.update');
 Route::delete('/premiacion/{id_rol}', [premiacionController::class, 'destroy'])->name('premiacion.destroy');
-//
+//Posiciones
 Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones.index");
+Route::post('/posiciones', [posicionesController::class, 'store'])->name('posiciones.store');
+Route::put('/posiciones/{id_rol}', [posicionesController::class, 'update'])->name('posiciones.update');
+Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');

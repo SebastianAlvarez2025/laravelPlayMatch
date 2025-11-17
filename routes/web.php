@@ -90,10 +90,11 @@ Route::get('/fechas', [fechasController::class,"index"])->name("fechas.index");
 Route::post('/fechas', [fechasController::class, 'store'])->name('fechas.store');
 Route::put('/fechas/{id_fecha}', [fechasController::class, 'update'])->name('fechas.update');
 Route::delete('/fechas/{id_fecha}', [fechasController::class, 'destroy'])->name('fechas.destroy');
-
-
-
+//Faltas
 Route::get('/faltas', [faltasController::class,"index"])->name("faltas.index");
+Route::post('/faltas', [faltasController::class, 'store'])->name('faltas.store');
+Route::put('/faltas/{id_falta}', [faltasController::class, 'update'])->name('faltas.update');
+Route::delete('/faltas/{id_falta}', [faltasController::class, 'destroy'])->name('faltas.destroy');
 //Jugadores
 Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores.index");
 Route::post('/jugadores', [jugadoresController::class, 'store'])->name('jugadores.store');

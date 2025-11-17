@@ -8,7 +8,6 @@
         <div class="card-body">
             <h3>Módulo Categorías</h3>
             <hr>
-
             <form action="{{ url('/categorias') }}" method="GET">
                 <div class="text-end mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">

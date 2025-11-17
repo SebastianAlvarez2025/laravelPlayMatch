@@ -2,65 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Arbitro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Arbitro;
 
 class ArbitrosController extends Controller
 {
-    // Listar con búsqueda y paginación
-    public function index(Request $request)
-    {
-        $buscar = $request->get('search');
+    public function index(Request $request){
+        $search = $request->input('search');
+        $query = DB::table('arbitros');
 
-        $datos = Arbitro::query()
-            ->when($buscar, function ($query, $buscar) {
-                $query->where(function($q) use ($buscar) {
-                    $q->where('categoria_arbitral', 'LIKE', "%{$buscar}%")
-                      ->orWhere('licencia', 'LIKE', "%{$buscar}%");
-                });
-            })
-            ->paginate(10);
+        if($search){
+            $query->where(function ($q) use($search){
+                $q->where('id_arbitro','LIKE',"%{$search}%")
+                  ->orWhere('id_usuario','LIKE',"%{$search}%")
+                  ->orWhere('licencia','LIKE',"%{$search}%")
+                  ->orWhere('anos_experiencia','LIKE',"%{$search}%")
+                  ->orWhere('categoria_arbitral','LIKE',"%{$search}%")
+                  ->orWhere('estado','LIKE',"%{$search}%");
+            });
+        }
 
-        return view('arbitros', compact('datos'));
+        $datos = $query->paginate(10);
+
+        return view("arbitros", compact('datos'));
     }
 
-    // Guardar
-    public function store(Request $request)
-    {
-        $request->validate([
-            'id_usuario' => 'required|integer',
-            'licencia' => 'required|string|max:50',
-            'anos_experiencia' => 'required|integer|min:0',
-            'categoria_arbitral' => 'required|string|max:50',
+    public function store(Request $request){
+        DB::table('arbitros')->insert([
+            'id_arbitro' => $request->id_arbitro,
+            'id_usuario' => $request->id_usuario,
+            'licencia' => $request->licencia,
+            'anos_experiencia' => $request->anos_experiencia,
+            'categoria_arbitral' => $request->categoria_arbitral,
+            'estado' => $request->estado,
         ]);
 
-        Arbitro::create($request->all());
-
-        return redirect()->route('arbitros.index')->with('success', 'Árbitro registrado correctamente.');
+        return redirect()->route('arbitros.index')
+                         ->with('success', 'Árbitro creado correctamente.');
     }
 
-    // Actualizar
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'id_usuario' => 'required|integer',
-            'licencia' => 'required|string|max:50',
-            'anos_experiencia' => 'required|integer|min:0',
-            'categoria_arbitral' => 'required|string|max:50',
+    public function update(Request $request, $id){
+        DB::table('arbitros')->where('id_arbitro', $id)->update([
+            'id_usuario' => $request->id_usuario,
+            'licencia' => $request->licencia,
+            'anos_experiencia' => $request->anos_experiencia,
+            'categoria_arbitral' => $request->categoria_arbitral,
+            'estado' => $request->estado,
         ]);
 
-        $arbitro = Arbitro::findOrFail($id);
-        $arbitro->update($request->all());
-
-        return redirect()->route('arbitros.index')->with('success', 'Árbitro actualizado correctamente.');
+        return redirect()->route('arbitros.index')
+                         ->with('success', 'Árbitro actualizado correctamente.');
     }
 
-    // Eliminar
-    public function destroy($id)
-    {
-        $arbitro = Arbitro::findOrFail($id);
-        $arbitro->delete();
+    public function destroy($id){
+        DB::table('arbitros')->where('id_arbitro', $id)->delete();
 
-        return redirect()->route('arbitros.index')->with('success', 'Árbitro eliminado correctamente.');
+        return redirect()->route('arbitros.index')
+                         ->with('success', 'Árbitro eliminado correctamente.');
     }
 }

@@ -34,11 +34,11 @@
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="table-primary">
                     <tr>
-                        <th>ID</th>
+                        <th>Equipo</th>
                         <th>Nombre del equipo</th>
                         <th>Ciudad</th>
                         <th>Categoría</th>
-                        <th>Escudo URL</th>
+                        <th>Escudo</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -50,11 +50,21 @@
                             <td>{{ $item->nombre_equipo }}</td>
                             <td>{{ $item->ciudad }}</td>
                             <td>{{ $item->nombre_categoria }}</td>
-                            <td>{{ $item->escudo_url }}</td>
-                            <td>{{ $item->estado }}</td>
+                            <td class="text-center">
+                                @if($item->escudo_final)
+                                    <img src="{{ $item->escudo_final }}" 
+                                         alt="Escudo {{ $item->nombre_equipo }}" 
+                                         style="width: 60px; height: 60px; object-fit: contain; border-radius: 5px;">
+                                @else
+                                    <span class="text-muted">Sin escudo</span>
+                                @endif
+                            </td>
+                            <td>
+                                {{ $item->estado }}
+                            </td>
                             <td>
                                 <!-- BOTÓN EDITAR -->
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_equipo }}">
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_equipo }}">
                                     <i class="fa-solid fa-pen-to-square"></i> Editar
                                 </button>
 
@@ -62,7 +72,7 @@
                                 <form action="{{ route('equipos.destroy', $item->id_equipo) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar este equipo?')">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este equipo?')">
                                         <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
                                 </form>
@@ -105,7 +115,13 @@
 
                                             <div class="mb-3">
                                                 <label>Escudo URL</label>
-                                                <input type="text" class="form-control" name="escudo_url" value="{{ $item->escudo_url }}">
+                                                <input type="text" class="form-control" name="escudo_url" value="{{ $item->escudo_final }}" placeholder="https://ejemplo.com/escudo.jpg">
+                                                @if($item->escudo_final)
+                                                    <div class="mt-2">
+                                                        <small>Vista previa actual:</small><br>
+                                                        <img src="{{ $item->escudo_final }}" alt="Vista previa" style="width: 50px; height: 50px; object-fit: contain; border: 1px solid #ddd;">
+                                                    </div>
+                                                @endif
                                             </div>
 
                                             <div class="mb-3">
@@ -140,7 +156,6 @@
                 <p class="text-center mt-3">No se encontraron equipos.</p>
             @endif
         </div>
-
 
         <!-- MODAL AGREGAR -->
         <div class="modal fade" id="agregarModal" tabindex="-1">
@@ -178,7 +193,8 @@
 
                             <div class="mb-3">
                                 <label>Escudo URL</label>
-                                <input type="text" class="form-control" name="escudo_url">
+                                <input type="text" class="form-control" name="escudo_url" placeholder="https://ejemplo.com/escudo.jpg">
+                                <small class="text-muted">Ejemplo: https://dimayor.com.co/wp-content/uploads/2024/06/TIGRES-FC.png</small>
                             </div>
 
                             <div class="mb-3">

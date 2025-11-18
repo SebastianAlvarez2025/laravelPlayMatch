@@ -36,7 +36,6 @@ class equiposController extends Controller
             return $equipo;
         });
 
-        // PARA SELECT EN MODAL CREAR Y EDITAR
         $categorias = DB::table('categorias')->get();
 
         return view('equipos', compact('datos', 'categorias'));

@@ -23,7 +23,7 @@ class Equipo extends Model
         'estado',
     ];
 
-    // RELACIÓN OPCIONAL CON CATEGORÍAS
+    // relacion con categorias 
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria');

@@ -18,7 +18,7 @@
         .sidebar {
             width: 250px;
             height: 100vh;
-            background-color: #3c3d3dff;
+            background-color: #2031c2ff;
             position: fixed;
             left: 0;
             top: 0;
@@ -41,7 +41,7 @@
             border: none;
         }
         .sidebar a:hover {
-            background-color: #646668ff;
+            background-color: #333dceff;
         }
         .brand-title {
             font-size: 22px;

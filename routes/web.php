@@ -62,6 +62,8 @@ Route::get('/torneos', [torneosController::class,"index"])->name("torneos.index"
 Route::post('/torneos/store', [torneosController::class, 'store'])->name('torneos.store');
 Route::put('/torneos/update/{id}', [torneosController::class, 'update'])->name('torneos.update');
 Route::delete('/torneos/delete/{id}', [torneosController::class, 'destroy'])->name('torneos.destroy');
+Route::get('/torneos/inscribir/{id_torneo}', [TorneosController::class, 'inscribir'])->name('torneos.inscribir');
+
 //Tecnicos
 Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos.index");
 Route::post('/tecnicos/store', [tecnicosController::class, 'store'])->name('tecnicos.store');

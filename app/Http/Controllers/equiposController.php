@@ -75,8 +75,27 @@ class equiposController extends Controller
     }
 
     public function destroy($id)
-    {
-        DB::table('equipos')->where('id_equipo', $id)->delete();
-        return redirect()->route('equipos.index');
+{
+    try {
+        $equipo = Equipo::findOrFail($id);
+        $equipo->delete();
+
+        return redirect()
+            ->route('equipos.index')
+            ->with('success', 'Equipo eliminado de la base de datos');
+            
+    } catch (\Illuminate\Database\QueryException $e) {
+
+        if ($e->getCode() == "23000") {
+            return redirect()
+                ->route('equipos.index')
+                ->with('error', 'No se puede eliminar el equipo porque está relacionado con otro registro');
+        }
+
+        return redirect()
+            ->route('equipos.index')
+            ->with('error', 'Error al eliminar el registro, comuníquese con el administrador del sistema');
     }
+}
+
 }

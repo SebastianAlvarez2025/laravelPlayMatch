@@ -2,35 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Torneo;
+use App\Models\categoriasModelo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Torneo;
 
 class TorneosController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-
-        $query = DB::table('torneos')
-            ->join('categorias', 'torneos.id_categoria', '=', 'categorias.id_categoria')
-            ->join('usuarios', 'torneos.id_usuario', '=', 'usuarios.id_usuario')
-            ->select(
-                'torneos.*',
-                'categorias.nombre_categoria as categoria',
-                'usuarios.nombre as usuario'
-            );
-
+        $query = DB::table('torneos');
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('torneos.id_torneo', 'LIKE', "%{$search}%")
-                    ->orWhere('torneos.nombre_torneo', 'LIKE', "%{$search}%")
-                    ->orWhere('torneos.fecha_inicio', 'LIKE', "%{$search}%")
-                    ->orWhere('torneos.fecha_fin', 'LIKE', "%{$search}%")
-                    ->orWhere('torneos.ciudad', 'LIKE', "%{$search}%")
-                    ->orWhere('categorias.nombre_categoria', 'LIKE', "%{$search}%")
-                    ->orWhere('usuarios.nombre', 'LIKE', "%{$search}%")
-                    ->orWhere('torneos.estado', 'LIKE', "%{$search}%");
+                $q->where('id_torneo', 'LIKE', "%{$search}%")
+                    ->orWhere('nombre_torneo', 'LIKE', "%{$search}%")
+                    ->orWhere('fecha_inicio', 'LIKE', "%{$search}%")
+                    ->orWhere('fecha_fin', 'LIKE', "%{$search}%")
+                    ->orWhere('ciudad', 'LIKE', "%{$search}%")
+                    ->orWhere('id_categoria', 'LIKE', "%{$search}%")
+                    ->orWhere('id_usuario', 'LIKE', "%{$search}%")
+                    ->orWhere('estado', 'LIKE', "%{$search}%");
             });
         }
 
@@ -62,13 +54,13 @@ class TorneosController extends Controller
         $torneo = Torneo::findOrFail($id_torneo);
 
         $torneo->update([
-            'nombre_torneo'   => $request->nombre_torneo,
-            'fecha_inicio'    => $request->fecha_inicio,
-            'fecha_fin'       => $request->fecha_fin,
-            'ciudad'          => $request->ciudad,
-            'id_categoria'    => $request->id_categoria,
-            'id_usuario'      => $request->id_usuario,
-            'estado'          => $request->estado
+            'nombre_torneo' => $request->nombre_torneo,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_fin' => $request->fecha_fin,
+            'ciudad' => $request->ciudad,
+            'id_categoria' => $request->id_categoria,
+            'id_usuario' => $request->id_usuario,
+            'estado' => $request->estado,
         ]);
 
         return redirect()->route('torneos.index')->with('success', 'Torneo actualizado correctamente');
@@ -80,11 +72,5 @@ class TorneosController extends Controller
         $torneo->delete();
 
         return redirect()->route('torneos.index')->with('success', 'Torneo eliminado correctamente');
-    }
-
-    public function inscribir($id_torneo)
-    {
-        return redirect()->route('torneos.index')
-            ->with('success', 'Te has inscrito al torneo correctamente.');
     }
 }

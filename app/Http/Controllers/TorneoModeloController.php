@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\torneoModel;
 use Illuminate\Http\Request;
 
-class TorneoModelController extends Controller
+class TorneoModeloController extends Controller
 {
     /**
      * Display a listing of the resource.

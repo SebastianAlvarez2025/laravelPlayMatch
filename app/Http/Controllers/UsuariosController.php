@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\usuariosModelo;
 
-class UsuariosController extends Controller
+class usuariosController extends Controller
 {
     // Mostrar roles + búsqueda
     public function index(Request $request){
@@ -43,7 +44,7 @@ class UsuariosController extends Controller
         ]);
 
         usuariosModelo::create($request->all());
-        return redirect()->route('torneos.index')->with('success','Usuario registrado correctamente');
+        return redirect()->route('usuarios.index')->with('success','Usuario registrado correctamente');
     }
 
     // Actualizar (modificar)

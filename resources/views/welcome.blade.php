@@ -163,6 +163,10 @@
                 <a href="{{ route('jugadores.index') }}"><i class="fas fa-user"></i> Jugadores</a>
                 <a href="{{ route('tecnicos.index') }}"><i class="fas fa-chalkboard-teacher"></i> Técnicos</a>
 
+                <!-- 🔥 NUEVA SECCIÓN - INSCRIPCIONES 🔥 -->
+                <div class="category-title">Inscripciones</div>
+                <a href="{{ route('inscripciones.index') }}"><i class="fas fa-clipboard-check"></i> Inscripciones</a>
+
                 <div class="category-title">Partidos</div>
                 <a href="{{ route('encuentros.index') }}"><i class="fas fa-futbol"></i> Encuentros</a>
                 <a href="{{ route('fechas.index') }}"><i class="fas fa-calendar-alt"></i> Fechas</a>

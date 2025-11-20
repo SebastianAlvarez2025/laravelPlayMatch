@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class usuariosModelo extends Model
+class rolesModelo extends Model
 {
     protected $table = 'usuarios';
     protected $primaryKey = 'id_usuario';
@@ -13,14 +13,17 @@ class usuariosModelo extends Model
     protected $keyType = 'string';
     public $timestamps = false;
     protected $fillable=[
+
         'id_usuario',
         'nombre',
         'apellido',
-        'correo',
-        "telefono",
-        "id_rol",
-        "fecha_registro",
-        "fecha_nacimiento",
-        "estado"
+        'correo',                        
+        'telefono',                      
+        'id_rol',                                
+        'fecha_registro',                  
+        'fecha_nacimiento',                 
+        'estado'                 
     ];
+
+
 }

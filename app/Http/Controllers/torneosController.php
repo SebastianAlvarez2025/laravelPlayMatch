@@ -2,96 +2,85 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Torneo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\torneosModelo;
 
-class torneosController extends Controller
+class TorneosController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $search = $request->input('search');
-
-
+        
         $query = DB::table('torneos')
+            ->leftJoin('categorias', 'torneos.id_categoria', '=', 'categorias.id_categoria')
+            ->leftJoin('usuarios', 'torneos.id_usuario', '=', 'usuarios.id_usuario')
+            ->select(
+                'torneos.*', 
+                'categorias.nombre_categoria',
+                DB::raw("CONCAT(usuarios.nombre, ' ', usuarios.apellido) as usuario_nombre_completo")
+            );
 
-        ->join('categorias', 'torneos.id_categoria', '=', 'categorias.id_categoria')
-        ->join('usuarios', 'torneos.id_usuario', '=', 'usuarios.id_usuario')
-        ->select(
-            'torneos.*',
-            'categorias.nombre_categoria as categoria_nombre',
-            'usuarios.nombre as nombre_usuario',
-            'usuarios.apellido as apellido_usuario'
-        );
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('torneos.id_torneo', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.nombre_torneo', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.fecha_inicio', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.fecha_fin', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.ciudad', 'LIKE', "%{$search}%")
+                  ->orWhere('categorias.nombre_categoria', 'LIKE', "%{$search}%")
+                  ->orWhere('usuarios.nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('usuarios.apellido', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.estado', 'LIKE', "%{$search}%");
+            });
+        }
 
-    if($search){
-        $query->where(function ($q) use($search){
-            $q->where('torneos.id_torneo','LIKE',"%{$search}%")
-              ->orWhere('torneos.nombre_torneo','LIKE',"%{$search}%")
-              ->orWhere('torneos.fecha_inicio','LIKE',"%{$search}%")
-              ->orWhere('torneos.fecha_fin','LIKE',"%{$search}%")
-              ->orWhere('torneos.ciudad','LIKE',"%{$search}%")
-              ->orWhere('torneos.id_categoria','LIKE',"%{$search}%")
-              ->orWhere('categorias.nombre_categoria','LIKE',"%{$search}%")
-              ->orWhere('torneos.id_usuario','LIKE',"%{$search}%")
-              ->orWhere('usuarios.nombre','LIKE',"%{$search}%")
-              ->orWhere('usuarios.apellido','LIKE',"%{$search}%")
-              ->orWhere('torneos.estado','LIKE',"%{$search}%");
-        });
-    }
-        $datos = $query->paginate(10)->appends($request->only('search'));
-
-        $categorias = DB::table('categorias')->get();
-        $usuarios = DB::table('usuarios')->get();
-
-        return view("torneos", compact('datos', 'categorias', 'usuarios'));
-    }
-    
-    public function create(){
-    $categorias = DB::table('categorias')->get(); 
-    $usuarios = DB::table('usuarios')->get();
-
-    return view('torneos.create', compact('categorias', 'usuarios'));
+        $datos = $query->paginate(10);
+        return view('torneos', compact('datos'));
     }
 
-    //Crear
-    public function store(Request $request){
-        $request -> validate([
+    public function store(Request $request)
+    {
+        $request->validate([
             'id_torneo' => 'required|unique:torneos,id_torneo',
             'nombre_torneo' => 'required',
-            'fecha_inicio'  => 'required',
-            'fecha_fin' => 'required',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date',
             'ciudad' => 'required',
-            'id_categoria' => 'required',
-            'id_usuario' => 'required',
-            'estado' => 'required',
+            'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_usuario' => 'required|exists:usuarios,id_usuario',
+            'estado' => 'required|in:Activo,Inactivo,Finalizado',
         ]);
 
-        torneosModelo::create($request->all());
+        Torneo::create($request->all());
 
-        return redirect()->route('torneos.index')
-                     ->with('success', 'Torneo creado correctamente.');
+        return redirect()->route('torneos.index')->with('success', 'Torneo registrado correctamente');
     }
 
-    //Actualizar
-    public function update(Request $request, $id_torneo){
-        $torneo = torneosModelo::findOrFail($id_torneo);
-        $torneo ->update([
-            'nombre_torneo' => $request->nombre_torneo,
-            'fecha_inicio' => $request->fecha_inicio,
-            'fecha_fin' => $request->fecha_fin,
-            'ciudad' => $request->ciudad,
-            'id_categoria' => $request->id_categoria,
-            'id_usuario' => $request->id_usuario,
-            'estado' => $request->estado,
+    public function update(Request $request, $id_torneo)
+    {
+        $torneo = Torneo::findOrFail($id_torneo);
+
+        $request->validate([
+            'nombre_torneo' => 'required',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date',
+            'ciudad' => 'required',
+            'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_usuario' => 'required|exists:usuarios,id_usuario',
+            'estado' => 'required|in:Activo,Inactivo,Finalizado',
         ]);
-        return redirect()->route('torneos.index')->with('success','Torneo actualizado correctamente');
+
+        $torneo->update($request->all());
+
+        return redirect()->route('torneos.index')->with('success', 'Torneo actualizado correctamente');
     }
 
-    // Eliminar
-    public function destroy($id_torneo){
-        $torneo = torneosModelo::findOrFail($id_torneo);
-        $torneo ->delete();
-        return redirect()->route('torneos.index')->with('success','Torneo eliminado correctamente');
+    public function destroy($id_torneo)
+    {
+        $torneo = Torneo::findOrFail($id_torneo);
+        $torneo->delete();
+
+        return redirect()->route('torneos.index')->with('success', 'Torneo eliminado correctamente');
     }
 }

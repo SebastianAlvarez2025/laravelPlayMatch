@@ -10,42 +10,46 @@
 
   <body>
 |   <div class="container-sm d-flex justify-content-center mt-5"> 
-        <div class="card" style="width: 1200px;">
+        <div class="card" style="width: 700px;">
             <div class="card-body">
                 <div class="d-flex justify-content-center">
-                    <h3>nombre del torneo</h3>
+                    <h3 style="color: blue">nombre del torneo</h3>
                 </div>
-                
-                <table class="table">
-                    <thead>
-                        <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">3</th>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>@social</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div style="display: flex; align-items: center; gap: 80px;">
+                    <div>
+                        <img src="https://editorial.uefa.com/resources/0268-1219bc378015-9f968011d650-1000/fbl-eur-c1-draw.jpeg alt="Imagen externa" width="400px" height="250px">     
+                    </div>
+                    <div>
+                        <div>
+                            <h6 style="font-weight: bold;">CATEGORIA</h6>
+                            <p> sub-20 </p>
+                        </div>
+
+                        <div>
+                        <h6 style="font-weight: bold;">FECHAS</h6>
+                        <div>
+                            <p> ENERO-10-2025 DICIEMBRE-15-2025 </p>
+                        </div> 
+                        
+                        <div>
+                        <h6 style="font-weight: bold;">CIUDAD</h6>
+                        <div>
+                            <p> BOGOTA D.C </p>
+                        </div>
+
+                        <div>
+                            <h6 style="font-weight: bold;">ESTADO</h6>                      
+                            <p> Incripciones Abiertas </p>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+
+                    <div style="text-align: center;">
+                        <button>RESGISTRASE </button>
+                    </div>
 
             </div>
         </div>

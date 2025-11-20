@@ -18,6 +18,7 @@ use App\Http\Controllers\posicionesController;
 use App\Http\Controllers\torneosController;
 use App\Http\Controllers\tecnicosController;
 use App\Http\Controllers\tipo_faltaController;
+use App\Http\Controllers\InscriptionController;
 
 
 Route::get('/', function () {
@@ -55,6 +56,14 @@ Route::post('/encuentros/store', [EncuentrosController::class, 'store'])->name('
 Route::get('/encuentros/edit/{id}', [EncuentrosController::class, 'edit'])->name('encuentros.edit');
 Route::put('/encuentros/update/{id}', [EncuentrosController::class, 'update'])->name('encuentros.update');
 Route::delete('/encuentros/destroy/{id}', [EncuentrosController::class, 'destroy'])->name('encuentros.destroy');
+
+
+
+
+Route::resource('inscripciones', InscriptionController::class);
+
+
+
 
 //Jesus
 //Torneos

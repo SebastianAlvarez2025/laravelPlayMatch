@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Torneo;
-use App\Models\categoriasModelo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,22 +11,31 @@ class TorneosController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $query = DB::table('torneos');
+        
+        $query = DB::table('torneos')
+            ->leftJoin('categorias', 'torneos.id_categoria', '=', 'categorias.id_categoria')
+            ->leftJoin('usuarios', 'torneos.id_usuario', '=', 'usuarios.id_usuario')
+            ->select(
+                'torneos.*', 
+                'categorias.nombre_categoria',
+                DB::raw("CONCAT(usuarios.nombre, ' ', usuarios.apellido) as usuario_nombre_completo")
+            );
+
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('id_torneo', 'LIKE', "%{$search}%")
-                    ->orWhere('nombre_torneo', 'LIKE', "%{$search}%")
-                    ->orWhere('fecha_inicio', 'LIKE', "%{$search}%")
-                    ->orWhere('fecha_fin', 'LIKE', "%{$search}%")
-                    ->orWhere('ciudad', 'LIKE', "%{$search}%")
-                    ->orWhere('id_categoria', 'LIKE', "%{$search}%")
-                    ->orWhere('id_usuario', 'LIKE', "%{$search}%")
-                    ->orWhere('estado', 'LIKE', "%{$search}%");
+                $q->where('torneos.id_torneo', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.nombre_torneo', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.fecha_inicio', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.fecha_fin', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.ciudad', 'LIKE', "%{$search}%")
+                  ->orWhere('categorias.nombre_categoria', 'LIKE', "%{$search}%")
+                  ->orWhere('usuarios.nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('usuarios.apellido', 'LIKE', "%{$search}%")
+                  ->orWhere('torneos.estado', 'LIKE', "%{$search}%");
             });
         }
 
         $datos = $query->paginate(10);
-
         return view('torneos', compact('datos'));
     }
 
@@ -36,12 +44,12 @@ class TorneosController extends Controller
         $request->validate([
             'id_torneo' => 'required|unique:torneos,id_torneo',
             'nombre_torneo' => 'required',
-            'fecha_inicio' => 'required',
-            'fecha_fin' => 'required',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date',
             'ciudad' => 'required',
-            'id_categoria' => 'required',
-            'id_usuario' => 'required',
-            'estado' => 'required',
+            'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_usuario' => 'required|exists:usuarios,id_usuario',
+            'estado' => 'required|in:Activo,Inactivo,Finalizado',
         ]);
 
         Torneo::create($request->all());
@@ -53,15 +61,17 @@ class TorneosController extends Controller
     {
         $torneo = Torneo::findOrFail($id_torneo);
 
-        $torneo->update([
-            'nombre_torneo' => $request->nombre_torneo,
-            'fecha_inicio' => $request->fecha_inicio,
-            'fecha_fin' => $request->fecha_fin,
-            'ciudad' => $request->ciudad,
-            'id_categoria' => $request->id_categoria,
-            'id_usuario' => $request->id_usuario,
-            'estado' => $request->estado,
+        $request->validate([
+            'nombre_torneo' => 'required',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date',
+            'ciudad' => 'required',
+            'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_usuario' => 'required|exists:usuarios,id_usuario',
+            'estado' => 'required|in:Activo,Inactivo,Finalizado',
         ]);
+
+        $torneo->update($request->all());
 
         return redirect()->route('torneos.index')->with('success', 'Torneo actualizado correctamente');
     }

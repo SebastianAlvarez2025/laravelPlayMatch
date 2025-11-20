@@ -122,3 +122,7 @@ Route::get('/posiciones', [posicionesController::class,"index"])->name("posicion
 Route::post('/posiciones', [posicionesController::class, 'store'])->name('posiciones.store');
 Route::put('/posiciones/{id_rol}', [posicionesController::class, 'update'])->name('posiciones.update');
 Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');
+
+Route::get('/Tornes',function() {
+        return view('kevin.Tornes');
+});

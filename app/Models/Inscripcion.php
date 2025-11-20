@@ -33,16 +33,4 @@ class Inscripcion extends Model
     {
         return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
     }
-
-    // Scope para inscripciones activas
-    public function scopeActivas($query)
-    {
-        return $query->where('estado', 'Inscrito')->orWhere('estado', 'Participando');
-    }
-
-    // Scope para un torneo específico
-    public function scopePorTorneo($query, $torneoId)
-    {
-        return $query->where('id_torneo', $torneoId);
-    }
 }

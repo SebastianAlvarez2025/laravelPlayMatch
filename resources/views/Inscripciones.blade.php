@@ -9,7 +9,7 @@
             <hr>
 
             <!-- BOTÓN NUEVO -->
-            <form action="{{ url('/inscripciones') }}" method="GET">
+            <form action="{{ route('inscripciones.index') }}" method="GET">
                 <div class="text-end mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
                         <i class="fa-solid fa-plus"></i> Nueva Inscripción
@@ -27,7 +27,7 @@
 
                     <div class="col-md-6 text-end">
                         <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                        <a href="{{ url('/inscripciones') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                        <a href="{{ route('inscripciones.index') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
                     </div>
                 </div>
             </form>

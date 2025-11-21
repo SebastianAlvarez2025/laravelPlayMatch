@@ -14,7 +14,7 @@ class Inscripcion extends Model
 
     protected $fillable = [
         'id_torneo',
-        'id_usuario', 
+        'id_usuario',
         'fecha_inscripcion',
         'estado',
         'observaciones'
@@ -24,13 +24,13 @@ class Inscripcion extends Model
         'fecha_inscripcion' => 'date',
     ];
 
-    public function torneo()
-    {
-        return $this->belongsTo(Torneo::class, 'id_torneo', 'id_torneo');
-    }
-
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
+    }
+
+    public function torneo()
+    {
+        return $this->belongsTo(Torneo::class, 'id_torneo', 'id_torneo');
     }
 }

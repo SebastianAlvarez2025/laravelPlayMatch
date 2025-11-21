@@ -18,7 +18,7 @@ use App\Http\Controllers\posicionesController;
 use App\Http\Controllers\torneosController;
 use App\Http\Controllers\tecnicosController;
 use App\Http\Controllers\tipo_faltaController;
-use App\Http\Controllers\InscriptionController;
+use App\Http\Controllers\InscripcionController;
 
 
 Route::get('/', function () {
@@ -58,10 +58,10 @@ Route::put('/encuentros/update/{id}', [EncuentrosController::class, 'update'])->
 Route::delete('/encuentros/destroy/{id}', [EncuentrosController::class, 'destroy'])->name('encuentros.destroy');
 
 
-Route::get('/inscripciones', [InscriptionController::class, 'index'])->name('inscripciones.index');
-Route::post('/inscripciones', [InscriptionController::class, 'store'])->name('inscripciones.store');
-Route::put('/inscripciones/{id}', [InscriptionController::class, 'update'])->name('inscripciones.update');
-Route::delete('/inscripciones/{id}', [InscriptionController::class, 'destroy'])->name('inscripciones.destroy');
+Route::get('/inscripciones', [InscripcionController::class, 'index'])->name('inscripciones.index');
+Route::post('/inscripciones', [InscripcionController::class, 'store'])->name('inscripciones.store');
+Route::put('/inscripciones/{id}', [InscripcionController::class, 'update'])->name('inscripciones.update');
+Route::delete('/inscripciones/{id}', [InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
 
 
 

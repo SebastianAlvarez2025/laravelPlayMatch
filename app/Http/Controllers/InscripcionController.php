@@ -7,7 +7,7 @@ use App\Models\Torneo;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 
-class InscriptionController extends Controller
+class InscripcionController extends Controller
 {
     public function index()
     {
@@ -30,7 +30,7 @@ class InscriptionController extends Controller
         $usuarios = Usuario::where('estado', 'activo')->get();
         $torneos = Torneo::whereIn('estado', ['planificado', 'en_curso'])->get();
 
-        return view('inscripciones.index', compact('inscripciones', 'usuarios', 'torneos'));
+        return view('inscripciones', compact('inscripciones', 'usuarios', 'torneos'));
     }
 
     public function store(Request $request)

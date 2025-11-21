@@ -37,7 +37,7 @@
                             <th scope="col">Usuario</th>
                             <th scope="col">Equipo</th>
                             <th scope="col">licencia</th>
-                            <th scope="col">Fecha de inicio</th>
+                           
                     </tr>
                     </thead>
                     <tbody>
@@ -47,7 +47,7 @@
                                 <td>{{$item->id_usuario}}</td>
                                 <td>{{$item->id_equipo}}</td>
                                 <td>{{$item->licencia}}</td>
-                                <td>{{$item->fecha_inicio}}</td>                        
+                                                    
                                <td>
                                 <!-- BOTÓN EDITAR -->
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_tecnico }}">
@@ -89,10 +89,7 @@
                                                 <label for="licencia" class="form-label">Licencia</label>
                                                 <input type="number" class="form-control" name="licencia" value="{{ $item->licencia }}" required>
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
-                                                <input type="fecha_inicio" class="form-control" name="fecha_inicio" value="{{ $item->fecha_inicio }}" required>
-                                            </div>
+                                            
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -137,10 +134,7 @@
                                 <label for="licencia" class="form-label">Licencia</label>
                                 <input type="number" class="form-control" name="licencia" placeholder="Ingrese licencia" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
-                                <input type="number" class="form-control" name="fecha_inicio" placeholder="Ingrese fecha de inicio" required>
-                            </div>
+                           
                             
                         </div>
                         <div class="modal-footer">

@@ -13,7 +13,6 @@ class Usuario extends Model
     protected $primaryKey = 'id_usuario';
 
     protected $fillable = [
-        'id_usuario',
         'nombre',
         'apellido',
         'correo',
@@ -29,40 +28,13 @@ class Usuario extends Model
         'fecha_nacimiento' => 'date',
     ];
 
-    // Relación con Rol (si existe el modelo Rol)
-    public function rol()
-    {
-        return $this->belongsTo(Rol::class, 'id_rol', 'id_rol');
-    }
-
-    // Relación con Inscripciones
     public function inscripciones()
     {
         return $this->hasMany(Inscripcion::class, 'id_usuario', 'id_usuario');
     }
 
-    // Relación con Torneos (como organizador/creador)
-    public function torneosCreados()
-    {
-        return $this->hasMany(Torneo::class, 'id_usuario', 'id_usuario');
-    }
-
-    // Scope para usuarios activos
-    public function scopeActivos($query)
-    {
-        return $query->where('estado', 'activo');
-    }
-
-    // Scope para buscar por nombre o apellido
-    public function scopeBuscar($query, $search)
-    {
-        return $query->where('nombre', 'like', "%{$search}%")
-                    ->orWhere('apellido', 'like', "%{$search}%");
-    }
-
-    // Accessor para nombre completo
     public function getNombreCompletoAttribute()
     {
-        return $this->nombre . ' ' . $this->apellido;
+        return "{$this->nombre} {$this->apellido}";
     }
 }

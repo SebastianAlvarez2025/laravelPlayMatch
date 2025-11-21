@@ -15,15 +15,15 @@ class Torneo extends Model
     protected $fillable = [
         'nombre_torneo',
         'fecha_inicio',
-        'fecha_fin', 
+        'fecha_fin',
         'ciudad',
         'id_categoria',
         'id_usuario',
         'estado'
     ];
 
-    protected $casts = [
-        'fecha_inicio' => 'date',
-        'fecha_fin' => 'date',
-    ];
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class, 'id_torneo', 'id_torneo');
+    }
 }

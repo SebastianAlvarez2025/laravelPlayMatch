@@ -3,6 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\fechasModelo;
+use App\Models\Torneo;
+use App\Models\lugaresModelo;
+use App\Models\arbitrosModelo;
+use App\Models\Equipo;
 
 class Encuentro extends Model
 {
@@ -15,28 +20,45 @@ class Encuentro extends Model
         'hora',
         'id_torneo',
         'id_lugar',
-        'id_equipo',
-        'id_arbitro'
+        'id_arbitro',
+        'id_equipo_local',
+        'id_equipo_visitante',
+        'estado'
     ];
 
-    public function torneo() {
-        return $this->belongsTo(torneoModel::class, 'id_torneo', 'id_torneo');
+    // FECHA
+    public function fecha()
+    {
+        return $this->belongsTo(fechasModelo::class, 'id_fecha', 'id_fecha');
     }
 
-    public function lugar() {
+    // TORNEO
+    public function torneo()
+    {
+        return $this->belongsTo(Torneo::class, 'id_torneo', 'id_torneo');
+    }
+
+    // LUGAR
+    public function lugar()
+    {
         return $this->belongsTo(lugaresModelo::class, 'id_lugar', 'id_lugar');
     }
 
-    public function equipo() {
-        return $this->belongsTo(equipo::class, 'id_equipo', 'id_equipo');
-    }
-
-    public function arbitro() {
+    // ÁRBITRO
+    public function arbitro()
+    {
         return $this->belongsTo(arbitrosModelo::class, 'id_arbitro', 'id_arbitro');
     }
 
-    // 🔥 RELACIÓN CORRECTA CON FECHAS
-    public function fechaInfo() {
-        return $this->belongsTo(fechasModelo::class, 'id_fecha', 'id_fecha');
+    // EQUIPO LOCAL
+    public function equipoLocal()
+    {
+        return $this->belongsTo(Equipo::class, 'id_equipo_local', 'id_equipo');
+    }
+
+    // EQUIPO VISITANTE
+    public function equipoVisitante()
+    {
+        return $this->belongsTo(Equipo::class, 'id_equipo_visitante', 'id_equipo');
     }
 }

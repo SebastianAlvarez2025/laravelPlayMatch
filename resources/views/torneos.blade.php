@@ -2,42 +2,39 @@
 
 @section('title', 'Torneos')
 @section('content')
+
 <div class="container-sm d-flex justify-content-center mt-5">
     <div class="card" style="width: 1200px;">
         <div class="card-body">
             <h3>Módulo Torneos</h3>
             <hr>
 
-            <!-- BOTÓN NUEVO -->
-            <form action="{{ url('/torneos') }}" method="GET">
+            <form action="{{ url('/equipos') }}" method="GET">
                 <div class="text-end mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
                         <i class="fa-solid fa-plus"></i> Nuevo Torneo
                     </button>
                 </div>
 
-                <!-- BUSCADOR -->
                 <div class="row g-2 align-items-center">
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por nombre, categoría, usuario o ciudad">
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por equipo o ciudad">
                         </div>
                     </div>
-
                     <div class="col-md-6 text-end">
                         <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                        <a href="{{ url('/torneos') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                        <a href="{{ url('/equipos') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
                     </div>
                 </div>
             </form>
 
-            <!-- TABLA -->
             @if($datos->count() > 0)
-                <table class="table table-striped table-hover table-bordered text-center">
+                <table class="table table-striped table-hover table-bordered">
                     <thead class="table-primary">
-                        <tr>
-                            <th>ID</th>
+                    <tr>
+                        <th>ID</th>
                             <th>Nombre de Torneo</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
@@ -45,10 +42,11 @@
                             <th>Categoría</th>
                             <th>Usuario</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
+                            <th>Max Equipos</th>
+                            <th>Tipo Torneo</th>
+ 
+                    </tr>
                     </thead>
-
                     <tbody>
                     @foreach ($datos as $item)
                         <tr>
@@ -60,34 +58,31 @@
                             <td>{{ $item->nombre_categoria ?? 'Sin categoría' }}</td>
                             <td>{{ $item->usuario_nombre_completo ?? 'Usuario no encontrado' }}</td>
                             <td>
-                                <span class="badge {{ $item->estado == 'Activo' ? 'bg-success' : ($item->estado == 'Finalizado' ? 'bg-info' : 'bg-secondary') }}">
-                                    {{ $item->estado }}
+                                <span class="badge
+                                    {{ $item->estado == 'planificado' ? 'bg-secondary' :
+                                    ($item->estado == 'en_curso' ? 'bg-info' :
+                                    ($item->estado == 'finalizado' ? 'bg-success' : 'bg-danger')) }}">
+                                    
+                                    {{ ucfirst(str_replace('_', ' ', $item->estado)) }}
                                 </span>
                             </td>
+                            <td>{{ $item->max_equipos }}</td>
+                            <td>{{ $item->tipo_torneo}}</td>
 
-                            <td class="text-center">
-                                <div class="btn-group" role="group">
-                                    <!-- EDITAR -->
-                                    <button type="button" 
-                                            class="btn btn-success btn-sm me-1" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editarModal{{ $item->id_torneo }}">
-                                        <i class="fa-solid fa-pen-to-square"></i>
+                            <td>
+                                <!-- BOTÓN EDITAR -->
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_torneo }}">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </button>
+
+                                <!-- BOTÓN ELIMINAR -->
+                                <form action="{{ route('torneos.destroy', $item->id_torneo) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este torneo?')">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
                                     </button>
-
-                                    <!-- ELIMINAR -->
-                                    <form action="{{ route('torneos.destroy', $item->id_torneo) }}" 
-                                          method="POST" 
-                                          class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('¿Seguro que deseas eliminar este torneo?')">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                </form>
                             </td>
                         </tr>
 
@@ -98,9 +93,8 @@
                                     <form action="{{ route('torneos.update', $item->id_torneo) }}" method="POST">
                                         @csrf
                                         @method('PUT')
-
                                         <div class="modal-header">
-                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar Torneo</h5>
+                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar torneo</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
 
@@ -139,22 +133,31 @@
                                                     <option value="Finalizado" {{ $item->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado</option>
                                                 </select>
                                             </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Max Equipos</label>
+                                                <input type="text" class="form-control" name="max_equipos" value="{{ $item->max_equipos }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Tipo de torneo</label>
+                                                <input type="text" class="form-control" name="tipo_torneo" value="{{ $item->tipo_torneo }}" required>
+                                            </div>
                                         </div>
 
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
                                         </div>
+
                                     </form>
                                 </div>
                             </div>
                         </div>
+
                     @endforeach
                     </tbody>
                 </table>
 
-                <!-- PAGINACIÓN -->
-                <div class="d-flex justify-content-center mt-3">
+                <div class="d-flex justify-content-end">
                     {{ $datos->links() }}
                 </div>
 
@@ -171,15 +174,12 @@
                         @csrf
 
                         <div class="modal-header">
-                            <h5 class="modal-title"><i class="fa-solid fa-trophy"></i> Crear Torneo</h5>
+                            <h5 class="modal-title"><i class="fa-solid fa-plus"></i> Crear torneo</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label">ID Torneo</label>
-                                <input type="text" class="form-control" name="id_torneo" required>
-                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Nombre de Torneo</label>
                                 <input type="text" class="form-control" name="nombre_torneo" required>
@@ -214,30 +214,27 @@
                                     <option value="Finalizado">Finalizado</option>
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Max equipos</label>
+                                <input type="text" class="form-control" name="max_equipos" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tipo torneo</label>
+                                <input type="text" class="form-control" name="tipo_torneo" required>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                         </div>
+
                     </form>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
-
-@if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'success',
-                title: '¡Éxito!',
-                text: '{{ session('success') }}',
-                confirmButtonText: 'Aceptar'
-            });
-        });
-    </script>
-@endif
 
 @endsection

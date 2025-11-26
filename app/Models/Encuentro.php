@@ -50,15 +50,7 @@ class Encuentro extends Model
         return $this->belongsTo(arbitrosModelo::class, 'id_arbitro', 'id_arbitro');
     }
 
-    // EQUIPO LOCAL
-    public function equipoLocal()
-    {
-        return $this->belongsTo(Equipo::class, 'id_equipo_local', 'id_equipo');
-    }
-
-    // EQUIPO VISITANTE
-    public function equipoVisitante()
-    {
-        return $this->belongsTo(Equipo::class, 'id_equipo_visitante', 'id_equipo');
+    public function fechaInfo() {
+        return $this->belongsTo(fechasModelo::class, 'id_fecha', 'id_fecha');
     }
 }

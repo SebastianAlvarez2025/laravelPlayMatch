@@ -20,7 +20,11 @@
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
+<<<<<<< Updated upstream
                             <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneos">
+=======
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneo o ciudad">
+>>>>>>> Stashed changes
                         </div>
                     </div>
                     <div class="col-md-6 text-end">
@@ -53,9 +57,26 @@
                             <td>{{ $item->fecha_inicio }}</td>
                             <td>{{ $item->fecha_fin }}</td>
                             <td>{{ $item->ciudad }}</td>
+<<<<<<< Updated upstream
                             <td>{{ $item->categoria_nombre }}</td>
                             <td>{{ $item->nombre_usuario }} {{ $item->apellido_usuario }}</td>
                             <td>{{ $item->estado }}</td>
+=======
+                            <td>{{ $item->nombre_categoria ?? 'Sin categoría' }}</td>
+                            <td>{{ $item->usuario_nombre_completo ?? 'Usuario no encontrado' }}</td>
+                            <td>
+                                <span class="estado 
+                                    {{ $item->estado == 'planificado' ? 'bg-secondary' :
+                                    ($item->estado == 'en_curso' ? 'bg-info' :
+                                    ($item->estado == 'finalizado' ? 'bg-success' : 'bg-danger')) }}">
+                                    
+                                    {{ ucfirst(str_replace('_', ' ', $item->estado)) }}
+                                </span>
+                            </td>
+                            <td>{{ $item->max_equipos }}</td>
+                            <td>{{ $item->tipo_torneo}}</td>
+
+>>>>>>> Stashed changes
                             <td>
                                 <!-- BOTÓN EDITAR -->
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_torneo }}">
@@ -107,6 +128,7 @@
                                             </div>
 
                                             <div class="mb-3">
+<<<<<<< Updated upstream
                                                 <label for="id_categoria" class="form-label">Nombre de la categoría:</label>
                                                 <select class="form-select" name="id_categoria" required>
                                                     @foreach($categorias as $categoria)
@@ -116,6 +138,24 @@
                                                             {{ $categoria->nombre_categoria }}
                                                         </option>
                                                     @endforeach
+=======
+                                                <label class="form-label">Categoría</label>
+                                                <input type="number" class="form-control" name="id_categoria" value="{{ $item->id_categoria }}" required>
+                                                <small class="text-muted">ID actual: {{ $item->id_categoria }} - {{ $item->nombre_categoria }}</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Usuario</label>
+                                                <input type="number" class="form-control" name="id_usuario" value="{{ $item->id_usuario }}" required>
+                                                <small class="text-muted">ID actual: {{ $item->id_usuario }} - {{ $item->usuario_nombre_completo }}</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Estado</label>
+                                                <select class="form-control" name="estado" required>
+                                                    <option value="planificado" {{ $item->estado == 'planificado' ? 'selected' : '' }}>Planificado</option>
+                                                    <option value="en_curso" {{ $item->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
+                                                    <option value="finalizado" {{ $item->estado == 'finalizado' ? 'selected' : '' }}>Finalizado</option>
+                                                    <option value="cancelado" {{ $item->estado == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+>>>>>>> Stashed changes
                                                 </select>
                                             </div>
 
@@ -211,12 +251,43 @@
                             </div>
 
                             <div class="mb-3">
+<<<<<<< Updated upstream
                                 <label for="id_categoria" class="form-label">Categoría:</label>
                                 <select class="form-select" name="id_categoria" required>
                                     <option value="" hidden disable selected>Seleccione una categoria:</option>
                                     @foreach($categorias as $categoria)
                                         <option value="{{ $categoria->id_categoria }}">{{ $categoria->nombre_categoria }}</option>
                                     @endforeach
+=======
+                                <label class="form-label">Ciudad</label>
+                                <input type="text" class="form-control" name="ciudad" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>Categoría</label>
+                                <select name="id_categoria" class="form-select" required>
+                                    <option disabled selected>Seleccione una categoría</option>
+                                    @foreach($categorias as $cat)
+                                        <option value="{{ $cat->id_categoria }}">{{ $cat->nombre_categoria }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label>Usuario</label>
+                                <select name="id_usuario" class="form-select" required>
+                                    <option disabled selected>Seleccione un Usuario</option>
+                                    @foreach($usuarios as $user)
+                                        <option value="{{ $user->id_usuario }}">{{ $user->nombre }} {{ $user->apellido }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Estado</label>
+                                <select class="form-control" name="estado" required>
+                                    <option value="planificado">Planificado</option>
+                                    <option value="en_curso">En curso</option>
+                                    <option value="finalizado">Finalizado</option>
+                                    <option value="cancelado">Cancelado</option>
+>>>>>>> Stashed changes
                                 </select>
                             </div>
 

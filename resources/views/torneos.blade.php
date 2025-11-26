@@ -21,7 +21,11 @@
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneos">
+=======
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneo o ciudad">
+>>>>>>> Stashed changes
 =======
                             <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneo o ciudad">
 >>>>>>> Stashed changes
@@ -155,6 +159,9 @@
                                                     <option value="en_curso" {{ $item->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
                                                     <option value="finalizado" {{ $item->estado == 'finalizado' ? 'selected' : '' }}>Finalizado</option>
                                                     <option value="cancelado" {{ $item->estado == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                                                 </select>
                                             </div>
@@ -287,6 +294,9 @@
                                     <option value="en_curso">En curso</option>
                                     <option value="finalizado">Finalizado</option>
                                     <option value="cancelado">Cancelado</option>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                                 </select>
                             </div>

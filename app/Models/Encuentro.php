@@ -3,11 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\fechasModelo;
-use App\Models\Torneo;
-use App\Models\lugaresModelo;
-use App\Models\arbitrosModelo;
-use App\Models\Equipo;
 
 class Encuentro extends Model
 {
@@ -26,40 +21,17 @@ class Encuentro extends Model
         'estado'
     ];
 
-    // FECHA
-    public function fecha()
-    {
-        return $this->belongsTo(fechasModelo::class, 'id_fecha', 'id_fecha');
-    }
+    // Relaciones
+    public function fecha() { return $this->belongsTo(fechasModelo::class, 'id_fecha', 'id_fecha'); }
+    public function torneo() { return $this->belongsTo(Torneo::class, 'id_torneo', 'id_torneo'); }
+    public function lugar() { return $this->belongsTo(lugaresModelo::class, 'id_lugar', 'id_lugar'); }
+    public function arbitro() { return $this->belongsTo(arbitrosModelo::class, 'id_arbitro', 'id_arbitro'); }
+    public function equipoLocal() { return $this->belongsTo(Equipo::class, 'id_equipo_local', 'id_equipo'); }
+    public function equipoVisitante() { return $this->belongsTo(Equipo::class, 'id_equipo_visitante', 'id_equipo'); }
 
-    // TORNEO
-    public function torneo()
+    // Nombre del árbitro
+    public function getNombreArbitroAttribute()
     {
-        return $this->belongsTo(Torneo::class, 'id_torneo', 'id_torneo');
-    }
-
-    // LUGAR
-    public function lugar()
-    {
-        return $this->belongsTo(lugaresModelo::class, 'id_lugar', 'id_lugar');
-    }
-
-    // ÁRBITRO
-    public function arbitro()
-    {
-        return $this->belongsTo(arbitrosModelo::class, 'id_arbitro', 'id_arbitro');
-    }
-
-    // EQUIPO LOCAL
-    public function equipoLocal()
-    {
-        return $this->belongsTo(Equipo::class, 'id_equipo_local', 'id_equipo');
-    }
-
-    // EQUIPO VISITANTE
-    public function equipoVisitante()
-    {
-        return $this->belongsTo(Equipo::class, 'id_equipo_visitante', 'id_equipo');
+        return $this->arbitro ? $this->arbitro->id_usuario : 'Sin árbitro';
     }
 }
- 

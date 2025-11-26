@@ -2,22 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Fecha extends Model
+class fechasModelo extends Model
 {
+    use HasFactory;
+
     protected $table = 'fechas';
     protected $primaryKey = 'id_fecha';
     public $timestamps = false;
 
     protected $fillable = [
         'id_torneo',
-        'numero_fecha',
-        'fecha',
-        'estado'
+        'fecha'
     ];
 
- 
+    // Si quieres la relación inversa (opcional)
     public function encuentros()
     {
         return $this->hasMany(Encuentro::class, 'id_fecha', 'id_fecha');

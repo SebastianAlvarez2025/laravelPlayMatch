@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Torneo extends Model
 {
-    use HasFactory;
-
     protected $table = 'torneos';
     protected $primaryKey = 'id_torneo';
 
@@ -19,11 +18,10 @@ class Torneo extends Model
         'ciudad',
         'id_categoria',
         'id_usuario',
-        'estado'
+        'estado',
+        'max_equipos',
+        'tipo_torneo',
     ];
 
-    public function inscripciones()
-    {
-        return $this->hasMany(Inscripcion::class, 'id_torneo', 'id_torneo');
-    }
+    public $timestamps = false;
 }

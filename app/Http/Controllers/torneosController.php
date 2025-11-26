@@ -1,86 +1,104 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Torneo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Torneo;
 
 class TorneosController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
-        $query = DB::table('torneos')
+
+        $datos = DB::table('torneos')
             ->leftJoin('categorias', 'torneos.id_categoria', '=', 'categorias.id_categoria')
             ->leftJoin('usuarios', 'torneos.id_usuario', '=', 'usuarios.id_usuario')
             ->select(
-                'torneos.*', 
+                'torneos.*',
                 'categorias.nombre_categoria',
-                DB::raw("CONCAT(usuarios.nombre, ' ', usuarios.apellido) as usuario_nombre_completo")
-            );
+                DB::raw("CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS usuario_nombre_completo")
+            )
+            ->when($search, function ($query, $search) {
+                return $query->where('nombre_torneo', 'LIKE', "%{$search}%")
+                             ->orWhere('ciudad', 'LIKE', "%{$search}%");
+            })
+            ->orderBy('id_torneo', 'asc')
+            ->paginate(10);
 
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('torneos.id_torneo', 'LIKE', "%{$search}%")
-                  ->orWhere('torneos.nombre_torneo', 'LIKE', "%{$search}%")
-                  ->orWhere('torneos.fecha_inicio', 'LIKE', "%{$search}%")
-                  ->orWhere('torneos.fecha_fin', 'LIKE', "%{$search}%")
-                  ->orWhere('torneos.ciudad', 'LIKE', "%{$search}%")
-                  ->orWhere('categorias.nombre_categoria', 'LIKE', "%{$search}%")
-                  ->orWhere('usuarios.nombre', 'LIKE', "%{$search}%")
-                  ->orWhere('usuarios.apellido', 'LIKE', "%{$search}%")
-                  ->orWhere('torneos.estado', 'LIKE', "%{$search}%");
-            });
-        }
+        $categorias = DB::table('categorias')->get();
+        $usuarios = DB::table('usuarios')->get();
 
-        $datos = $query->paginate(10);
-        return view('torneos', compact('datos'));
+        return view('torneos', compact('datos', 'categorias', 'usuarios'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'id_torneo' => 'required|unique:torneos,id_torneo',
             'nombre_torneo' => 'required',
-            'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date',
-            'ciudad' => 'required',
-            'id_categoria' => 'required|exists:categorias,id_categoria',
-            'id_usuario' => 'required|exists:usuarios,id_usuario',
-            'estado' => 'required|in:Activo,Inactivo,Finalizado',
+            'fecha_inicio'  => 'required|date',
+            'fecha_fin'     => 'required|date',
+            'ciudad'        => 'required',
+            'id_categoria'  => 'required',
+            'id_usuario'    => 'required',
+            'estado'        => 'required',
+            'max_equipos'   => 'required|numeric',
+            'tipo_torneo'   => 'required',
         ]);
 
-        Torneo::create($request->all());
-
-        return redirect()->route('torneos.index')->with('success', 'Torneo registrado correctamente');
-    }
-
-    public function update(Request $request, $id_torneo)
-    {
-        $torneo = Torneo::findOrFail($id_torneo);
-
-        $request->validate([
-            'nombre_torneo' => 'required',
-            'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date',
-            'ciudad' => 'required',
-            'id_categoria' => 'required|exists:categorias,id_categoria',
-            'id_usuario' => 'required|exists:usuarios,id_usuario',
-            'estado' => 'required|in:Activo,Inactivo,Finalizado',
+        DB::table('torneos')->insert([
+            'nombre_torneo' => $request->nombre_torneo,
+            'fecha_inicio'  => $request->fecha_inicio,
+            'fecha_fin'     => $request->fecha_fin,
+            'ciudad'        => $request->ciudad,
+            'id_categoria'  => $request->id_categoria,
+            'id_usuario'    => $request->id_usuario,
+            'estado'        => $request->estado,
+            'max_equipos'   => $request->max_equipos,
+            'tipo_torneo'   => $request->tipo_torneo,
         ]);
 
-        $torneo->update($request->all());
-
-        return redirect()->route('torneos.index')->with('success', 'Torneo actualizado correctamente');
+        return redirect()->route('torneos.index');
     }
 
-    public function destroy($id_torneo)
+    public function update(Request $request, $id)
     {
-        $torneo = Torneo::findOrFail($id_torneo);
-        $torneo->delete();
+        DB::table('torneos')->where('id_torneo', $id)->update([
+            'nombre_torneo' => $request->nombre_torneo,
+            'fecha_inicio'  => $request->fecha_inicio,
+            'fecha_fin'     => $request->fecha_fin,
+            'ciudad'        => $request->ciudad,
+            'id_categoria'  => $request->id_categoria,
+            'id_usuario'    => $request->id_usuario,
+            'estado'        => $request->estado,
+            'max_equipos'   => $request->max_equipos,
+            'tipo_torneo'   => $request->tipo_torneo,
+        ]);
 
-        return redirect()->route('torneos.index')->with('success', 'Torneo eliminado correctamente');
+        return redirect()->route('torneos.index');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $torneo = Torneo::findOrFail($id);
+            $torneo->delete();
+
+            return redirect()
+                ->route('torneos.index')
+                ->with('success', 'Torneo eliminado exitosamente');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            if ($e->getCode() == "23000") {
+                return redirect()
+                    ->route('torneos.index')
+                    ->with('error', 'No se puede eliminar porque está relacionado con otros registros');
+            }
+
+            return redirect()
+                ->route('torneos.index')
+                ->with('error', 'Error inesperado. Contacte al administrador.');
+        }
     }
 }

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\tecnicosModelo; // ✅ Agregar esta línea
 
 class tecnicosController extends Controller
 {
-    // Mostrar roles + búsqueda
+    // Mostrar técnicos + búsqueda
     public function index(Request $request){
         $search = $request->input('search');
         $query = DB::table('tecnicos');
@@ -17,8 +18,7 @@ class tecnicosController extends Controller
                 $q->where('id_tecnico','LIKE',"%{$search}%")
                   ->orWhere('id_usuario','LIKE',"%{$search}%")
                   ->orWhere('id_equipo','LIKE',"%{$search}%")
-                  ->orWhere('licencia','LIKE',"%{$search}%")
-                  ->orWhere('fecha_inicio','LIKE',"%{$search}%");
+                  ->orWhere('licencia','LIKE',"%{$search}%");
             });
         }
 
@@ -26,18 +26,17 @@ class tecnicosController extends Controller
         return view("tecnicos")->with("datos", $datos);
     }
 
-    // Crear nuevo rol
+    // Crear nuevo técnico
     public function store(Request $request){
         $request->validate([
             'id_tecnico' => 'required|unique:tecnicos,id_tecnico',
             'id_usuario' => 'required',
             'id_equipo' => 'required',
-            'licencia' => 'required',
-            'fecha_inicio' => 'required',
+            'licencia' => 'required'
         ]);
 
         tecnicosModelo::create($request->all());
-        return redirect()->route('tecnicos.index')->with('success','Tecnico registrado correctamente');
+        return redirect()->route('tecnicos.index')->with('success','Técnico registrado correctamente');
     }
 
     // Actualizar (modificar)
@@ -47,17 +46,14 @@ class tecnicosController extends Controller
             'id_usuario' => $request->id_usuario,
             'id_equipo' => $request->id_equipo,
             'licencia' => $request->licencia,
-            'fecha_inicio' => $request->fecha_inicio,
-            
         ]);
-        return redirect()->route('tecnicos.index')->with('success','Tecnico actualizado correctamente');
+        return redirect()->route('tecnicos.index')->with('success','Técnico actualizado correctamente');
     }
 
     // Eliminar
     public function destroy($id_tecnico){
-        $tipo_falta = tecnicosModelo::findOrFail($id_tecnico);
-        $tipo_falta->delete();
-        return redirect()->route('tecnicos.index')->with('success','Tecnico  eliminado correctamente');
+        $tecnicos = tecnicosModelo::findOrFail($id_tecnico); // ✅ Corregido el nombre
+        $tecnicos->delete();
+        return redirect()->route('tecnicos.index')->with('success','Técnico eliminado correctamente');
     }
 }
-

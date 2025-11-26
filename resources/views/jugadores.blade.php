@@ -82,6 +82,20 @@
                                         </div>
                                         <div class="modal-body">
                                             
+                                            
+                                            <div class="mb-3">
+                                                <label for="id_usuario" class="form-label">Jugador:</label>
+                                                <select class="form-select" name="id_usuario" required>
+                                                    @foreach($usuarios as $usuario)
+                                                        <option value="{{ $usuario->id_usuario }}"
+                                                            {{ $usuario->id_usuario == $item->id_usuario ? 'selected' : '' }}>
+                                                            
+                                                            {{ $usuario->nombre }} {{ $usuario->apellido }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
                                             <div class="mb-3">
                                                 <label for="id_equipo" class="form-label">Equipo:</label>
                                                 <select class="form-select" name="id_equipo" required>
@@ -200,4 +214,3 @@
     </container>
 
 @endsection
-

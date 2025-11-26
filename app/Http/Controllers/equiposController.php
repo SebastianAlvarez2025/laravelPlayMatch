@@ -26,7 +26,7 @@ class equiposController extends Controller
             'Tigres FC' => 'https://dimayor.com.co/wp-content/uploads/2024/06/TIGRES-FC.png',
             'junior FC' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/ESCUDO_JUNIOR.svg/1024px-ESCUDO_JUNIOR.svg.png',
             'inter miami FC' =>'https://elparquedelosdibujos.com/colorear/dibujos-colorear-deportes/futbol/escudos-de-futbol/escudos-de-futbol-img/escudo-del-inter-miami-club-de-futbol-version-2-.webp',
-            'las trenzas del calvo' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8AzsB9oyEwivSquj0Y_YanemnexyhorutGuEuXCj-UpBHQ4C__OJvOTNhigGTMPNu4NQ&usqp=CAU',
+            'las trenzas del calvo' =>'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8AzsB9oyEwivSquj0Y_YanemnexyhorutGuEuXCj-UpBHQ4C__OJvOTNhigGTMPNu4NQ&usqp=CAU',
             'barcelona FC' => 'https://static.vecteezy.com/system/resources/thumbnails/014/414/712/small/fc-barcelona-logo-on-transparent-background-free-vector.jpg'
         ];
 
@@ -75,8 +75,27 @@ class equiposController extends Controller
     }
 
     public function destroy($id)
-    {
-        DB::table('equipos')->where('id_equipo', $id)->delete();
-        return redirect()->route('equipos.index');
+{
+    try {
+        $equipo = Equipo::findOrFail($id);
+        $equipo->delete();
+
+        return redirect()
+            ->route('equipos.index')
+            ->with('success', 'Equipo eliminado de la base de datos');
+            
+    } catch (\Illuminate\Database\QueryException $e) {
+
+        if ($e->getCode() == "23000") {
+            return redirect()
+                ->route('equipos.index')
+                ->with('error', 'No se puede eliminar el equipo porque está relacionado con otro registro');
+        }
+
+        return redirect()
+            ->route('equipos.index')
+            ->with('error', 'Error al eliminar el registro, comuníquese con el administrador del sistema');
     }
+}
+
 }

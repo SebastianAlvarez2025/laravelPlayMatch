@@ -18,6 +18,7 @@ use App\Http\Controllers\posicionesController;
 use App\Http\Controllers\torneosController;
 use App\Http\Controllers\tecnicosController;
 use App\Http\Controllers\tipo_faltaController;
+use App\Http\Controllers\InscripcionController;
 
 
 Route::get('/', function () {
@@ -56,24 +57,35 @@ Route::get('/encuentros/edit/{id}', [EncuentrosController::class, 'edit'])->name
 Route::put('/encuentros/update/{id}', [EncuentrosController::class, 'update'])->name('encuentros.update');
 Route::delete('/encuentros/destroy/{id}', [EncuentrosController::class, 'destroy'])->name('encuentros.destroy');
 
+
+Route::get('/inscripciones', [InscripcionController::class, 'index'])->name('inscripciones.index');
+Route::post('/inscripciones', [InscripcionController::class, 'store'])->name('inscripciones.store');
+Route::put('/inscripciones/{id}', [InscripcionController::class, 'update'])->name('inscripciones.update');
+Route::delete('/inscripciones/{id}', [InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
+
+
+
+
 //Jesus
 //Torneos
-Route::get('/torneos', [torneosController::class,"index"])->name('torneos.index');
+Route::get('/torneos', [torneosController::class,"index"])->name("torneos.index");
 Route::post('/torneos/store', [torneosController::class, 'store'])->name('torneos.store');
-Route::put('/torneos/update/{id_torneo}', [torneosController::class, 'update'])->name('torneos.update');
-Route::delete('/torneos/delete/{id_torneo}', [torneosController::class, 'destroy'])->name('torneos.destroy');
+Route::put('/torneos/update/{id}', [torneosController::class, 'update'])->name('torneos.update');
+Route::delete('/torneos/delete/{id}', [torneosController::class, 'destroy'])->name('torneos.destroy');
+
+
 //Tecnicos
-Route::get('/tecnicos', [tecnicosController::class,"index"])->name('tecnicos.index');
+Route::get('/tecnicos', [tecnicosController::class,"index"])->name("tecnicos.index");
 Route::post('/tecnicos/store', [tecnicosController::class, 'store'])->name('tecnicos.store');
 Route::put('/tecnicos/update/{id}', [tecnicosController::class, 'update'])->name('tecnicos.update');
 Route::delete('/tecnicos/delete/{id}', [tecnicosController::class, 'destroy'])->name('tecnicos.destroy');
 //Tipo_Falta
-Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name('tipo_falta.index');
+Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta.index");
 Route::post('/tipo_falta/store', [tipo_faltaController::class, 'store'])->name('tipo_falta.store');
 Route::put('/tipo_falta/update/{id}', [tipo_faltaController::class, 'update'])->name('tipo_falta.update');
 Route::delete('/tipo_falta/delete/{id}', [tipo_faltaController::class, 'destroy'])->name('tipo_falta.destroy');
 //Usuarios
-Route::get('/usuarios', [UsuariosController::class,"index"])->name('usuarios.index');
+Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios.index");
 Route::post('/usuarios/store', [usuariosController::class, 'store'])->name('usuarios.store');
 Route::put('/usuarios/update/{id}', [usuariosController::class, 'update'])->name('usuarios.update');
 Route::delete('/usuarios/delete/{id}', [usuariosController::class, 'destroy'])->name('usuarios.destroy');
@@ -122,3 +134,7 @@ Route::get('/posiciones', [posicionesController::class,"index"])->name("posicion
 Route::post('/posiciones', [posicionesController::class, 'store'])->name('posiciones.store');
 Route::put('/posiciones/{id_rol}', [posicionesController::class, 'update'])->name('posiciones.update');
 Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');
+
+Route::get('/Tornes',function() {
+        return view('kevin.Tornes');
+});

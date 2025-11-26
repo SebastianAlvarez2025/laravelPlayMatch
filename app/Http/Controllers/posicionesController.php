@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\posicionesModelo;
+use App\Models\torneoModel;
+use App\Models\equipo;
 
 class posicionesController extends Controller
 {
     // Mostrar roles + búsqueda
     public function index(Request $request){
         $search = $request->input('search');
-        $query = DB::table('posiciones');
+        $query = DB::table('posiciones')
+        ->join('torneos', 'posiciones.id_torneo','=','torneos.id_torneo')
+        ->join('equipos', 'posiciones.id_equipo','=','equipos.id_equipo')
+        ->select('posiciones.*','torneos.nombre_torneo','equipos.nombre_equipo');
 
         if($search){
             $query->where(function ($q) use($search){

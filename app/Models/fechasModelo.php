@@ -18,9 +18,10 @@ class fechasModelo extends Model
         'fecha'
     ];
 
-    // Si quieres la relación inversa (opcional)
+    // Relación con encuentros
     public function encuentros()
     {
         return $this->hasMany(Encuentro::class, 'id_fecha', 'id_fecha');
     }
 }
+ 

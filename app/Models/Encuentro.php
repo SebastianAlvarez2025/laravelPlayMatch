@@ -21,7 +21,7 @@ class Encuentro extends Model
         'estado'
     ];
 
-    // Relaciones
+   
     public function fecha() { return $this->belongsTo(fechasModelo::class, 'id_fecha', 'id_fecha'); }
     public function torneo() { return $this->belongsTo(Torneo::class, 'id_torneo', 'id_torneo'); }
     public function lugar() { return $this->belongsTo(lugaresModelo::class, 'id_lugar', 'id_lugar'); }
@@ -29,7 +29,7 @@ class Encuentro extends Model
     public function equipoLocal() { return $this->belongsTo(Equipo::class, 'id_equipo_local', 'id_equipo'); }
     public function equipoVisitante() { return $this->belongsTo(Equipo::class, 'id_equipo_visitante', 'id_equipo'); }
 
-    // Nombre del árbitro
+    
     public function getNombreArbitroAttribute()
     {
         return $this->arbitro ? $this->arbitro->id_usuario : 'Sin árbitro';

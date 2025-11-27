@@ -17,7 +17,7 @@ class premiacionController extends Controller
             $query->where(function ($q) use($search){
                 $q->where('id_premiacion','LIKE',"%{$search}%")
                   ->orWhere('id_torneo','LIKE',"%{$search}%")
-                  ->orWhere('id_equipo_ganador','LIKE',"%{$search}%")
+                  ->orWhere('id_equipo','LIKE',"%{$search}%")
                   ->orWhere('posicion','LIKE',"%{$search}%")
                   ->orWhere('premio','LIKE',"%{$search}%")
                   ->orWhere('descripcion','LIKE',"%{$search}%");
@@ -33,7 +33,7 @@ class premiacionController extends Controller
         $request->validate([
             'id_premiacion' => 'required|unique:resultados,id_resultado',
             'id_torneo' => 'required',
-            'id_equipo_ganador' => 'required',
+            'id_equipo' => 'required',
             'posicion' => 'required',
             'premio' => 'required',
             'descripcion' => 'required',
@@ -48,7 +48,7 @@ class premiacionController extends Controller
         $premiacion = premiacionModelo::findOrFail($id_premiacion);
         $premiacion->update([
             'id_torneo' => $request->id_torneo,
-            'id_equipo_ganador' => $request->id_equipo_ganador,
+            'id_equipo' => $request->id_equipo,
             'posicion' => $request->posicion,
             'premio' => $request->premio,
             'descripcion' => $request->descripcion,

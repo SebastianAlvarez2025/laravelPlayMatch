@@ -38,7 +38,9 @@
                         <th>Identificación del encuentro</th>
                         <th>goles del local</th>
                         <th>goles del visitante</th>
-                        <th>ganador</th>
+                        <th>id_equipo </th>
+                        <th>id_equipo_local</th>
+                        <th>id_equipo_visitante</th>
                         <th>observacion</th>
                     </tr>
                     </thead>
@@ -47,9 +49,12 @@
                         <tr>
                             <td>{{ $item->id_resultado }}</td>
                             <td>{{ $item->id_encuentro }}</td>
+                            <td>{{ $item->id_torneo }}</td>
                             <td>{{ $item->goles_local }}</td>
                             <td>{{ $item->goles_visitante }}</td>
-                            <td>{{ $item->ganador }}</td>
+                            <td>{{ $item->id_equipo }}</td>
+                            <td>{{ $item->id_equipo_local }}</td>
+                            <td>{{ $item->id_equipo_visitante }}</td>
                             <td>{{ $item->observaciones }}</td>
                             <td>
                                 <!-- BOTÓN EDITAR -->
@@ -93,8 +98,8 @@
                                                 <input type="text" class="form-control" name="goles_visitante" value="{{ $item->goles_visitante }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="ganador" class="form-label">Ganador</label>
-                                                <input type="text" class="form-control" name="ganador" value="{{ $item->ganador }}" required>
+                                                <label for="id_equipo" class="form-label">Ganador</label>
+                                                <input type="text" class="form-control" name="id_equipo" value="{{ $item->id_equipo }}" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="observaciones" class="form-label">observaciones</label>

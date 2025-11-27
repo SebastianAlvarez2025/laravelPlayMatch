@@ -15,9 +15,12 @@ class resultadosModel extends Model
     protected $fillable=[
         'id_resultado',
         'id_encuentro',
+        'id_torneo',
         'goles_local',
         'goles_visitante',
-        'ganador',
+        'id_equipo',
+        'id_equipo_local',
+        'id_equipo_visitante',
         'observaciones'
     ];
 }

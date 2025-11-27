@@ -9,7 +9,7 @@
             <h3>Módulo Torneos</h3>
             <hr>
 
-            <form action="{{ url('/equipos') }}" method="GET">
+            <form action="{{ url('/torneos') }}" method="GET">
                 <div class="text-end mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
                         <i class="fa-solid fa-plus"></i> Nuevo Torneo
@@ -20,12 +20,12 @@
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por equipo o ciudad">
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneo o ciudad">
                         </div>
                     </div>
                     <div class="col-md-6 text-end">
                         <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                        <a href="{{ url('/equipos') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                        <a href="{{ url('/torneos') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
                     </div>
                 </div>
             </form>

@@ -19,6 +19,8 @@ use App\Http\Controllers\torneosController;
 use App\Http\Controllers\tecnicosController;
 use App\Http\Controllers\tipo_faltaController;
 use App\Http\Controllers\InscripcionController;
+use App\Http\Controllers\LoginController;
+
 
 
 Route::get('/', function () {
@@ -57,14 +59,20 @@ Route::get('/encuentros/edit/{id}', [EncuentrosController::class, 'edit'])->name
 Route::put('/encuentros/update/{id}', [EncuentrosController::class, 'update'])->name('encuentros.update');
 Route::delete('/encuentros/destroy/{id}', [EncuentrosController::class, 'destroy'])->name('encuentros.destroy');
 
-
+// inscripciones 
 Route::get('/inscripciones', [InscripcionController::class, 'index'])->name('inscripciones.index');
 Route::post('/inscripciones', [InscripcionController::class, 'store'])->name('inscripciones.store');
 Route::put('/inscripciones/{id}', [InscripcionController::class, 'update'])->name('inscripciones.update');
 Route::delete('/inscripciones/{id}', [InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
 
+// login
 
-
+Route::get('/', [LoginController::class, 'showLogin'])->name('login');
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 
 //Jesus
 //Torneos

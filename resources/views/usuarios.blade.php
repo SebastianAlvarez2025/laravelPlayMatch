@@ -52,7 +52,7 @@
                                 <td>{{$item->apellido}}</td>
                                 <td>{{$item->correo}}</td>
                                 <td>{{$item->telefono}}</td>
-                                <td>{{$item->id_rol}}</td>
+                                <td>{{$item->nombrerol}}</td>
                                 <td>{{$item->fecha_registro}}</td>
                                 <td>{{$item->fecha_nacimiento}}</td>
                                 <td>{{$item->estado}}</td>
@@ -95,16 +95,23 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="correo" class="form-label">Correo</label>
-                                                <input type="number" class="form-control" name="correo" value="{{ $item->correo }}" required>
+                                                <input type="text" class="form-control" name="correo" value="{{ $item->correo }}" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="telefono" class="form-label">Telefono</label>
-                                                <input type="text" class="form-control" name="telefono" value="{{ $item->telefono }}" required>
+                                                <input type="number" class="form-control" name="telefono" value="{{ $item->telefono }}" required>
+
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="id_rol" class="form-label">Rol</label>
-                                                <input type="text" class="form-control" name="id_rol" value="{{ $item->id_rol }}" required>
-                                            </div>
+
+                                            <select class="form-control" name="id_rol" required>
+                                                @foreach($roles as $rol)
+                                                    <option value="{{ $rol->id_rol }}" 
+                                                        {{ $item->id_rol == $rol->id_rol ? 'selected' : '' }}>
+                                                        {{ $rol->nombrerol }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
                                             <div class="mb-3">
                                                 <label for="fecha_registro" class="form-label">Fecha de Registro</label>
                                                 <input type="text" class="form-control" name="fecha_registro" value="{{ $item->fecha_registro }}" required>
@@ -114,8 +121,11 @@
                                                 <input type="text" class="form-control" name="fecha_nacimiento" value="{{ $item->fecha_nacimiento }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="estado" class="form-label">Estado</label>
-                                                <input type="text" class="form-control" name="estado" value="{{ $item->estado }}" required>
+                                                <label class="form-label">Estado</label>
+                                                <select class="form-control" name="estado" required>
+                                                    <option value="activo" {{ $item->estado == 'activo' ? 'selected' : '' }}>Activo</option>
+                                                    <option value="inactivo" {{ $item->estado == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -159,28 +169,36 @@
                             </div>
                             <div class="mb-3">
                                 <label for="correo" class="form-label">Correo</label>
-                                <input type="number" class="form-control" name="correo" placeholder="Ingrese el Apellido" required>
+                                <input type="text" class="form-control" name="correo" placeholder="Ingrese el Apellido" required>
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Telefono</label>
-                                <input type="text" class="form-control" name="telefono" placeholder="Ingrese el Telefono" required>
+                                <input type="number" class="form-control" name="telefono" placeholder="Ingrese el Telefono" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="id_rol" class="form-label">Rol</label>
-                                <input type="text" class="form-control" name="iid_rol" placeholder="Ingrese el Rol" required>
+                            <div>
+                            <select class="form-control" name="id_rol" required>
+                                @foreach($roles as $rol)
+                                    <option value="{{ $rol->id_rol }}">
+                                        {{ $rol->nombrerol }}
+                                    </option>
+                                @endforeach
+                            </select>
                             </div>
                             <div class="mb-3">
                                 <label for="fecha_registro" class="form-label">Fecha de Registro</label>
-                                <input type="text" class="form-control" name="fecha_registro" placeholder="Ingrese la fecha de registro" required>
+                                <input type="date" class="form-control" name="fecha_registro" placeholder="Ingrese la fecha de registro" required>
                             </div>
                             <div class="mb-3">
                                 <label for="fecha_nacimiento" class="form-label">Fecha Nacimiento</label>
-                                <input type="text" class="form-control" name="fecha_nacimiento" placeholder="Ingrese la Fecha de Nacimiento" required>
+                                <input type="date" class="form-control" name="fecha_nacimiento" placeholder="Ingrese la Fecha de Nacimiento" required>
                             </div>
                             <div class="mb-3">
-                                <label for="estado" class="form-label">Estado</label>
-                                <input type="text" class="form-control" name="estado" placeholder="Ingrese el Estado" required>
-                            </div>
+                                                <label class="form-label">Estado</label>
+                                                <select class="form-control" name="estado" required>
+                                                    <option value="activo" {{ $item->estado == 'activo' ? 'selected' : '' }}>Activo</option>
+                                                    <option value="inactivo" {{ $item->estado == 'inactivo' ? 'selected' : '' }}>Inactivo</option>
+                                                </select>
+                                            </div>
                             
                         </div>
                         <div class="modal-footer">

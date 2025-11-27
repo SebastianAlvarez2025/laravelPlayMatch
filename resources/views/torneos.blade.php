@@ -17,17 +17,10 @@
                 </div>
 
                 <div class="row g-2 align-items-center">
-                    <div class="col-md-6">      
+                    <div class="col-md-6">
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneo o ciudad">
-
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneo o ciudad">
-
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por torneo o ciudad">
-
                             <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por equipo o ciudad">
-
                         </div>
                     </div>
                     <div class="col-md-6 text-end">
@@ -65,20 +58,20 @@
                             <td>{{ $item->nombre_categoria ?? 'Sin categoría' }}</td>
                             <td>{{ $item->usuario_nombre_completo ?? 'Usuario no encontrado' }}</td>
                             <td>
-                                <span class="estado 
-                            <td>{{ $item->nombre_categoria ?? 'Sin categoría' }}</td>
-                            <td>{{ $item->usuario_nombre_completo ?? 'Usuario no encontrado' }}</td>
-                            <td>
                                 <span class="badge
-                                    {{ $item->estado == 'planificado' ? 'bg-secondary' :
-                                    ($item->estado == 'en_curso' ? 'bg-info' :
-                                    ($item->estado == 'finalizado' ? 'bg-success' : 'bg-danger')) }}">
+                                    {{
+                                        $item->estado == 'planificado' ? 'bg-secondary' :
+                                        ($item->estado == 'en_curso' ? 'bg-info' :
+                                        ($item->estado == 'finalizado' ? 'bg-success' :
+                                        ($item->estado == 'cancelado' ? 'bg-danger' : 'bg-dark')))
+                                    }}">
                                     
                                     {{ ucfirst(str_replace('_', ' ', $item->estado)) }}
                                 </span>
                             </td>
                             <td>{{ $item->max_equipos }}</td>
                             <td>{{ $item->tipo_torneo}}</td>
+
                             <td>
                                 <!-- BOTÓN EDITAR -->
                                 <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_torneo }}">
@@ -126,40 +119,32 @@
                                                 <input type="text" class="form-control" name="ciudad" value="{{ $item->ciudad }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Categoría</label>
-                                                <input type="number" class="form-control" name="id_categoria" value="{{ $item->id_categoria }}" required>
-                                                <small class="text-muted">ID actual: {{ $item->id_categoria }} - {{ $item->nombre_categoria }}</small>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Usuario</label>
-                                                <input type="number" class="form-control" name="id_usuario" value="{{ $item->id_usuario }}" required>
-                                                <small class="text-muted">ID actual: {{ $item->id_usuario }} - {{ $item->usuario_nombre_completo }}</small>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Estado</label>
-                                                <select class="form-control" name="estado" required>
-                                                    <option value="planificado" {{ $item->estado == 'planificado' ? 'selected' : '' }}>Planificado</option>
-                                                    <option value="en_curso" {{ $item->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
-                                                    <option value="finalizado" {{ $item->estado == 'finalizado' ? 'selected' : '' }}>Finalizado</option>
-                                                    <option value="cancelado" {{ $item->estado == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                                                <label>Categoría</label>
+                                                <select name="id_categoria" class="form-select" required>
+                                                    @foreach($categorias as $user)
+                                                        <option value="{{ $user->id_categoria }}" {{ $user->id_categoria == $item->id_categoria ? 'selected' : '' }}>
+                                                            {{ $user->nombre_categoria }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
-
-                                                <label class="form-label">Categoría</label>
-                                                <input type="number" class="form-control" name="id_categoria" value="{{ $item->id_categoria }}" required>
-                                                <small class="text-muted">ID actual: {{ $item->id_categoria }} - {{ $item->nombre_categoria }}</small>
-
                                             </div>
                                             <div class="mb-3">
-                                                <label class="form-label">Usuario</label>
-                                                <input type="number" class="form-control" name="id_usuario" value="{{ $item->id_usuario }}" required>
-                                                <small class="text-muted">ID actual: {{ $item->id_usuario }} - {{ $item->usuario_nombre_completo }}</small>
+                                                <label>Usuarios</label>
+                                                <select name="id_usuario" class="form-select" required>
+                                                    @foreach($usuarios as $user)
+                                                        <option value="{{ $user->id_usuario }}" {{ $user->id_usuario == $item->id_usuario ? 'selected' : '' }}>
+                                                            {{ $user->nombre }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Estado</label>
                                                 <select class="form-control" name="estado" required>
-                                                    <option value="Activo" {{ $item->estado == 'Activo' ? 'selected' : '' }}>Activo</option>
-                                                    <option value="Inactivo" {{ $item->estado == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
-                                                    <option value="Finalizado" {{ $item->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado</option>
+                                                    <option value="planificado" {{ $item->estado == 'planificado' ? 'selected' : '' }}>Planifiacado</option>
+                                                    <option value="en_curso" {{ $item->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
+                                                    <option value="finalizado" {{ $item->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado</option>
+                                                    <option value="cancelado" {{ $item->estado == 'canceladoo' ? 'selected' : '' }}>Cancelado</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
@@ -226,32 +211,24 @@
                                 <input type="text" class="form-control" name="ciudad" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">ID Categoría</label>
-                                <input type="number" class="form-control" name="id_categoria" required>
-                                <small class="text-muted">Ingresa el ID de la categoría</small>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Ciudad</label>
-                                <input type="text" class="form-control" name="ciudad" required>
-                            </div>
-                            <div class="mb-3">
                                 <label>Categoría</label>
                                 <select name="id_categoria" class="form-select" required>
                                     <option disabled selected>Seleccione una categoría</option>
-                                    @foreach($categorias as $cat)
-                                        <option value="{{ $cat->id_categoria }}">{{ $cat->nombre_categoria }}</option>
+                                    @foreach($categorias as $user)
+                                        <option value="{{ $user->id_categoria }}">{{ $user->nombre_categoria }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label>Usuario</label>
-                                <select name="id_usuario" class="form-select" required>
-                                    <option disabled selected>Seleccione un Usuario</option>
-                                    @foreach($usuarios as $user)
-                                        <option value="{{ $user->id_usuario }}">{{ $user->nombre }} {{ $user->apellido }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                                                <label>Usuarios</label>
+                                                <select name="id_usuario" class="form-select" required>
+                                                    @foreach($usuarios as $user)
+                                                        <option value="{{ $user->id_usuario }}" {{ $user->id_usuario == $item->id_usuario ? 'selected' : '' }}>
+                                                            {{ $user->nombre }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                             <div class="mb-3">
                                 <label class="form-label">Estado</label>
                                 <select class="form-control" name="estado" required>
@@ -259,17 +236,6 @@
                                     <option value="en_curso">En curso</option>
                                     <option value="finalizado">Finalizado</option>
                                     <option value="cancelado">Cancelado</option>
-                                </select>
-                                <label class="form-label">ID Usuario</label>
-                                <input type="number" class="form-control" name="id_usuario" required>
-                                <small class="text-muted">Ingresa el ID del usuario</small>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Estado</label>
-                                <select class="form-control" name="estado" required>
-                                    <option value="Activo">Activo</option>
-                                    <option value="Inactivo">Inactivo</option>
-                                    <option value="Finalizado">Finalizado</option>
                                 </select>
                             </div>
                             <div class="mb-3">

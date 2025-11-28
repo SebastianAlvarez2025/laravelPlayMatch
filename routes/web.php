@@ -143,11 +143,3 @@ Route::post('/posiciones', [posicionesController::class, 'store'])->name('posici
 Route::put('/posiciones/{id_rol}', [posicionesController::class, 'update'])->name('posiciones.update');
 Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');
 
-Route::get('/Tornes',function() {
-        return view('kevin.Tornes');
-});#   P R   T r i g g e r   -    
-  
- j u e v e s ,   2 7   d e   n o v i e m b r e   d e   2 0 2 5   1 0 : 0 5 : 1 9   p .   m .  
-  
-  
- 

@@ -110,7 +110,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
     Route::delete('/faltas/{id_falta}', [faltasController::class, 'destroy'])->name('faltas.destroy');
     
     //Jugadores
-    Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores.index");
+    Route::get('/jugadores', [jugadoresController::class,'index'])->name('jugadores.index');
     Route::post('/jugadores', [jugadoresController::class, 'store'])->name('jugadores.store');
     Route::put('/jugadores/{id_jugador}', [jugadoresController::class, 'update'])->name('jugadores.update');
     Route::delete('/jugadores/{id_jugador}', [jugadoresController::class, 'destroy'])->name('jugadores.destroy');

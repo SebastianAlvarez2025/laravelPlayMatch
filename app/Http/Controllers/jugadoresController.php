@@ -13,23 +13,18 @@ class jugadoresController extends Controller
 
 
         $query = DB::table('jugadores')
-
-        ->join('usuarios', 'jugadores.id_usuario', '=', 'usuarios.id_usuario')
         ->join('equipos', 'jugadores.id_equipo', '=', 'equipos.id_equipo')
         ->select(
             'jugadores.*',
-            'usuarios.nombre as usuario_nombre',
-            'usuarios.apellido as usuario_apellido',
+
             'equipos.nombre_equipo as equipo_nombre'
         );
 
     if($search){
         $query->where(function ($q) use($search){
             $q->where('jugadores.id_jugador','LIKE',"%{$search}%")
-              ->orWhere('jugadores.id_usuario','LIKE',"%{$search}%")
-              ->orWhere('usuarios.nombre','LIKE',"%{$search}%")
-              ->orWhere('usuarios.apellido','LIKE',"%{$search}%")
               ->orWhere('jugadores.id_equipo','LIKE',"%{$search}%")
+              ->orWhere('jugadores.nombre_jugador','LIKE',"%{$search}%")
               ->orWhere('equipos.nombre_equipo','LIKE',"%{$search}%")
               ->orWhere('jugadores.numero_camiseta','LIKE',"%{$search}%")
               ->orWhere('jugadores.posicion','LIKE',"%{$search}%")
@@ -39,23 +34,21 @@ class jugadoresController extends Controller
         $datos = $query->paginate(10)->appends($request->only('search'));
 
         $equipos = DB::table('equipos')->get();
-        $usuarios = DB::table('usuarios')->get();
 
-        return view("jugadores", compact('datos', 'equipos', 'usuarios'));
+        return view("jugadores", compact('datos', 'equipos'));
     }
     
     public function create(){
     $equipos = DB::table('equipos')->get(); 
-    $usuarios = DB::table('usuarios')->get();
 
-    return view('jugadores.create', compact('equipos', 'usuarios'));
+    return view('jugadores.create', compact('equipos'));
     }
 
     //Crear
     public function store(Request $request){
         $request -> validate([
             'id_jugador' => 'required|unique:jugadores,id_jugador',
-            'id_usuario' => 'required|unique:jugadores,id_usuario',
+            'nombre_jugador' => 'required',
             'id_equipo'  => 'required',
             'posicion' => 'required',
             'numero_camiseta' => 'required',
@@ -72,6 +65,7 @@ class jugadoresController extends Controller
     public function update(Request $request, $id_jugador){
         $jugador = jugadoresModelo::findOrFail($id_jugador);
         $jugador ->update([
+            'nombre_jugador' => $request->nombre_jugador,
             'id_equipo' => $request->id_equipo,
             'posicion' => $request->posicion,
             'numero_camiseta' => $request->numero_camiseta,
@@ -84,6 +78,6 @@ class jugadoresController extends Controller
     public function destroy($id_jugador){
         $jugador = jugadoresModelo::findOrFail($id_jugador);
         $jugador ->delete();
-        return redirect()->route('jugadores.index')->with('success','Lugar eliminado correctamente');
+        return redirect()->route('jugadores.index')->with('success','Jugador eliminado correctamente');
     }
 }

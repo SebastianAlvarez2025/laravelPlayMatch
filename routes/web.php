@@ -48,7 +48,7 @@ Route::post('/categorias/store', [categoriasController::class, 'store'])->name('
 Route::put('/categorias/update/{id}', [categoriasController::class, 'update'])->name('categorias.update');
 Route::delete('/categorias/delete/{id}', [categoriasController::class, 'destroy'])->name('categorias.destroy');
 
-
+// arbitros 
 Route::get('/arbitros', [arbitrosController::class, 'index'])->name('arbitros.index');
 Route::post('/arbitros/store', [arbitrosController::class, 'store'])->name('arbitros.store');
 Route:: put('/arbitros/update/{id}', [arbitrosController::class, 'update'])->name('arbitros.update');
@@ -66,7 +66,6 @@ Route::post('/inscripciones', [InscripcionController::class, 'store'])->name('in
 Route::put('/inscripciones/{id}', [InscripcionController::class, 'update'])->name('inscripciones.update');
 Route::delete('/inscripciones/{id}', [InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
 
-// login
 
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');

@@ -17,9 +17,12 @@ class resultadosController extends Controller
             $query->where(function ($q) use($search){
                 $q->where('id_resultado','LIKE',"%{$search}%")
                   ->orWhere('id_encuentro','LIKE',"%{$search}%")
+                  ->orWhere('id_torneo','LIKE',"%{$search}%")
                   ->orWhere('goles_local','LIKE',"%{$search}%")
                   ->orWhere('goles_visitante','LIKE',"%{$search}%")
-                  ->orWhere('ganador','LIKE',"%{$search}%")
+                  ->orWhere('id_equipo','LIKE',"%{$search}%")
+                  ->orWhere('id_equipo_local','LIKE',"%{$search}%")
+                  ->orWhere('id_equipo_visitante','LIKE',"%{$search}%")
                   ->orWhere('observaciones','LIKE',"%{$search}%");
             });
         }
@@ -33,9 +36,12 @@ class resultadosController extends Controller
         $request->validate([
             'id_resultado' => 'required|unique:resultados,id_resultado',
             'id_encuentro' => 'required',
+            'id_torneo' => 'required',
             'goles_local' => 'required',
             'goles_visitante' => 'required',
-            'ganador' => 'required',
+            'id_equipo' => 'required',
+            'id_equipo_local' => 'required',
+            'id_equipo_visitante' => 'required',
             'observaciones' => 'required',
         ]);
 
@@ -50,7 +56,7 @@ class resultadosController extends Controller
             'id_encuentro' => $request->id_encuentro,
             'goles_local' => $request->goles_local,
             'goles_visitante' => $request->goles_visitante,
-            'ganador' => $request->ganador,
+            'id_equipo' => $request->id_equipo,
             'observaciones' => $request->observaciones,
         ]);
         return redirect()->route('resultados.index')->with('success','Resultado actualizado correctamente');

@@ -15,7 +15,7 @@ class resultadosModel extends Model
     protected $fillable=[
         'id_premiacion',
         'id_torneo',
-        'id_equipo_ganador',
+        'id_equipo',
         'posicion',
         'premio',
         'descripcion'

@@ -47,7 +47,7 @@
                         <tr>
                             <td>{{ $item->id_premiacion }}</td>
                             <td>{{ $item->id_torneo }}</td>
-                            <td>{{ $item->id_equipo_ganador }}</td>
+                            <td>{{ $item->id_equipo }}</td>
                             <td>{{ $item->posicion }}</td>
                             <td>{{ $item->premio }}</td>
                             <td>{{ $item->descripcion }}</td>
@@ -85,8 +85,8 @@
                                                 <input type="text" class="form-control" name="id_torneo" value="{{ $item->id_torneo }}" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="id_equipo_ganador" class="form-label">Identificador del equipo ganador</label>
-                                                <input type="text" class="form-control" name="id_equipo_ganador" value="{{ $item->id_equipo_ganador }}" required>
+                                                <label for="id_equipo" class="form-label">Identificador del equipo ganador</label>
+                                                <input type="text" class="form-control" name="id_equipo" value="{{ $item->id_equipo }}" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="posicion" class="form-label">Posicion</label>

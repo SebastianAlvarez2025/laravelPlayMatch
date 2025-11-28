@@ -9,6 +9,7 @@ class jugadoresModelo extends Model
     protected $table = 'jugadores';
     protected $primaryKey = 'id_jugador';
     public $timestamps = false;
+    public $incrementing = false;
 
     protected $fillable = [
         'id_jugador',

@@ -65,8 +65,6 @@ Route::post('/inscripciones', [InscripcionController::class, 'store'])->name('in
 Route::put('/inscripciones/{id}', [InscripcionController::class, 'update'])->name('inscripciones.update');
 Route::delete('/inscripciones/{id}', [InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
 
-// login
-
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');

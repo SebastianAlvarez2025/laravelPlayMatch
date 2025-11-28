@@ -15,22 +15,41 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // Buscar usuario por correo
+        $request->validate([
+            'correo' => 'required|email',
+            'password' => 'required|string'
+        ]);
+
         $usuario = DB::table('usuarios')
                     ->where('correo', $request->correo)
                     ->first();
 
-        // Validar correo
         if (!$usuario) {
-            return back()->with('error', 'Correo incorrecto.'); 
+            return back()->withErrors(['correo' => 'El correo no existe.'])->withInput();
         }
 
-        // Validar contraseña con HASH
         if (!Hash::check($request->password, $usuario->password)) {
-            return back()->with('error', 'Contraseña incorrecta.');
+            return back()->withErrors(['password' => 'La contraseña es incorrecta.'])->withInput();
         }
 
-        // Login correcto
+        $request->session()->regenerate();
+
+        $request->session()->put('user', [
+            'id' => $usuario->id_usuario,
+            'nombre' => $usuario->nombre,
+            'correo' => $usuario->correo,
+            'id_rol' => $usuario->id_rol
+        ]);
+
         return redirect()->route('dashboard');
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->forget('user');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

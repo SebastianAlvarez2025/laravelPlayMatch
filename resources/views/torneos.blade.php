@@ -141,7 +141,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Estado</label>
                                                 <select class="form-control" name="estado" required>
-                                                    <option value="planificado" {{ $item->estado == 'planificado' ? 'selected' : '' }}>Planifiacado</option>
+                                                    <option value="planificado" {{ $item->estado == 'planificado' ? 'selected' : '' }}>Planificado</option>
                                                     <option value="en_curso" {{ $item->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
                                                     <option value="finalizado" {{ $item->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado</option>
                                                     <option value="cancelado" {{ $item->estado == 'canceladoo' ? 'selected' : '' }}>Cancelado</option>

@@ -19,6 +19,8 @@ use App\Http\Controllers\torneosController;
 use App\Http\Controllers\tecnicosController;
 use App\Http\Controllers\tipo_faltaController;
 use App\Http\Controllers\InscripcionController;
+use App\Http\Controllers\LoginController;
+
 
 
 Route::get('/', function () {
@@ -45,6 +47,7 @@ Route::get('/categorias', [categoriasController::class, 'index'])->name('categor
 Route::post('/categorias/store', [categoriasController::class, 'store'])->name('categorias.store');
 Route::put('/categorias/update/{id}', [categoriasController::class, 'update'])->name('categorias.update');
 Route::delete('/categorias/delete/{id}', [categoriasController::class, 'destroy'])->name('categorias.destroy');
+
 // arbitros 
 Route::get('/arbitros', [arbitrosController::class, 'index'])->name('arbitros.index');
 Route::post('/arbitros/store', [arbitrosController::class, 'store'])->name('arbitros.store');
@@ -57,14 +60,19 @@ Route::get('/encuentros/edit/{id}', [EncuentrosController::class, 'edit'])->name
 Route::put('/encuentros/update/{id}', [EncuentrosController::class, 'update'])->name('encuentros.update');
 Route::delete('/encuentros/destroy/{id}', [EncuentrosController::class, 'destroy'])->name('encuentros.destroy');
 
-
+// inscripciones 
 Route::get('/inscripciones', [InscripcionController::class, 'index'])->name('inscripciones.index');
 Route::post('/inscripciones', [InscripcionController::class, 'store'])->name('inscripciones.store');
 Route::put('/inscripciones/{id}', [InscripcionController::class, 'update'])->name('inscripciones.update');
 Route::delete('/inscripciones/{id}', [InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
 
 
-
+Route::get('/', [LoginController::class, 'showLogin'])->name('login');
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 
 //Jesus
 //Torneos
@@ -137,4 +145,9 @@ Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])-
 
 Route::get('/Tornes',function() {
         return view('kevin.Tornes');
-});
+});#   P R   T r i g g e r   -    
+  
+ j u e v e s ,   2 7   d e   n o v i e m b r e   d e   2 0 2 5   1 0 : 0 5 : 1 9   p .   m .  
+  
+  
+ 

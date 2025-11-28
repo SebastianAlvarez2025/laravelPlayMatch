@@ -163,7 +163,7 @@
                 <a href="{{ route('jugadores.index') }}"><i class="fas fa-user"></i> Jugadores</a>
                 <a href="{{ route('tecnicos.index') }}"><i class="fas fa-chalkboard-teacher"></i> Técnicos</a>
 
-                <!-- 🔥 NUEVA SECCIÓN - INSCRIPCIONES 🔥 -->
+                <!--  NUEVA SECCIÓN - INSCRIPCIONES -->
                 <div class="category-title">Inscripciones</div>
                 <a href="{{ route('inscripciones.index') }}"><i class="fas fa-clipboard-check"></i> Inscripciones</a>
 

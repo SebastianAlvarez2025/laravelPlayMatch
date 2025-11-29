@@ -23,13 +23,16 @@ use App\Http\Controllers\LoginController;
 use App\Http\Middleware\CheckAuth; 
 
 
-Route::get('/dashboard', function () {
-    return view('welcome');
-})->middleware('check_auth')->name('dashboard');
 // LOGIN
 Route::get('/', [LoginController::class, 'showLogin'])->name('login');
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+
+Route::middleware([checkAuth::class])->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('welcome');
+    })->name('dashboard');
 
 
     //Jorge
@@ -139,4 +142,16 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
     Route::post('/posiciones', [posicionesController::class, 'store'])->name('posiciones.store');
     Route::put('/posiciones/{id_rol}', [posicionesController::class, 'update'])->name('posiciones.update');
     Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');
+
+});
+
+    //Route::get('/dashboard', function () {
+    //return view('welcome');
+    //})->middleware('check_auth')->name('dashboard');
+
+    /**cree el archivo helpers
+     * se modifico el composer json
+     * cree una ruta en web para proteger las demas vistas
+     * y cree un if en el menu de navegacion
+     */
 

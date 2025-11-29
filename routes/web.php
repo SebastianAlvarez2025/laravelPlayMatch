@@ -144,14 +144,3 @@ Route::middleware([checkAuth::class])->group(function () {
     Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');
 
 });
-
-    //Route::get('/dashboard', function () {
-    //return view('welcome');
-    //})->middleware('check_auth')->name('dashboard');
-
-    /**cree el archivo helpers
-     * se modifico el composer json
-     * cree una ruta en web para proteger las demas vistas
-     * y cree un if en el menu de navegacion
-     */
-

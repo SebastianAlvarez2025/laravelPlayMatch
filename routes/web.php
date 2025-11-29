@@ -17,7 +17,7 @@ use App\Http\Controllers\premiacionController;
 use App\Http\Controllers\posicionesController;
 use App\Http\Controllers\torneosController;
 use App\Http\Controllers\tecnicosController;
-use App\Http\Controllers\tipo_faltaController;
+use App\Http\Controllers\cronologiaController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\CheckAuth; 
@@ -113,7 +113,7 @@ Route::middleware([checkAuth::class])->group(function () {
     Route::delete('/faltas/{id_falta}', [faltasController::class, 'destroy'])->name('faltas.destroy');
     
     //Jugadores
-    Route::get('/jugadores', [jugadoresController::class,"index"])->name("jugadores.index");
+    Route::get('/jugadores', [jugadoresController::class,'index'])->name('jugadores.index');
     Route::post('/jugadores', [jugadoresController::class, 'store'])->name('jugadores.store');
     Route::put('/jugadores/{id_jugador}', [jugadoresController::class, 'update'])->name('jugadores.update');
     Route::delete('/jugadores/{id_jugador}', [jugadoresController::class, 'destroy'])->name('jugadores.destroy');
@@ -143,4 +143,3 @@ Route::middleware([checkAuth::class])->group(function () {
     Route::put('/posiciones/{id_rol}', [posicionesController::class, 'update'])->name('posiciones.update');
     Route::delete('/posiciones/{id_rol}', [posicionesController::class, 'destroy'])->name('posiciones.destroy');
 
-});

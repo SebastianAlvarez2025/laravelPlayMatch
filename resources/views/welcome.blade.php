@@ -150,6 +150,10 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-content">
+                @php
+                $rol = session('usuer.codigoRoles');
+                @endphp
+                @if($rol == 1)
                 <div class="brand-title">🏆 Playmatch</div>
 
                 <div class="category-title">Configuración</div>
@@ -187,6 +191,7 @@
                 <a href="{{ route('resultados.index') }}"><i class="fas fa-clipboard-list"></i> Resultados</a>
                 <a href="{{ route('posiciones.index') }}"><i class="fas fa-chart-line"></i> Posiciones</a>
                 <a href="{{ route('premiacion.index') }}"><i class="fas fa-medal"></i> Premiación</a>
+                @endif
             </div>
 
             <div class="sidebar-footer">

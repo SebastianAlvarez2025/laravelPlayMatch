@@ -34,7 +34,7 @@ class LoginController extends Controller
         }
 
         // Verificar la contraseña
-        if (!Hash::check($request->password, $usuario->clave)) {
+        if (!Hash::check($request->password, $usuario->password)) {
             return back()->withErrors([
                 'password' => 'La contraseña es incorrecta.'
             ])->withInput();

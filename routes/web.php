@@ -31,7 +31,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::middleware([checkAuth::class])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('welcome');
+        return view('dashboard');
     })->name('dashboard');
 
 

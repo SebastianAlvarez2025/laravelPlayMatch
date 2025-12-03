@@ -1,0 +1,1 @@
+a:4:{s:6:"_token";s:40:"3GwKQGvuTqMdz7e4CEoom96s2p7kzjpDANIghla0";s:9:"_previous";a:2:{s:3:"url";s:27:"http://127.0.0.1:8000/login";s:5:"route";s:5:"login";}s:6:"_flash";a:2:{s:3:"old";a:0:{}s:3:"new";a:0:{}}s:4:"user";a:4:{s:2:"id";s:3:"987";s:6:"nombre";s:4:"Juan";s:6:"correo";s:14:"juan@gmail.com";s:6:"id_rol";s:1:"3";}}

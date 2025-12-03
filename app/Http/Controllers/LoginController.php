@@ -15,30 +15,38 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // Validación de campos
         $request->validate([
             'correo' => 'required|email',
             'password' => 'required|string'
         ]);
 
+        // Buscar usuario por correo
         $usuario = DB::table('usuarios')
                     ->where('correo', $request->correo)
                     ->first();
 
         if (!$usuario) {
-            return back()->withErrors(['correo' => 'El correo no existe.'])->withInput();
+            return back()->withErrors([
+                'correo' => 'El correo no existe.'
+            ])->withInput();
         }
 
-        if (!Hash::check($request->password, $usuario->password)) {
-            return back()->withErrors(['password' => 'La contraseña es incorrecta.'])->withInput();
+        // Verificar contraseña
+        if (!Hash::check($request->password, $usuario->clave)) {
+            return back()->withErrors([
+                'password' => 'La contraseña es incorrecta.'
+            ])->withInput();
         }
 
+        // Crear sesión
         $request->session()->regenerate();
 
         $request->session()->put('user', [
-            'id' => $usuario->id_usuario,
-            'nombre' => $usuario->nombre,
-            'correo' => $usuario->correo,
-            'id_rol' => $usuario->id_rol
+            'id'      => $usuario->id_usuario,
+            'nombre'  => $usuario->nombre,
+            'correo'  => $usuario->correo,
+            'id_rol'  => $usuario->id_rol
         ]);
 
         return redirect()->route('dashboard');

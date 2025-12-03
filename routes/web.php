@@ -20,16 +20,26 @@ use App\Http\Controllers\tecnicosController;
 use App\Http\Controllers\cronologiaController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\LoginController;
-use App\Http\Middleware\CheckAuth; 
+use App\Http\Middleware\CheckAuth;
 
-
+// DASHBOARD protegido
 Route::get('/dashboard', function () {
     return view('welcome');
 })->middleware('check_auth')->name('dashboard');
-// LOGIN
-Route::get('/', [LoginController::class, 'showLogin'])->name('login');
+
+// LOGIN (solo una ruta GET)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+
+// PROCESAR LOGIN
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+
+// REDIRECCIÓN raíz → login
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+
+
 
 
     //Jorge
@@ -79,11 +89,11 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
     Route::delete('/tecnicos/delete/{id}', [tecnicosController::class, 'destroy'])->name('tecnicos.destroy');
     
     //Tipo_Falta
-    Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta.index");
-    Route::post('/tipo_falta/store', [tipo_faltaController::class, 'store'])->name('tipo_falta.store');
-    Route::put('/tipo_falta/update/{id}', [tipo_faltaController::class, 'update'])->name('tipo_falta.update');
-    Route::delete('/tipo_falta/delete/{id}', [tipo_faltaController::class, 'destroy'])->name('tipo_falta.destroy');
-    
+    Route::get('/cronologia', [cronologiaController::class,"index"])->name("cronologia.index");
+    Route::post('/cronologia/store', [cronologiaController::class, 'store'])->name('cronologia.store');
+    Route::put('/cronologia/update/{id}', [cronologiaController::class, 'update'])->name('cronologia.update');
+    Route::delete('/cronologia/delete/{id}', [cronologiaController::class, 'destroy'])->name('cronologia.destroy');
+
     //Usuarios
     Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios.index");
     Route::post('/usuarios/store', [usuariosController::class, 'store'])->name('usuarios.store');

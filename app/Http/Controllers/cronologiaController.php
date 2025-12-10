@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class cronologiaController extends Controller
+class CronologiaController extends Controller
 {
     // Mostrar roles + búsqueda
     public function index(Request $request){

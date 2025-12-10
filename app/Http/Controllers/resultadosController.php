@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\resultadosModelo;
 
-class resultadosController extends Controller
+class ResultadosController extends Controller
 {
     // Mostrar resultados + búsqueda
     public function index(Request $request){

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\faltasModelo;
 
-class faltasController extends Controller
+class FaltasController extends Controller
 {
     public function index(Request $request){
         $search = $request->input('search');

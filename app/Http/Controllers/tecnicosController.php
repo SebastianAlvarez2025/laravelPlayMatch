@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\tecnicosModelo; // ✅ Agregar esta línea
+use App\Models\tecnicosModelo; 
 
-class tecnicosController extends Controller
+class TecnicosController extends Controller
 {
     // Mostrar técnicos + búsqueda
     public function index(Request $request){

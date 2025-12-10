@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\lugaresModelo;
 
-class lugaresController extends Controller
+class LugaresController extends Controller
 {
     // Mostrar roles + búsqueda
     public function index(Request $request){

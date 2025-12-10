@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Categoria; 
 
-class categoriasController extends Controller
+class CategoriasController extends Controller
 {
 
     public function index(Request $request)

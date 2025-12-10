@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\rolesModelo;
 
-class rolesController extends Controller
+class RolesController extends Controller
 {
     // Mostrar roles + búsqueda
     public function index(Request $request){

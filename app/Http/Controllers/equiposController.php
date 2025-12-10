@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\equipo;
 
-class equiposController extends Controller
+class EquiposController extends Controller
 {
     public function index(Request $request)
     {

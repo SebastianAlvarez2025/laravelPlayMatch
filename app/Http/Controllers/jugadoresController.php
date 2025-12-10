@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\jugadoresModelo;
 
-class jugadoresController extends Controller
+class JugadoresController extends Controller
 {
     public function index(Request $request){
         $search = $request->input('search');

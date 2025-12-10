@@ -131,6 +131,54 @@
             padding: 10px;
             font-size: 14px;
         }
+        /* 🔹 Caja fija para que NO se mueva nada */
+    .pm-fixed-box {
+        max-width: 1150px;
+        width: 100%;
+        margin: auto;
+    }
+
+    /* 🔹 Contenedor con scroll interno */
+    .pm-table-container {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 450px; /* Ajusta si quieres más o menos altura */
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+
+    /* 🔹 La tabla no crece más del contenedor */
+    .pm-table-container table {
+        width: 100%;
+        table-layout: fixed;
+        white-space: nowrap;
+    }
+
+    /* 🔹 Cortar texto largo sin romper el diseño */
+    .pm-table-container td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* Ajuste de ancho de columnas para que no se encimen */
+.pm-table-container th {
+    padding: 12px;
+    font-weight: 600;
+    white-space: normal !important; /* Permite salto de línea */
+}
+
+/* Si quieres que SOLO los encabezados puedan tener salto de línea */
+.pm-table-container th {
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* Opcional: algunos th necesitan más ancho */
+.pm-table-container th:nth-child(2) { width: 160px; }  /* Nombre Torneo */
+.pm-table-container th:nth-child(7) { width: 120px; }  /* Usuario */
+.pm-table-container th:nth-child(11) { width: 150px; } /* Imagen */
+.pm-table-container th:nth-child(12) { width: 100px; } /* Acciones */
+
+
     </style>
 </head>
 <body>
@@ -233,7 +281,7 @@
             </div>
 
             <div class="sidebar-footer">
-                    <a href="/login" class="btn btn-outline-light w-100">Cerrar sesión</a>
+                    <a href="/" class="btn btn-outline-light w-100">Cerrar sesión</a>
             </div>
         </div>
 

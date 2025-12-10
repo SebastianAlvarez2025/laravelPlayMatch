@@ -24,9 +24,15 @@ use App\Http\Middleware\CheckAuth;
 
 
 // LOGIN
-Route::get('/', [LoginController::class, 'showLogin'])->name('login');
+Route::get('/', [torneosController::class, 'inicioVisitante'])->name('inicio');
+
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+
+ //VISTAS
+Route::get('/buscar-torneo', [TorneosController::class, 'buscarVisitante'])->name('buscar.visitante');
+Route::get('/torneo/{id}', [TorneosController::class, 'show'])->name('torneo.show');
+
 
 Route::middleware([checkAuth::class])->group(function () {
 

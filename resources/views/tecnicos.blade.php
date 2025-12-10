@@ -33,10 +33,11 @@
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="table-primary">
                     <tr>
-                       <th scope="col">Tecnico</th>
-                            <th scope="col">Usuario</th>
-                            <th scope="col">Equipo</th>
-                            <th scope="col">licencia</th>
+                       <th>Técnico</th>
+                       <th>Usuario</th>
+                       <th>Equipo</th>
+                       <th>Licencia</th>
+                       <th>Acciones</th>
                            
                     </tr>
                     </thead>

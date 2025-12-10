@@ -42,6 +42,7 @@
                             <th scope="col">Registro</th>
                             <th scope="col">Fecha de Nacimiento</th>
                             <th scope="col">Estado</th>
+                            <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>

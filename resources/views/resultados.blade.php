@@ -36,12 +36,14 @@
                     <tr>
                         <th>Identificación del resultado</th>
                         <th>Identificación del encuentro</th>
+                        <th>Id torneo</th>
                         <th>goles del local</th>
                         <th>goles del visitante</th>
                         <th>id_equipo </th>
                         <th>id_equipo_local</th>
                         <th>id_equipo_visitante</th>
                         <th>observacion</th>
+                        <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>

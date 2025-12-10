@@ -37,9 +37,10 @@
                         <th>Identificación de la premiacion</th>
                         <th>Identificación del torneo</th>
                         <th>Identificación del equipo gandor</th>
-                        <th>posicion</th>
-                        <th>premio</th>
-                        <th>descripcion</th>
+                        <th>Posicion</th>
+                        <th>Premio</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>

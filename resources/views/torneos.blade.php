@@ -31,10 +31,15 @@
             </form>
 
             @if($datos->count() > 0)
-                <table class="table table-striped table-hover table-bordered">
-                    <thead class="table-primary">
-                    <tr>
-                        <th>ID</th>
+
+            <!-- 🔹 Caja fija + scroll interno -->
+            <div class="pm-fixed-box">
+                <div class="pm-table-container">
+
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
                             <th>Nombre de Torneo</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
@@ -44,136 +49,144 @@
                             <th>Estado</th>
                             <th>Max Equipos</th>
                             <th>Tipo Torneo</th>
- 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($datos as $item)
-                        <tr>
-                            <td>{{ $item->id_torneo }}</td>
-                            <td>{{ $item->nombre_torneo }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->fecha_inicio)->format('d/m/Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->fecha_fin)->format('d/m/Y') }}</td>
-                            <td>{{ $item->ciudad }}</td>
-                            <td>{{ $item->nombre_categoria ?? 'Sin categoría' }}</td>
-                            <td>{{ $item->usuario_nombre_completo ?? 'Usuario no encontrado' }}</td>
-                            <td>
-                                <span class="badge
-                                    {{
-                                        $item->estado == 'planificado' ? 'bg-secondary' :
-                                        ($item->estado == 'en_curso' ? 'bg-info' :
-                                        ($item->estado == 'finalizado' ? 'bg-success' :
-                                        ($item->estado == 'cancelado' ? 'bg-danger' : 'bg-dark')))
-                                    }}">
-                                    
-                                    {{ ucfirst(str_replace('_', ' ', $item->estado)) }}
-                                </span>
-                            </td>
-                            <td>{{ $item->max_equipos }}</td>
-                            <td>{{ $item->tipo_torneo}}</td>
-
-                            <td>
-                                <!-- BOTÓN EDITAR -->
-                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_torneo }}">
-                                    <i class="fa-solid fa-pen-to-square"></i> Editar
-                                </button>
-
-                                <!-- BOTÓN ELIMINAR -->
-                                <form action="{{ route('torneos.destroy', $item->id_torneo) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este torneo?')">
-                                        <i class="fa-solid fa-trash"></i> Eliminar
-                                    </button>
-                                </form>
-                            </td>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
                         </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($datos as $item)
+                            <tr>
+                                <td>{{ $item->id_torneo }}</td>
+                                <td>{{ $item->nombre_torneo }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->fecha_inicio)->format('d/m/Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->fecha_fin)->format('d/m/Y') }}</td>
+                                <td>{{ $item->ciudad }}</td>
+                                <td>{{ $item->nombre_categoria ?? 'Sin categoría' }}</td>
+                                <td>{{ $item->usuario_nombre_completo ?? 'Usuario no encontrado' }}</td>
+                                <td>
+                                    <span class="badge
+                                        {{
+                                            $item->estado == 'planificado' ? 'bg-secondary' :
+                                            ($item->estado == 'en_curso' ? 'bg-info' :
+                                            ($item->estado == 'finalizado' ? 'bg-success' :
+                                            ($item->estado == 'cancelado' ? 'bg-danger' : 'bg-dark')))
+                                        }}">
+                                        {{ ucfirst(str_replace('_', ' ', $item->estado)) }}
+                                    </span>
+                                </td>
+                                <td>{{ $item->max_equipos }}</td>
+                                <td>{{ $item->tipo_torneo}}</td>
+                                <td>{{ $item->imagen }}</td>
 
-                        <!-- MODAL EDITAR -->
-                        <div class="modal fade" id="editarModal{{ $item->id_torneo }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <form action="{{ route('torneos.update', $item->id_torneo) }}" method="POST">
+                                <td>
+                                    <!-- BOTÓN EDITAR -->
+                                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_torneo }}">
+                                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                                    </button>
+
+                                    <!-- BOTÓN ELIMINAR -->
+                                    <form action="{{ route('torneos.destroy', $item->id_torneo) }}" method="POST" class="d-inline">
                                         @csrf
-                                        @method('PUT')
-                                        <div class="modal-header">
-                                            <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar torneo</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <div class="mb-3">
-                                                <label class="form-label">Nombre de Torneo</label>
-                                                <input type="text" class="form-control" name="nombre_torneo" value="{{ $item->nombre_torneo }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Fecha de Inicio</label>
-                                                <input type="date" class="form-control" name="fecha_inicio" value="{{ $item->fecha_inicio }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Fecha de Finalización</label>
-                                                <input type="date" class="form-control" name="fecha_fin" value="{{ $item->fecha_fin }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Ciudad</label>
-                                                <input type="text" class="form-control" name="ciudad" value="{{ $item->ciudad }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label>Categoría</label>
-                                                <select name="id_categoria" class="form-select" required>
-                                                    @foreach($categorias as $user)
-                                                        <option value="{{ $user->id_categoria }}" {{ $user->id_categoria == $item->id_categoria ? 'selected' : '' }}>
-                                                            {{ $user->nombre_categoria }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label>Usuarios</label>
-                                                <select name="id_usuario" class="form-select" required>
-                                                    @foreach($usuarios as $user)
-                                                        <option value="{{ $user->id_usuario }}" {{ $user->id_usuario == $item->id_usuario ? 'selected' : '' }}>
-                                                            {{ $user->nombre }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Estado</label>
-                                                <select class="form-control" name="estado" required>
-                                                    <option value="planificado" {{ $item->estado == 'planificado' ? 'selected' : '' }}>Planificado</option>
-                                                    <option value="en_curso" {{ $item->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
-                                                    <option value="finalizado" {{ $item->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado</option>
-                                                    <option value="cancelado" {{ $item->estado == 'canceladoo' ? 'selected' : '' }}>Cancelado</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Max Equipos</label>
-                                                <input type="text" class="form-control" name="max_equipos" value="{{ $item->max_equipos }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Tipo de torneo</label>
-                                                <input type="text" class="form-control" name="tipo_torneo" value="{{ $item->tipo_torneo }}" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
-                                        </div>
-
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este torneo?')">
+                                            <i class="fa-solid fa-trash"></i> Eliminar
+                                        </button>
                                     </form>
+                                </td>
+                            </tr>
+
+                            <!-- MODAL EDITAR -->
+                            <div class="modal fade" id="editarModal{{ $item->id_torneo }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <form action="{{ route('torneos.update', $item->id_torneo) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Editar torneo</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nombre de Torneo</label>
+                                                    <input type="text" class="form-control" name="nombre_torneo" value="{{ $item->nombre_torneo }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Fecha de Inicio</label>
+                                                    <input type="date" class="form-control" name="fecha_inicio" value="{{ $item->fecha_inicio }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Fecha de Finalización</label>
+                                                    <input type="date" class="form-control" name="fecha_fin" value="{{ $item->fecha_fin }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Ciudad</label>
+                                                    <input type="text" class="form-control" name="ciudad" value="{{ $item->ciudad }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Categoría</label>
+                                                    <select name="id_categoria" class="form-select" required>
+                                                        @foreach($categorias as $user)
+                                                            <option value="{{ $user->id_categoria }}" {{ $user->id_categoria == $item->id_categoria ? 'selected' : '' }}>
+                                                                {{ $user->nombre_categoria }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Usuarios</label>
+                                                    <select name="id_usuario" class="form-select" required>
+                                                        @foreach($usuarios as $user)
+                                                            <option value="{{ $user->id_usuario }}" {{ $user->id_usuario == $item->id_usuario ? 'selected' : '' }}>
+                                                                {{ $user->nombre }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Estado</label>
+                                                    <select class="form-control" name="estado" required>
+                                                        <option value="planificado" {{ $item->estado == 'planificado' ? 'selected' : '' }}>Planificado</option>
+                                                        <option value="en_curso" {{ $item->estado == 'en_curso' ? 'selected' : '' }}>En curso</option>
+                                                        <option value="finalizado" {{ $item->estado == 'Finalizado' ? 'selected' : '' }}>Finalizado</option>
+                                                        <option value="cancelado" {{ $item->estado == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Max Equipos</label>
+                                                    <input type="text" class="form-control" name="max_equipos" value="{{ $item->max_equipos }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Tipo de torneo</label>
+                                                    <input type="text" class="form-control" name="tipo_torneo" value="{{ $item->tipo_torneo }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Imagen</label>
+                                                    <input type="text" class="form-control" name="imagen" value="{{ $item->imagen }}" >
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+                                            </div>
+
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    @endforeach
-                    </tbody>
-                </table>
+                        @endforeach
+                        </tbody>
+                    </table>
 
-                <div class="d-flex justify-content-end">
-                    {{ $datos->links() }}
-                </div>
+                </div> <!-- pm-table-container -->
+            </div> <!-- pm-fixed-box -->
+
+            <div class="d-flex justify-content-end">
+                {{ $datos->links() }}
+            </div>
 
             @else
                 <p class="text-center mt-3">No se encontraron Torneos.</p>
@@ -193,7 +206,6 @@
                         </div>
 
                         <div class="modal-body">
-
                             <div class="mb-3">
                                 <label class="form-label">Nombre de Torneo</label>
                                 <input type="text" class="form-control" name="nombre_torneo" required>
@@ -220,15 +232,13 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                                <label>Usuarios</label>
-                                                <select name="id_usuario" class="form-select" required>
-                                                    @foreach($usuarios as $user)
-                                                        <option value="{{ $user->id_usuario }}" {{ $user->id_usuario == $item->id_usuario ? 'selected' : '' }}>
-                                                            {{ $user->nombre }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                <label>Usuarios</label>
+                                <select name="id_usuario" class="form-select" required>
+                                    @foreach($usuarios as $user)
+                                        <option value="{{ $user->id_usuario }}">{{ $user->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">Estado</label>
                                 <select class="form-control" name="estado" required>
@@ -245,6 +255,10 @@
                             <div class="mb-3">
                                 <label class="form-label">Tipo torneo</label>
                                 <input type="text" class="form-control" name="tipo_torneo" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Imagen</label>
+                                <input type="text" class="form-control" name="imagen">
                             </div>
                         </div>
 

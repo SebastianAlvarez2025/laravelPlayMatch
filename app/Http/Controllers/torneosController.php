@@ -43,7 +43,8 @@ class TorneosController extends Controller
             'id_usuario'    => 'required',
             'estado'        => 'required',
             'max_equipos'   => 'required|numeric',
-            'tipo_torneo'   => 'required',
+            'tipo_torneo'   => 'nullable|string',
+            'imagen' => 'nullable'
         ]);
 
         DB::table('torneos')->insert([
@@ -56,6 +57,7 @@ class TorneosController extends Controller
             'estado'        => $request->estado,
             'max_equipos'   => $request->max_equipos,
             'tipo_torneo'   => $request->tipo_torneo,
+            'imagen' => $request->imagen,
         ]);
 
         return redirect()->route('torneos.index');
@@ -73,6 +75,7 @@ class TorneosController extends Controller
             'estado'        => $request->estado,
             'max_equipos'   => $request->max_equipos,
             'tipo_torneo'   => $request->tipo_torneo,
+            'imagen' => $request->imagen,
         ]);
 
         return redirect()->route('torneos.index');
@@ -101,4 +104,41 @@ class TorneosController extends Controller
                 ->with('error', 'Error inesperado. Contacte al administrador.');
         }
     }
+
+    public function inicioVisitante()
+    {
+        $torneos = Torneo::orderBy('id_torneo', 'desc')->take(3)->get();
+        return view('index', compact('torneos'));
+    }
+
+    public function buscarVisitante(Request $request)
+    {
+        $search = $request->search;
+
+        $torneos = Torneo::where('id_torneo', $search)
+            ->orWhere('nombre_torneo', 'LIKE', '%' . $search . '%')
+            ->get();
+
+        // ➤ Si encontró 1 torneo → enviarlo directo a la información
+        if ($torneos->count() === 1) {
+            return redirect()->route('torneo.show', $torneos->first()->id_torneo);
+        }
+
+        return view('buscarTorneo', [
+        'torneos' => $torneos,
+        'search' => $search
+    ]);
+    }
+
+    public function show($id)
+    {
+        $torneo = DB::table('torneos')->where('id_torneo', $id)->first();
+
+        if (!$torneo) {
+            abort(404, 'Torneo no encontrado');
+        }
+
+        return view('datos-torneo', compact('torneo'));
+    }
+
 }

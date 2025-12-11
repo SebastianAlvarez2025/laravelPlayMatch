@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class rolesModelo extends Model
+class RolesModelo extends Model
 {
     protected $table = 'roles';
     protected $primaryKey = 'id_rol';

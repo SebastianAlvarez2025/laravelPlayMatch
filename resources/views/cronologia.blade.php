@@ -147,7 +147,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="id_cronologia" class="form-label">Id Tipo de Falta</label>
+                                <label for="id_cronologia" class="form-label">cronologia</label>
                                 <input type="text" class="form-control" name="id_cronologia" placeholder="Ingrese el ID del tipo de Falta" required>
                             </div>
                             <div class="mb-3">

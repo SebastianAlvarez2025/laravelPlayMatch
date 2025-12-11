@@ -87,12 +87,12 @@ Route::middleware([checkAuth::class])->group(function () {
     Route::put('/tecnicos/update/{id}', [tecnicosController::class, 'update'])->name('tecnicos.update');
     Route::delete('/tecnicos/delete/{id}', [tecnicosController::class, 'destroy'])->name('tecnicos.destroy');
     
-    //Tipo_Falta
-    Route::get('/tipo_falta', [tipo_faltaController::class,"index"])->name("tipo_falta.index");
-    Route::post('/tipo_falta/store', [tipo_faltaController::class, 'store'])->name('tipo_falta.store');
-    Route::put('/tipo_falta/update/{id}', [tipo_faltaController::class, 'update'])->name('tipo_falta.update');
-    Route::delete('/tipo_falta/delete/{id}', [tipo_faltaController::class, 'destroy'])->name('tipo_falta.destroy');
-    
+    //cronologia 
+    Route::get('/cronologia', [CronologiaController::class, "index"])->name("cronologia.index");
+    Route::post('/cronologia/store', [CronologiaController::class, 'store'])->name('cronologia.store');
+    Route::put('/cronologia/update/{id}', [CronologiaController::class, 'update'])->name('cronologia.update');
+    Route::delete('/cronologia/delete/{id}', [CronologiaController::class, 'destroy'])->name('cronologia.destroy');
+
     //Usuarios
     Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios.index");
     Route::post('/usuarios/store', [usuariosController::class, 'store'])->name('usuarios.store');

@@ -40,7 +40,6 @@
                             <th scope="col">Registro</th>
                             <th scope="col">Fecha de Nacimiento</th>
                             <th scope="col">Estado</th>
-                            <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -215,4 +214,4 @@
 </div>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('dashboard', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\laravelPlayMatch\resources\views/usuarios.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('welcome', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\laravelPlayMatch\resources\views/usuarios.blade.php ENDPATH**/ ?>

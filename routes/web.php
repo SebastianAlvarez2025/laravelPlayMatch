@@ -22,10 +22,10 @@ use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\CheckAuth;
 
-// DASHBOARD protegido
+// DASHBOARD (sin middleware por ahora)
 Route::get('/dashboard', function () {
     return view('welcome');
-})->middleware('check_auth')->name('dashboard');
+})->name('dashboard');
 
 // LOGIN (solo una ruta GET)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -37,7 +37,6 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
 
 
 

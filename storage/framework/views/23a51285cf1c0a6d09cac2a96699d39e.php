@@ -1,7 +1,5 @@
-@extends('welcome')
-
-@section('title', 'Faltas')
-@section('content')
+<?php $__env->startSection('title', 'Faltas'); ?>
+<?php $__env->startSection('content'); ?>
 
 <div class="container-sm d-flex justify-content-center mt-5">
     <div class="card" style="width: 1200px;">
@@ -9,7 +7,7 @@
             <h3>Módulo faltas</h3>
             <hr>
 
-            <form action="{{ url('/faltas') }}" method="GET">
+            <form action="<?php echo e(url('/faltas')); ?>" method="GET">
                 <div class="text-end mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarModal">
                         <i class="fa-solid fa-plus"></i> Nuevo
@@ -20,17 +18,17 @@
                     <div class="col-md-6">
                         <div class="input-group mb-3">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Buscar por faltas">
+                            <input type="text" class="form-control" name="search" value="<?php echo e(request('search')); ?>" placeholder="Buscar por faltas">
                         </div>
                     </div>
                     <div class="col-md-6 text-end">
                         <button type="submit" class="btn btn-info"><i class="fas fa-search-plus"></i> Buscar</button>
-                        <a href="{{ url('/faltas') }}" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
+                        <a href="<?php echo e(url('/faltas')); ?>" class="btn btn-warning"><i class="fas fa-list"></i> Reset</a>
                     </div>
                 </div>
             </form>
 
-            @if($datos->count() > 0)
+            <?php if($datos->count() > 0): ?>
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="table-primary">
                     <tr>
@@ -46,29 +44,29 @@
                     </thead>
                     <tbody>
 
-                    @foreach ($datos as $item)
+                    <?php $__currentLoopData = $datos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td>{{ $item->id_falta }}</td>
-                            <td>{{ $item->id_encuentro }}</td>
-                            <td>{{ $item->nombre_jugador }}</td>
+                            <td><?php echo e($item->id_falta); ?></td>
+                            <td><?php echo e($item->id_encuentro); ?></td>
+                            <td><?php echo e($item->nombre_jugador); ?></td>
 
-                            {{-- Mostrar texto combinado --}}
-                            <td>{{ $item->tipo_evento }} – minuto {{ $item->cronologia_minuto }}</td>
+                            
+                            <td><?php echo e($item->tipo_evento); ?> – minuto <?php echo e($item->cronologia_minuto); ?></td>
 
-                            <td>{{ $item->minuto }}</td>
-                            <td>{{ $item->tarjeta }}</td>
-                            <td>{{ $item->descripcion }}</td>
+                            <td><?php echo e($item->minuto); ?></td>
+                            <td><?php echo e($item->tarjeta); ?></td>
+                            <td><?php echo e($item->descripcion); ?></td>
 
                             <td>
                                 <!-- BOTÓN EDITAR -->
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal{{ $item->id_falta }}">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editarModal<?php echo e($item->id_falta); ?>">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
 
                                 <!-- BOTÓN ELIMINAR -->
-                                <form action="{{ route('faltas.destroy', $item->id_falta) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
+                                <form action="<?php echo e(route('faltas.destroy', $item->id_falta)); ?>" method="POST" class="d-inline">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar esta falta?')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
@@ -77,12 +75,12 @@
                         </tr>
 
                         <!-- MODAL EDITAR -->
-                        <div class="modal fade" id="editarModal{{ $item->id_falta }}" tabindex="-1">
+                        <div class="modal fade" id="editarModal<?php echo e($item->id_falta); ?>" tabindex="-1">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
-                                    <form action="{{ route('faltas.update', $item->id_falta) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
+                                    <form action="<?php echo e(route('faltas.update', $item->id_falta)); ?>" method="POST">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('PUT'); ?>
 
                                         <div class="modal-header">
                                             <h5 class="modal-title">Editar Falta</h5>
@@ -94,24 +92,26 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Encuentro:</label>
                                                 <select class="form-select" name="id_encuentro" required>
-                                                    @foreach($encuentros as $encuentro)
-                                                        <option value="{{ $encuentro->id_encuentro }}"
-                                                            {{ $encuentro->id_encuentro == $item->id_encuentro ? 'selected' : '' }}>
-                                                            {{ $encuentro->id_encuentro }}
+                                                    <?php $__currentLoopData = $encuentros; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $encuentro): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option value="<?php echo e($encuentro->id_encuentro); ?>"
+                                                            <?php echo e($encuentro->id_encuentro == $item->id_encuentro ? 'selected' : ''); ?>>
+                                                            <?php echo e($encuentro->id_encuentro); ?>
+
                                                         </option>
-                                                    @endforeach
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </select>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Jugador:</label>
                                                 <select class="form-select" name="id_jugador" required>
-                                                    @foreach($jugadores as $jugador)
-                                                        <option value="{{ $jugador->id_jugador }}"
-                                                            {{ $jugador->id_jugador == $item->id_jugador ? 'selected' : '' }}>
-                                                            {{ $jugador->nombre_jugador }}
+                                                    <?php $__currentLoopData = $jugadores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $jugador): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option value="<?php echo e($jugador->id_jugador); ?>"
+                                                            <?php echo e($jugador->id_jugador == $item->id_jugador ? 'selected' : ''); ?>>
+                                                            <?php echo e($jugador->nombre_jugador); ?>
+
                                                         </option>
-                                                    @endforeach
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </select>
                                             </div>
 
@@ -119,36 +119,37 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Cronología (Tipo – Minuto):</label>
                                                 <select class="form-select" name="id_cronologia" required>
-                                                    @foreach($cronologia as $c)
-                                                        @php
+                                                    <?php $__currentLoopData = $cronologia; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php
                                                             $texto = $c->tipo_evento . " - minuto " . $c->minuto;
-                                                        @endphp
+                                                        ?>
 
-                                                        <option value="{{ $c->id_cronologia }}"
-                                                            {{ $c->id_cronologia == $item->id_cronologia ? 'selected' : '' }}>
-                                                            {{ $texto }}
+                                                        <option value="<?php echo e($c->id_cronologia); ?>"
+                                                            <?php echo e($c->id_cronologia == $item->id_cronologia ? 'selected' : ''); ?>>
+                                                            <?php echo e($texto); ?>
+
                                                         </option>
-                                                    @endforeach
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </select>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Minuto:</label>
-                                                <input type="number" class="form-control" name="minuto" value="{{ $item->minuto }}" required>
+                                                <input type="number" class="form-control" name="minuto" value="<?php echo e($item->minuto); ?>" required>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Tarjeta:</label>
                                                 <select class="form-select" name="tarjeta" required>
-                                                    <option value="ninguna" {{ $item->tarjeta == 'ninguna' ? 'selected' : '' }}>Ninguna</option>
-                                                    <option value="amarilla" {{ $item->tarjeta == 'amarilla' ? 'selected' : '' }}>Amarilla</option>
-                                                    <option value="roja" {{ $item->tarjeta == 'roja' ? 'selected' : '' }}>Roja</option>
+                                                    <option value="ninguna" <?php echo e($item->tarjeta == 'ninguna' ? 'selected' : ''); ?>>Ninguna</option>
+                                                    <option value="amarilla" <?php echo e($item->tarjeta == 'amarilla' ? 'selected' : ''); ?>>Amarilla</option>
+                                                    <option value="roja" <?php echo e($item->tarjeta == 'roja' ? 'selected' : ''); ?>>Roja</option>
                                                 </select>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Descripción:</label>
-                                                <input type="text" class="form-control" name="descripcion" value="{{ $item->descripcion }}" required>
+                                                <input type="text" class="form-control" name="descripcion" value="<?php echo e($item->descripcion); ?>" required>
                                             </div>
 
                                         </div>
@@ -163,26 +164,27 @@
                             </div>
                         </div>
 
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                     </tbody>
                 </table>
 
                 <div class="d-flex justify-content-end">
-                    {{ $datos->links() }}
+                    <?php echo e($datos->links()); ?>
+
                 </div>
 
-            @else
+            <?php else: ?>
                 <p class="text-center mt-3">No se encontraron faltas.</p>
-            @endif
+            <?php endif; ?>
         </div>
 
         <!-- MODAL AGREGAR -->
         <div class="modal fade" id="agregarModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form action="{{ route('faltas.store') }}" method="POST">
-                        @csrf
+                    <form action="<?php echo e(route('faltas.store')); ?>" method="POST">
+                        <?php echo csrf_field(); ?>
 
                         <div class="modal-header">
                             <h5 class="modal-title">Crear Falta</h5>
@@ -200,9 +202,9 @@
                                 <label class="form-label">Encuentro:</label>
                                 <select class="form-select" name="id_encuentro" required>
                                     <option value="" hidden selected>Seleccione...</option>
-                                    @foreach($encuentros as $encuentro)
-                                        <option value="{{ $encuentro->id_encuentro }}">{{ $encuentro->id_encuentro }}</option>
-                                    @endforeach
+                                    <?php $__currentLoopData = $encuentros; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $encuentro): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($encuentro->id_encuentro); ?>"><?php echo e($encuentro->id_encuentro); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
 
@@ -210,9 +212,9 @@
                                 <label class="form-label">Jugador:</label>
                                 <select class="form-select" name="id_jugador" required>
                                     <option value="" hidden selected>Seleccione...</option>
-                                    @foreach($jugadores as $jugador)
-                                        <option value="{{ $jugador->id_jugador }}">{{ $jugador->nombre_jugador }}</option>
-                                    @endforeach
+                                    <?php $__currentLoopData = $jugadores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $jugador): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($jugador->id_jugador); ?>"><?php echo e($jugador->nombre_jugador); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
 
@@ -220,12 +222,12 @@
                                 <label class="form-label">Cronología:</label>
                                 <select class="form-select" name="id_cronologia" required>
                                     <option value="" hidden selected>Seleccione...</option>
-                                    @foreach($cronologia as $c)
-                                        @php
+                                    <?php $__currentLoopData = $cronologia; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php
                                             $texto = $c->tipo_evento . " - minuto " . $c->minuto;
-                                        @endphp
-                                        <option value="{{ $c->id_cronologia }}">{{ $texto }}</option>
-                                    @endforeach
+                                        ?>
+                                        <option value="<?php echo e($c->id_cronologia); ?>"><?php echo e($texto); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
 
@@ -264,4 +266,6 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('welcome', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\laravelPlayMatch\resources\views/faltas.blade.php ENDPATH**/ ?>

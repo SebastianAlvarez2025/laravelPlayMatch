@@ -181,7 +181,7 @@
                     Árbitros
                 </a>
                 <a href="{{ route('faltas.index') }}"><i class="fas fa-exclamation-triangle"></i> Faltas</a>
-                <a href="{{ route('cronologia.index') }}"><i class="fas fa-exclamation-circle"></i> Tipo Falta</a>
+                <a href="{{ route('cronologia.index') }}"><i class="fas fa-exclamation-circle"></i> cronologia</a>
 
                 <div class="category-title">Resultados</div>
                 <a href="{{ route('resultados.index') }}"><i class="fas fa-clipboard-list"></i> Resultados</a>

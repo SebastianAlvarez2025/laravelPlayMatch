@@ -8,77 +8,59 @@ use App\Models\faltasModelo;
 
 class faltasController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $search = $request->input('search');
 
-
         $query = DB::table('faltas')
+            ->join('encuentros', 'faltas.id_encuentro', '=', 'encuentros.id_encuentro')
+            ->join('jugadores', 'faltas.id_jugador', '=', 'jugadores.id_jugador')
+            ->join('cronologia', 'faltas.id_cronologia', '=', 'cronologia.id_cronologia')
+            ->select(
+                'faltas.*',
+                'cronologia.nombre as falta_nombre',
+                'jugadores.nombre_jugador'
+            );
 
-        ->join('encuentros', 'faltas.id_encuentro', '=', 'encuentros.id_encuentro')
-        ->join('jugadores', 'faltas.id_jugador', '=', 'jugadores.id_jugador')
-        ->join('usuarios', 'jugadores.id_usuario', '=', 'usuarios.id_usuario')
-        ->join('tipo_falta', 'faltas.id_tipo_falta', '=', 'tipo_falta.id_tipo_falta')
-        ->select(
-            'faltas.*',
-            'tipo_falta.nombre as falta_nombre',
-            'usuarios.nombre as nombre_usuario',
-            'usuarios.apellido as apellido_usuario'
-        );
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('faltas.id_falta', 'LIKE', "%{$search}%")
+                    ->orWhere('faltas.id_encuentro', 'LIKE', "%{$search}%")
+                    ->orWhere('faltas.id_jugador', 'LIKE', "%{$search}%")
+                    ->orWhere('faltas.id_cronologia', 'LIKE', "%{$search}%")
+                    ->orWhere('cronologia.nombre', 'LIKE', "%{$search}%")
+                    ->orWhere('jugadores.nombre_jugador', 'LIKE', "%{$search}%")
+                    ->orWhere('faltas.minuto', 'LIKE', "%{$search}%")
+                    ->orWhere('faltas.tarjeta', 'LIKE', "%{$search}%")
+                    ->orWhere('faltas.descripcion', 'LIKE', "%{$search}%");
+            });
+        }
 
-    if($search){
-        $query->where(function ($q) use($search){
-            $q->where('faltas_id_falta','LIKE',"%{$search}%")
-              ->orWhere('faltas.id_encuentro','LIKE',"%{$search}%")
-              ->orWhere('faltas.id_jugador','LIKE',"%{$search}%")
-              ->orWhere('fechas.id_tipo_falta','LIKE',"%{$search}%")
-              ->orWhere('tipo_falta.nombre','LIKE',"%{$search}%")
-              ->orWhere('usuarios.nombre','LIKE',"%{$search}%")
-              ->orWhere('usuarios.apellido','LIKE',"%{$search}%")
-              ->orWhere('fechas.minuto','LIKE',"%{$search}%")
-              ->orWhere('fechas.tarjeta','LIKE',"%{$search}%")
-              ->orWhere('fechas.descripcion','LIKE',"%{$search}%");
-        });
-    }
         $datos = $query->paginate(10)->appends($request->only('search'));
 
         $encuentros = DB::table('encuentros')->get();
-        $jugadores = DB::table('jugadores')
-                ->join('usuarios', 'jugadores.id_usuario', '=', 'usuarios.id_usuario')
-                ->select(
-                    'jugadores.id_jugador',
-                    'usuarios.nombre as nombre_usuario',
-                    'usuarios.apellido as apellido_usuario'
-                )
-            ->get();
+        $jugadores = DB::table('jugadores')->get();
+        $cronologia = DB::table('cronologia')->get();
 
-        $tipo_falta = DB::table('tipo_falta')->get();
-
-        return view("faltas", compact('datos', 'encuentros', 'jugadores', 'tipo_falta'));
-    }
-    
-    public function create(){
-    $encuentros = DB::table('encuentros')->get(); 
-    $jugadores = DB::table('jugadores')
-            ->join('usuarios', 'jugadores.id_usuario', '=', 'usuarios.id_usuario')
-            ->select(
-                'jugadores.id_jugador',
-                'usuarios.nombre as nombre_usuario',
-                'usuarios.apellido as apellido_usuario'
-            )
-        ->get();
-    $tipo_falta = DB::table('tipo_falta')->get();
-
-    return view('faltas.create', compact('encuentros', 'jugadores', 'tipo_falta'));
+        return view("faltas", compact('datos', 'encuentros', 'jugadores', 'cronologia'));
     }
 
-    //Crear
-    public function store(Request $request){
-        $request -> validate([
+    public function create()
+    {
+        $encuentros = DB::table('encuentros')->get();
+        $jugadores = DB::table('jugadores')->get();
+        $cronologia = DB::table('cronologia')->get();
+
+        return view('faltas.create', compact('encuentros', 'jugadores', 'cronologia'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
             'id_falta' => 'required|unique:faltas,id_falta',
             'id_encuentro' => 'required',
             'id_jugador'  => 'required',
-            'id_tipo_falta' => 'required',
-            'minuto' => 'required',
+            'id_cronologia' => 'required',
             'tarjeta' => 'required',
             'descripcion' => 'required',
         ]);
@@ -86,27 +68,30 @@ class faltasController extends Controller
         faltasModelo::create($request->all());
 
         return redirect()->route('faltas.index')
-                     ->with('success', 'Falta creada correctamente.');
+            ->with('success', 'Falta creada correctamente.');
     }
 
-    //Actualizar
-    public function update(Request $request, $id_falta){
+    public function update(Request $request, $id_falta)
+    {
         $falta = faltasModelo::findOrFail($id_falta);
-        $falta ->update([
+
+        $falta->update([
             'id_encuentro' => $request->id_encuentro,
             'id_jugador' => $request->id_jugador,
-            'id_tipo_falta' => $request->id_tipo_falta,
+            'id_cronologia' => $request->id_cronologia,
             'minuto' => $request->minuto,
             'tarjeta' => $request->tarjeta,
             'descripcion' => $request->descripcion,
         ]);
-        return redirect()->route('faltas.index')->with('success','Falta actualizada correctamente');
+
+        return redirect()->route('faltas.index')->with('success', 'Falta actualizada correctamente');
     }
 
-    // Eliminar
-    public function destroy($id_falta){
+    public function destroy($id_falta)
+    {
         $falta = faltasModelo::findOrFail($id_falta);
-        $falta ->delete();
-        return redirect()->route('faltas.index')->with('success','Falta eliminada correctamente');
+        $falta->delete();
+
+        return redirect()->route('faltas.index')->with('success', 'Falta eliminada correctamente');
     }
 }

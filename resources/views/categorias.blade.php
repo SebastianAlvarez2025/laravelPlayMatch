@@ -33,7 +33,7 @@
                     <thead class="table-primary">
                         <tr>
                             <th>ID Categoría</th>
-                            <th>nombre_categoria</th>
+                            <th>categoria</th>
                             <th>Descripción</th>
                             <th>Edad_Mínima</th>
                             <th>Edad_Máxima</th>

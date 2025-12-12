@@ -11,11 +11,12 @@
                 <p>¡Bienvenido! Has iniciado sesión con éxito.</p>
                 
                 {{-- Opcional: Mostrar detalles de la sesión del usuario --}}
-                @if(session('user'))
+                 @if(session('user'))
                     <p>Nombre: <strong>{{ session('user.nombre') }}</strong></p>
                     <p>Correo: <strong>{{ session('user.correo') }}</strong></p>
-                    <p>ID Rol: <strong>{{ session('user.id_rol') }}</strong></p>
-                @endif
+                    <p>Rol: <strong>{{ session('user.rol_nombre') }}</strong></p>
+                 @endif
+
                 
             </div>
         </div>

@@ -23,8 +23,8 @@ class LoginController extends Controller
 
         // Buscar el usuario por correo
         $usuario = DB::table('usuarios')
-                    ->where('correo', $request->correo)
-                    ->first();
+            ->where('correo', $request->correo)
+            ->first();
 
         // Verificar si el correo existe
         if (!$usuario) {
@@ -40,15 +40,15 @@ class LoginController extends Controller
             ])->withInput();
         }
 
-        // Regenerar la sesión
+        // Regenerar la sesión para evitar ataques de fijación
         $request->session()->regenerate();
 
-        // Guardar datos del usuario en sesión
+        // Guardar datos del usuario en sesión (CORREGIDO)
         $request->session()->put('user', [
-            'id'     => $usuario->id_usuario, // Cambia si tu columna se llama diferente
-            'nombre' => $usuario->nombre,
-            'correo' => $usuario->correo,
-            'id_rol' => $usuario->id_rol
+            'id'     => $usuario->id_usuario,  // ID del usuario
+            'nombre' => $usuario->nombre,      // Nombre del usuario
+            'correo' => $usuario->correo,      // Correo
+            'id_rol' => $usuario->id_rol       // <-- ESTA ES LA CLAVE QUE EL MENÚ UTILIZA
         ]);
 
         return redirect()->route('dashboard');

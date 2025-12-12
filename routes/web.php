@@ -21,6 +21,9 @@ use App\Http\Controllers\cronologiaController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\CheckAuth; 
+use App\Http\Controllers\BusquedaController;
+
+
 
 
 // LOGIN
@@ -41,6 +44,8 @@ Route::middleware([checkAuth::class])->group(function () {
     })->name('dashboard');
 
 
+    
+    Route::get('/buscar', [BusquedaController::class, 'index'])->name('buscar');
     //Jorge
     // equipo 
     Route::get('/equipos', [equiposController::class, 'index'])->name('equipos.index');
@@ -87,12 +92,12 @@ Route::middleware([checkAuth::class])->group(function () {
     Route::put('/tecnicos/update/{id}', [tecnicosController::class, 'update'])->name('tecnicos.update');
     Route::delete('/tecnicos/delete/{id}', [tecnicosController::class, 'destroy'])->name('tecnicos.destroy');
     
-    //cronologia 
-    Route::get('/cronologia', [CronologiaController::class, "index"])->name("cronologia.index");
+    //cronologia  
     Route::post('/cronologia/store', [CronologiaController::class, 'store'])->name('cronologia.store');
     Route::put('/cronologia/update/{id}', [CronologiaController::class, 'update'])->name('cronologia.update');
     Route::delete('/cronologia/delete/{id}', [CronologiaController::class, 'destroy'])->name('cronologia.destroy');
-
+    Route::get('/cronologia', [CronologiaController::class, 'index'])->name('cronologia.index');
+  
     //Usuarios
     Route::get('/usuarios', [UsuariosController::class,"index"])->name("usuarios.index");
     Route::post('/usuarios/store', [usuariosController::class, 'store'])->name('usuarios.store');

@@ -13,6 +13,9 @@ class PosicionesController extends Controller
         $search = $request->get('search', '');
 
         $datos = Posicion::query()
+            ->join('torneos', 'posiciones.id_torneo', '=', 'torneos.id_torneo')
+            ->select('posiciones.*', 'torneos.nombre_torneo')
+
             ->when($search, function($query, $search) {
                 $query->where('nombre_equipo', 'like', "%$search%")
                       ->orWhere('nombre_torneo', 'like', "%$search%");

@@ -48,8 +48,8 @@
                         @foreach($datos as $item)
                         <tr>
                             <td>{{ $item->id_posicion }}</td>
-                            <td>{{ $item->nombre_torneo }}</td>
-                            <td>{{ $item->nombre_equipo }}</td>
+                            <td>{{ $item->id_torneo }}</td>
+                            <td>{{ $item->id_equipo }}</td>
                             <td>{{ $item->pj }}</td>
                             <td>{{ $item->pg }}</td>
                             <td>{{ $item->pe }}</td>

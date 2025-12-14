@@ -15,6 +15,7 @@ class EquiposController extends Controller
         $datos = DB::table('equipos')
             ->join('categorias', 'equipos.id_categoria', '=', 'categorias.id_categoria')
             ->select('equipos.*', 'categorias.nombre_categoria')
+            
             ->when($search, function ($query, $search) {
                 return $query->where('nombre_equipo', 'LIKE', "%{$search}%")
                              ->orWhere('ciudad', 'LIKE', "%{$search}%");

@@ -143,10 +143,10 @@ Route::middleware([checkAuth::class])->group(function () {
     Route::delete('/resulatdos/{id_rol}', [resultadosController::class, 'destroy'])->name('resultados.destroy');
     
     //Premiacion
-    Route::get('/premiacion', [premiacionController::class,"index"])->name("premiacion.index");
-    Route::post('/premiacion', [premiacionController::class, 'store'])->name('premiacion.store');
-    Route::put('/premiacion/{id_rol}', [premiacionController::class, 'update'])->name('premiacion.update');
-    Route::delete('/premiacion/{id_rol}', [premiacionController::class, 'destroy'])->name('premiacion.destroy');
+    Route::get('/premiacion', [PremiacionController::class,"index"])->name("premiacion.index");
+    Route::post('/premiacion', [PremiacionController::class, 'store'])->name('premiacion.store');
+    Route::put('/premiacion/{id_rol}', [PremiacionController::class, 'update'])->name('premiacion.update');
+    Route::delete('/premiacion/{id_rol}', [PremiacionController::class, 'destroy'])->name('premiacion.destroy');
     
     //Posiciones
     Route::get('/posiciones', [posicionesController::class,"index"])->name("posiciones.index");

@@ -50,13 +50,17 @@
                     @foreach ($datos as $item)
                         <tr>
                             <td>{{ $item->id_resultado }}</td>
-                            <td>{{ $item->id_encuentro }}</td>
-                            <td>{{ $item->id_torneo }}</td>
+                            <td>
+                                {{ $item-> fecha }}
+                                <br><br>
+                                {{ $item-> hora }}
+                            </td>
+                            <td>{{ $item->nombre_torneo }}</td>
                             <td>{{ $item->goles_local }}</td>
                             <td>{{ $item->goles_visitante }}</td>
-                            <td>{{ $item->id_equipo }}</td>
-                            <td>{{ $item->id_equipo_local }}</td>
-                            <td>{{ $item->id_equipo_visitante }}</td>
+                            <td>{{ $item->nombre_equipo }}</td>
+                            <td>{{ $item->nombre_equipo }}</td>
+                            <td>{{ $item->nombre_equipo }}</td>
                             <td>{{ $item->observaciones }}</td>
                             <td>
                                 <!-- BOTÓN EDITAR -->

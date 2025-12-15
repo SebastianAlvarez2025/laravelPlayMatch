@@ -15,7 +15,8 @@ class PremiacionController extends Controller
 
         $query = DB::table('premiacion')
         ->join('equipos', 'equipos.id_equipo', '=', 'premiacion.id_equipo')
-        ->select('premiacion.*', 'equipos.nombre_equipo');
+        ->join('torneos', 'torneos.id_torneo', '=', 'premiacion.id_torneo')
+        ->select('premiacion.*', 'equipos.nombre_equipo', 'torneos.nombre_torneo');
 
         if ($search) {
     $query->where(function ($q) use ($search) {

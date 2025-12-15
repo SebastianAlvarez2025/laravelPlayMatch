@@ -14,7 +14,8 @@ class PosicionesController extends Controller
 
         $datos = Posicion::query()
             ->join('torneos', 'posiciones.id_torneo', '=', 'torneos.id_torneo')
-            ->select('posiciones.*', 'torneos.nombre_torneo')
+            ->join('equipos', 'posiciones.id_equipo', '=', 'equipos.id_equipo')
+            ->select('posiciones.*', 'torneos.nombre_torneo', 'equipos.nombre_equipo')
 
             ->when($search, function($query, $search) {
                 $query->where('nombre_equipo', 'like', "%$search%")

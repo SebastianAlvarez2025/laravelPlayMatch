@@ -11,7 +11,14 @@ class ResultadosController extends Controller
     // Mostrar resultados + búsqueda
     public function index(Request $request){
         $search = $request->input('search');
-        $query = DB::table('resultados');
+        
+        $query = DB::table('resultados')
+        ->join('encuentros', 'resultados.id_encuentro', '=', 'encuentros.id_encuentro')
+        ->join('fechas', 'resultados.id_encuentro', '=', 'fechas.id_fecha')
+        ->join('torneos', 'resultados.id_torneo', '=', 'torneos.id_torneo')
+        ->join('equipos', 'resultados.id_equipo', '=', 'equipos.id_equipo')
+        ->select('resultados.*','encuentros.hora', 'fechas.fecha', 'torneos.nombre_torneo', 
+        'equipos.nombre_equipo');
 
         if($search){
             $query->where(function ($q) use($search){

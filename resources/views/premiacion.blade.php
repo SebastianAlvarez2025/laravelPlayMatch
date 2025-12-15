@@ -35,8 +35,8 @@
                     <thead class="table-primary">
                     <tr>
                         <th>Identificación de la premiacion</th>
-                        <th>Identificación del torneo</th>
-                        <th>Identificación del equipo gandor</th>
+                        <th>Nombre del torneo</th>
+                        <th>Nombre del equipo gandor</th>
                         <th>Posicion</th>
                         <th>Premio</th>
                         <th>Descripcion</th>
@@ -47,8 +47,8 @@
                     @foreach ($datos as $item)
                         <tr>
                             <td>{{ $item->id_premiacion }}</td>
-                            <td>{{ $item->id_torneo }}</td>
-                            <td>{{ $item->id_equipo }}</td>
+                            <td>{{ $item->nombre_torneo }}</td>
+                            <td>{{ $item->nombre_equipo }}</td>
                             <td>{{ $item->posicion }}</td>
                             <td>{{ $item->premio }}</td>
                             <td>{{ $item->descripcion }}</td>

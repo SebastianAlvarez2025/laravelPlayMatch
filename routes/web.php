@@ -21,31 +21,30 @@ use App\Http\Controllers\cronologiaController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\CheckAuth; 
-use App\Http\Controllers\BusquedaController;
 
 
 
 
-// LOGIN
 Route::get('/', [torneosController::class, 'inicioVisitante'])->name('inicio');
-
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::middleware([CheckAuth::class])->group(function () {
 
- //VISTAS
-Route::get('/buscar-torneo', [TorneosController::class, 'buscarVisitante'])->name('buscar.visitante');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+});
+
+
 Route::get('/torneo/{id}', [TorneosController::class, 'show'])->name('torneo.show');
-
-
 Route::middleware([checkAuth::class])->group(function () {
 
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-
-    
-    Route::get('/buscar', [BusquedaController::class, 'index'])->name('buscar');
     //Jorge
     // equipo 
     Route::get('/equipos', [equiposController::class, 'index'])->name('equipos.index');

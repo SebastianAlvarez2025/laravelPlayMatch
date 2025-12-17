@@ -9,12 +9,15 @@ class CheckAuth
 {
     public function handle(Request $request, Closure $next)
     {
-        // Validar si la sesión NO tiene el usuario
         if (!$request->session()->has('user')) {
-            return redirect()->route('login')
-                ->with('error', 'Debes iniciar sesión.');
+            return redirect()->route('login');
         }
 
-        return $next($request);
+        $response = $next($request);
+
+        return $response
+            ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     }
 }

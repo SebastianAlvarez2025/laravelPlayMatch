@@ -38,7 +38,7 @@
                         <th>Nombre del jugador</th>
                         <th>Equipo</th>
                         <th>Posicion</th>
-                        <th>Número de camiseta</th>
+                        <th>Dorsal </th>
                         <th>Estado</th>
                          <th>Acciones</th>
                     </tr>
